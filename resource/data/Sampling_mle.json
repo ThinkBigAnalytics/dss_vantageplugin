@@ -1,0 +1,157 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Sampling",
+  "function_version": "1.5",
+  "function_type": "non-driver",
+  "function_alias_name": "Sampling",
+  "function_r_name": "aa.sampling",
+  "short_description": "Samples rows from an input table.",
+  "long_description": "Sampling function that does simple and stratified no-replacement sampling. ",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny",
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The table containing the data to be sampled.",
+      "description": "The table containing the data to be sampled.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "summary",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The summary input contains the stratum count information.",
+      "description": "The summary input contains the stratum count information.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "summary.data",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "GROUPTYPE"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "StratumColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the column that contains the sample conditions. If the function has only one input table (the data table), then condition_column is in the data table. If the function has two input tables, data and summary, then condition_column is in the summary table.",
+      "description": "Specifies the name of the column that contains the sample conditions. If the function has only one input table (the data table), then condition_column is in the data table. If the function has two input tables, data and summary, then condition_column is in the summary table.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "stratum.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SampleFraction",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies one or more fractions to use in sampling the data. (Syntax options that do not use sample.fraction require approx.sample.size.) If you specify only one fraction, then the function uses fraction for all strata defined by the sample conditions. If you specify more than one fraction, then the function uses each fraction for sampling a particular stratum defined by the condition arguments. Note: For conditional sampling with variable sample sizes, specify one fraction for each condition that you specify with the strata argument.",
+      "description": "Specifies one or more fractions to use in sampling the data. (Syntax options that do not use SampleFraction require ApproxSampleSize.) If you specify only one fraction, then the function uses fraction for all strata defined by the sample conditions. If you specify more than one fraction, then the function uses each fraction for sampling a particular stratum defined by the condition arguments. Note: For conditional sampling with variable sample sizes, specify one fraction for each condition that you specify with the Strata argument.",
+      "datatype": "DOUBLE",
+      "allowsLists": true,
+      "rName": "sample.fraction",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ApproxSampleSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies one or more approximate sample sizes to use in sampling the data. (Syntax options that do not use approx.sample.size require sample.fraction.) Each sample size is approximate because the function maps the size to the sample fractions and then generates the sample data. If you specify only one size, then it represents the total sample size for the entire population. If you also specify the strata argument, then the function proportionally generates sample units for each stratum. If you specify more than one size, then each size corresponds to a stratum, and the function uses each size to generate sample units for the corresponding stratum. Note: For conditional sampling with variable approximate sample sizes, specify one size for each condition that you specify with the strata argument.",
+      "description": "Specifies one or more approximate sample sizes to use in sampling the data. (Syntax options that do not use ApproxSampleSize require SampleFraction.) Each sample size is approximate because the function maps the size to the sample fractions and then generates the sample data. If you specify only one size, then it represents the total sample size for the entire population. If you also specify the Strata argument, then the function proportionally generates sample units for each stratum. If you specify more than one size, then each size corresponds to a stratum, and the function uses each size to generate sample units for the corresponding stratum. Note: For conditional sampling with variable approximate sample sizes, specify one size for each condition that you specify with the Strata argument.",
+      "datatype": "INTEGER",
+      "allowsLists": true,
+      "rName": "approx.sample.size",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Strata",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the sample conditions that appear in the condition_column specified by stratum.column. If strata specifies a condition that does not appear in condition_column, then the function issues an error message.",
+      "description": "Specifies the sample conditions that appear in the condition_column specified by StratumColumn. If Strata specifies a condition that does not appear in condition_column, then the function issues an error message.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "strata",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "lowerBound": -9223372036854775808,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Seed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the random seed used to initialize the algorithm.",
+      "description": "Specifies the random seed used to initialize the algorithm.",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "seed",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

@@ -1,0 +1,191 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "NERTrainer",
+  "function_version": "1.5",
+  "function_type": "driver",
+  "function_alias_name": "NERTrainer",
+  "function_r_name": "aa.ner.train",
+  "short_description": "SQL/MR function to train a ner model.",
+  "long_description": "SQL/MR function to train a ner model.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": true,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The relation that contains the training data.",
+      "description": "The relation that contains the training data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TextColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the text to analyze.",
+      "description": "Specifies the name of the input table column that contains the text to analyze.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "text.coloumn",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "ModelFileName",
+      "alternateNames": [
+        "ModelFile"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the model file that the function generates and installs in Aster Database.",
+      "description": "Specifies the name of the model file that the function generates and installs in Aster Database.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "model.file",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "FeatureTemplate",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the file that specifies how to generate features when training the model. You must install this feature template file in Aster Database under the user search path before calling the function. For more information about template_file, refer to \u201cFeature Template\u201d",
+      "description": "Specifies the name of the file that specifies how to generate features when training the model. You must install this feature template file in Aster Database under the user search path before calling the function. For more information about template_file, refer to \u201cFeature Template\u201d",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "feature.template",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [
+        "en",
+        "zh_CN",
+        "zh_TW"
+      ],
+      "defaultValue": "en",
+      "isOutputColumn": false,
+      "name": "InputLanguage",
+      "alternateNames": [
+        "Language"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the language of the input text: \u2022 en (English, the default) \u2022 zh_CN (Simplified Chinese) \u2022 zh_TW (Traditional Chinese)",
+      "description": "Specifies the language of the input text: \u2022 en (English, the default) \u2022 zh_CN (Simplified Chinese) \u2022 zh_TW (Traditional Chinese)",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "language",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 0.0001,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Eta",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the tolerance of the termination criterion. Defines the differences of the values of the loss function between two sequential epochs. The default value is 0.0001. When training a model, the function performs n-times iterations. At the end of each epoch, the function calculates the loss or cost function on the training samples. If the loss function value change is very small between two sequential epochs, the function considers the training process to have converged. The function defines eta as: Eta=(f(n)-f(n-1))/f(n-1), where f(n) is the loss function value of the nth epoch.",
+      "description": "Specifies the tolerance of the termination criterion. Defines the differences of the values of the loss function between two sequential epochs. The default value is 0.0001. When training a model, the function performs n-times iterations. At the end of each epoch, the function calculates the loss or cost function on the training samples. If the loss function value change is very small between two sequential epochs, the function considers the training process to have converged. The function defines Eta as: Eta=(f(n)-f(n-1))/f(n-1), where f(n) is the loss function value of the nth epoch.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "eta",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": 1000,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxIterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum number of iterations. The default value is '1000'",
+      "description": "Specifies the maximum number of iterations. The default value is '1000'",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.iter.num",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": 0,
+      "lowerBound": -2147483648,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MinOccurNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the minimum number times that a feature must occur in the input text before the function uses the feature to construct the model. The default value is 0.",
+      "description": "Specifies the minimum number times that a feature must occur in the input text before the function uses the feature to construct the model. The default value is 0.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "min.occur.num",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "ExtractorJar",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the JAR file that contains the Java classes that extract features. You must install this JAR file in Aster Database under the user search path before calling the function. Note: The name jar_file is case-sensitive.",
+      "description": "Specifies the name of the JAR file that contains the Java classes that extract features. You must install this JAR file in Aster Database under the user search path before calling the function. Note: The name jar_file is case-sensitive.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "extractor.jar",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

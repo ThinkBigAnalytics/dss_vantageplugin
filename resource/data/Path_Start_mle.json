@@ -1,0 +1,151 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Path_Start",
+  "function_version": "1.10",
+  "function_type": "non-driver",
+  "function_alias_name": "PathStart",
+  "function_r_name": "aa.path.start",
+  "ref_function_r_name": "ta.path.summarizer",
+  "short_description": "This function generates the children for a particular parent and sums up their counts",
+  "long_description": "This is a partition function, with parent being the partition key. This function generates the children for a particular parent and sums up their counts.",
+  "partner_function": "aa.path.summary,aa.path.generator",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the table containing the input data.",
+      "description": "The name of the table containing the input data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NodeColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Specifies the name of the input table column that contains the nodes.",
+      "description": " Specifies the name of the input table column that contains the nodes.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "node.column",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ParentColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the parent nodes. The partition.columns clause in the function call must include this column.",
+      "description": "Specifies the name of the input table column that contains the parent nodes. The PARTITION BY clause in the function call must include this column.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "parent.column",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "INTEGER"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CountColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the number of times a path was traveled.",
+      "description": "Specifies the name of the input table column that contains the number of times a path was traveled.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "count.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": true,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PartitionNames",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Lists the names of the columns that the partition.columns clause specifies. The function uses these names for output table columns. This argument and the partition.columns clause must specify the same names in the same order. One partition_column must be parent_column.",
+      "description": "Lists the names of the columns that the PARTITION BY clause specifies. The function uses these names for output table columns. This argument and the PARTITION BY clause must specify the same names in the same order. One partition_column must be parent_column.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "partition.names",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": ",",
+      "isOutputColumn": false,
+      "name": "Delimiter",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the single-character delimiter that separates symbols in the path string. The default value is comma (','). Note: Do not use any of the following characters as delimiter (they cause the function to fail): Asterisk (*), Plus (+), Left parenthesis ((), Right parenthesis ()), Single quotation mark ('), Escaped single quotation mark ('), Backslash ('')",
+      "description": "Specifies the single-character delimiter that separates symbols in the path string. The default value is comma (','). Note: Do not use any of the following characters as delimiter (they cause the function to fail): Asterisk (*), Plus (+), Left parenthesis ((), Right parenthesis ()), Single quotation mark ('), Escaped single quotation mark ('), Backslash ('')",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "delimiter",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

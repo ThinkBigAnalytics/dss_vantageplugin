@@ -1,0 +1,88 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "EvaluateNamedEntityFinderRow",
+  "function_version": "1.4",
+  "function_type": "non-driver",
+  "function_alias_name": "NamedEntityFinderEvaluatorMap",
+  "function_r_name": "aa.namedentity.finder.evaluate",
+  "ref_function_r_name": "aa.namedentity.finder.train",
+  "short_description": "Implements the name finder row evaluation SQL/MR function.",
+  "long_description": "Implements the name finder row evaluation SQL/MR function.",
+  "function_operation": "map",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The input table should contain a text column which contains input text.",
+      "description": "The input table should contain a text column which contains input text.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TextColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the text to analyze.",
+      "description": "Specifies the name of the input table column that contains the text to analyze.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "text.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Model",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies name of the model file to evaluate.",
+      "description": "Specifies name of the model file to evaluate.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

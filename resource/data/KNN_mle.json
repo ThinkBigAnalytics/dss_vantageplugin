@@ -1,0 +1,226 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "KNN",
+  "function_version": "1.8",
+  "function_type": "driver",
+  "function_alias_name": "KNN",
+  "function_r_name": "aa.knn",
+  "short_description": "This function uses K nearest neighbors alogrithm to classify the test points according to training points",
+  "long_description": "This function uses K nearest neighbors alogrithm to classify the test points according to training points",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "TrainingTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the training data. Each row represents a classified data object.",
+      "description": "Specifies the name of the table that contains the training data. Each row represents a classified data object.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "train",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "TestTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the test data to be classified by the ta.knn algorithm. Each row represents a test data object.",
+      "description": "Specifies the name of the table that contains the test data to be classified by the kNN algorithm. Each row represents a test data object.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "test",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the output table. By default, the function displays the output to the console.",
+      "description": "Specifies the name of the output table. By default, the function displays the output to the console.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.table",
+      "useInR": true,
+      "rOrderNum": 100
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "TrainingTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ResponseColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the training table column that contains the class label or classification of the classified data objects.",
+      "description": "Specifies the name of the training table column that contains the class label or classification of the classified data objects.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "response.column",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "TestTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IdColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the testing table column that uniquely identifies a data object.",
+      "description": "Specifies the name of the testing table column that uniquely identifies a data object.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "id.column",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "targetTable": [
+        "TrainingTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "DistanceFeatures",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the training table columns that the function uses to compute the distance between a test object and the training objects. The test table must also have these columns",
+      "description": "Specifies the names of the training table columns that the function uses to compute the distance between a test object and the training objects. The test table must also have these columns",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "distance.features",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "K",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the number of nearest neighbors to use for classifying the test data.",
+      "description": "Specifies the number of nearest neighbors to use for classifying the test data.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "k",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "PartitionBlockSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the partition block size to use with force.mapreduce ('true'). The recommended value depends on training data size and number of vworkers. For example, if your training data size is 10 billion and you have 10 vworkers, the recommended partition.block.size is 1/n billion, where n is an integer that corresponds to your vworker nodes\u2019 memory. Omitting this argument or specifying an inappropriate partition.block.size can degrade performance.",
+      "description": "Specifies the partition block size to use with ForceMapreduce ('true'). The recommended value depends on training data size and number of vworkers. For example, if your training data size is 10 billion and you have 10 vworkers, the recommended partition_block_size is 1/n billion, where n is an integer that corresponds to your vworker nodes\u2019 memory. Omitting this argument or specifying an inappropriate partition_block_size can degrade performance.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "parblock.size",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "defaultValue": false,
+      "name": "ForceMapreduce",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies whether to partition the training data. The default value is 'false', which causes the ta.knn function to load all training data into memory and use only the row function. If you specify 'true', the ta.knn function partitions the training data and uses the map-and reduce function.",
+      "description": "Specifies whether to partition the training data. The default value is 'false', which causes the KNN function to load all training data into memory and use only the row function. If you specify 'true', the KNN function partitions the training data and uses the map-and reduce function.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "force.mapreduce",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CustomizedDistance",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the distance function. The parameter jar is the name of the JAR file that contains the distance metric class. The parameter distance_class is the distance metric class defined in the jar file. The ta.knn function installs the JAR file on the Aster Database server. The default distance function is Euclidean distance.",
+      "description": "Specifies the distance function. The parameter jar is the name of the JAR file that contains the distance metric class. The parameter distance_class is the distance metric class defined in the jar file. The KNN function installs the JAR file on the Aster Database server. The default distance function is Euclidean distance.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "customized.distance",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": 0,
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "VotingWeight",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the voting weight of the distance between a test object and the training objects. The voting_weight must be a nonnegative integer. The default value is 0. The function calculates distance-weighted voting, w, with this equation: w = 1/POWER(distance, voting_weight) Where distance is the distance between the test object and the training object.",
+      "description": "Specifies the voting weight of the distance between a test object and the training objects. The voting_weight must be a nonnegative integer. The default value is 0. The function calculates distance-weighted voting, w, with this equation: w = 1/POWER(distance, voting_weight) Where distance is the distance between the test object and the training object.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "voting.weight",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

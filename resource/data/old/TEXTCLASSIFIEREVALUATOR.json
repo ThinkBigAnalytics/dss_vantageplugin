@@ -1,0 +1,81 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "TextClassifierEvaluator",
+  "function_version": "1.3",
+  "function_type": "non-driver",
+  "function_r_name": "aa.text.classifier.evaluate",
+  "ref_function_r_name": "aa.text.classifier.predict",
+  "short_description": "Evaluate the text classification SQL/MR function",
+  "long_description": "Evaluate the text classification SQL/MR function",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": true,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The relation that contains the output of a classifier",
+      "description": "The relation that contains the output of a classifier",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ObsColumn",
+      "alternateNames": [
+        "ExpectColumn"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input column that contains the expected (correct) category.",
+      "description": "Specifies the name of the input column that contains the expected (correct) category.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "obs.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PredictColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input column that contains the predicted category.",
+      "description": "Specifies the name of the input column that contains the predicted category.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "predict.column",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ]
+}
