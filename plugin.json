@@ -11,10 +11,10 @@
     // Meta data for display purposes
     "meta" : {
         // Name of this plugin that appears in the interface.
-        "label" : "Teradata Analytics Platform (Drop 24)",
+        "label" : "Teradata Analytics Platform",
 
-        "description" : "Plugin to execute Teradata Analytic functions from DSS.",
-        "author" : "dt186022",
+        "description" : "Plugin to execute Teradata Analytic Platform functions from DSS.",
+        "author" : "dt186022, kc186029",
 
         // The icon of a plugin must be one of the FontAwesome 3.1 icons
         "icon" : "icon-database",
@@ -25,6 +25,6 @@
         "url" : "https://info.teradata.com/download.cfm?ItemID=1007396",
 
         // List of tags for filtering the list of plugins
-        "tags" : ["Analytics", "Teradata",, "Database", "SQL", "Big Data", "Data Science"]
+        "tags" : ["Analytics", "Teradata", "Database", "SQL", "Big Data", "Data Science"]
     }
 }

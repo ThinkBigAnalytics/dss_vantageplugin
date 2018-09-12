@@ -4,21 +4,27 @@ import json
 import os
 import logging
 
+# -*- coding: utf-8 -*-
+'''
+Copyright © 2018 by Teradata.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+'''
+
 FUNCTION_CATEGORY="Data Transformation"
 
-def getCurrentConnectionName(inputDataset):
-    #input Dataset is the output of dataiku.Dataset("dataset name"
-    return inputDataset.get_location_info().get('info', {}).get('connectionName',
-                                                                '')
-
-def getConnectionParams(name):
-    client = dataiku.api_client()
-    mydssconnection = client.get_connection(name)
-    return mydssconnection.get_definition().get('params', {})
-
 def getConnectionParamsFromDataset(inputDataset):
-    name = getCurrentConnectionName(inputDataset)
-    return getConnectionParams(name)
+    return inputDataset.get_location_info(sensitive_info=True)['info']
 
 # paylaod is sent from the javascript's callPythonDo()
 # config and plugin_config are the recipe/dataset and plugin configured values
@@ -48,8 +54,7 @@ def do(payload, config, plugin_config, inputs):
             d['partitionInputKind']
             unaliased_inputs = {'desc':{}, 'values':[], 'count':0}
             if 'function_name' in keys:
-                # d["name"]=f['function_name'].upper()
-                d["name"]=f['function_name']
+                d["name"]=f['function_name'].upper()
             if 'input_tables' in keys:
                 d["hasInputTable"] = True
                 input_tab_lst = f['input_tables']
@@ -125,8 +130,9 @@ def do(payload, config, plugin_config, inputs):
         
 
     # AAF schema from connection details
-    connection = getConnectionParamsFromDataset(inputdataset)
-    aafschema = ([property.get('value', '') for property in connection.get('properties', {})
+    connection = getConnectionParamsFromDataset(input_dataset)
+    aafschema = ([property.get('value', '') for property in connection.\
+                  get('connectionParams', {}).get('properties', {})
           if 'aafschema_700' == property.get('name', '')] or ['']).pop()
 
     return {'choices' : choices,

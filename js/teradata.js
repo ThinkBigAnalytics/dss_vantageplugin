@@ -1,3 +1,21 @@
+/**
+ * Copyright © 2018 by Teradata.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
 (function (window, document, angular, $) {
 
   if (typeof window === 'undefined' || !window) {
@@ -10,7 +28,7 @@
     throw new Error('jQuery library not present!')
   }
 
-  const app = angular.module('teradata-ap.module', ['selectize']);
+  const app = angular.module('teradata-ap.module', []);
 
   app.controller('TeradataAPController', function ($scope, $timeout) {
 
@@ -57,7 +75,7 @@
     /**
      * Function metadata path - this path contains the JSON metadata of each function.
      */
-    const FUNCTION_METADATA_PATH = '/plugins/AsterAnalytics7_0/resource/data/';
+    const FUNCTION_METADATA_PATH = '/plugins/TeradataAnalyticsPlatform/resource/data/';
 
     /**
      * Parameters to use for the dialog box.
@@ -295,7 +313,6 @@
   },
       validityChanger: function () {
         $('div.ng-invalid').removeClass('ng-invalid')
-        $('#selectize-selectized').removeClass('ng-invalid');
         $('div.invalid').addClass('ng-invalid')
         return true;
       },
@@ -665,7 +682,7 @@
       validate: function () {
 
         const invalids = []
-        $('.ng-invalid:not(form,.ng-hide,div,ng-disabled,#selectize-selectized)').each((i, x) => invalids.push($(x).parent().prev().text()))
+        $('.ng-invalid:not(form,.ng-hide,div,ng-disabled)').each((i, x) => invalids.push($(x).parent().prev().text()))
 
         if (invalids.length) {
           $scope.validationDialog(`Please amend the following fields: <ul>${invalids.map(x => `<li>${x}</li>`).join('')}</ul>`)
@@ -972,242 +989,5 @@
     $scope.initialize();
 
   });
-
-  angular.module('selectize', [])
-
-    .directive('selectize', ['$parse', '$timeout', function ($parse, $timeout) {
-      var NG_OPTIONS_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+group\s+by\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w]*)|(?:\(\s*([\$\w][\$\w]*)\s*,\s*([\$\w][\$\w]*)\s*\)))\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?$/;
-
-      return {
-        scope: {
-          multiple: '@',
-          opts: '@selectize'
-        },
-        require: '?ngModel',
-        link: function (scope, element, attrs, ngModelCtrl) {
-          var opts = scope.$parent.$eval(scope.opts) || {};
-          var initializing = false;
-          var modelUpdate = false;
-          var optionsUpdate = false;
-          var selectize, newModelValue, newOptions, updateTimer;
-
-          watchModel();
-
-          if (attrs.ngDisabled) {
-            watchParentNgDisabled();
-          }
-
-          if (!attrs.ngOptions) {
-            return;
-          }
-
-          var match = attrs.ngOptions.match(NG_OPTIONS_REGEXP);
-          var valueName = match[4] || match[6];
-          var optionsExpression = match[7];
-          var optionsFn = $parse(optionsExpression);
-          var displayFn = $parse(match[2] || match[1]);
-          var valueFn = $parse(match[2] ? match[1] : valueName);
-
-          watchParentOptions();
-
-          function watchModel() {
-            scope.$watchCollection(function () {
-              return ngModelCtrl.$modelValue;
-            }, function (modelValue) {
-              if (modelValue != undefined) {
-                if (newModelValue == undefined || modelValue.length < newModelValue.length) {
-                  newModelValue = modelValue;
-                  modelUpdate = true;
-                  if (!updateTimer) {
-                    scheduleUpdate();
-                  }
-
-                }
-              }
-
-
-            });
-          }
-
-          function watchParentOptions() {
-            scope.$parent.$watchCollection(optionsExpression, function (options) {
-              newOptions = options || [];
-              optionsUpdate = true;
-              if (!updateTimer) {
-                scheduleUpdate();
-              }
-            });
-          }
-
-          function watchParentNgDisabled() {
-            scope.$parent.$watch(attrs.ngDisabled, function (isDisabled) {
-              if (selectize) {
-                isDisabled ? selectize.disable() : selectize.enable();
-              }
-            });
-          }
-
-          function scheduleUpdate() {
-            if (!selectize) {
-              if (!initializing) {
-                initSelectize();
-              }
-              return;
-            }
-
-            updateTimer = $timeout(function () {
-              var model = newModelValue;
-              var options = newOptions;
-              var selectizeOptions = Object.keys(selectize.options);
-              var optionsIsEmpty = selectizeOptions.length === 0 || selectize.options['?'] && selectizeOptions.length === 1;
-              if (optionsUpdate) {
-                if (!optionsIsEmpty) {
-                  selectize.clearOptions();
-                }
-                selectize.load(function (cb) {
-                  cb(options.map(function (option, index) {
-                    return {
-                      text: getOptionLabel(option),
-                      value: index
-                    };
-                  }));
-                });
-              }
-
-              if (modelUpdate || optionsUpdate) {
-                var selectedItems = getSelectedItems(model);
-                if (scope.multiple || selectedItems.length === 0) {
-                  selectize.clear();
-                  //clear can set the model to null
-                  ngModelCtrl.$setViewValue(model);
-                }
-                selectedItems.forEach(function (item) {
-                  selectize.addItem(item);
-                });
-                //wait to remove ? to avoid a single select from briefly setting the model to null
-                selectize.removeOption('?');
-
-                var $option = selectize.getOption(0);
-                if ($option) selectize.setActiveOption($option);
-              }
-
-              modelUpdate = optionsUpdate = false;
-              updateTimer = null;
-            });
-          }
-
-          function initSelectize() {
-            initializing = true;
-            scope.$evalAsync(function () {
-              initializing = false;
-              element.selectize(opts);
-              selectize = element[0].selectize;
-              if (attrs.ngOptions) {
-                if (scope.multiple) {
-                  selectize.on('item_add', onItemAddMultiSelect);
-                  selectize.on('item_remove', onItemRemoveMultiSelect);
-                } else if (opts.create) {
-                  selectize.on('item_add', onItemAddSingleSelect);
-                }
-              }
-            });
-          }
-
-          function onItemAddMultiSelect(value, $item) {
-            var model = ngModelCtrl.$viewValue || [];
-            console.log(model);
-            var options = optionsFn(scope.$parent);
-            var option = options[value];
-            value = option ? getOptionValue(option) : value;
-            if (model.indexOf(value) === -1) {
-              model.push(value);
-              if (!option && opts.create && options.indexOf(value) === -1) {
-                options.push(value);
-              }
-              scope.$evalAsync(function () {
-                ngModelCtrl.$setViewValue(model);
-              });
-            }
-          }
-
-          function onItemAddSingleSelect(value, $item) {
-            var model = ngModelCtrl.$viewValue;
-            var options = optionsFn(scope.$parent);
-            var option = options[value];
-            value = option ? getOptionValue(option) : value;
-
-            if (model !== value) {
-              model = value;
-
-              if (!option && options.indexOf(value) === -1) {
-                options.push(value);
-              }
-              scope.$evalAsync(function () {
-                ngModelCtrl.$setViewValue(model);
-              });
-            }
-          }
-
-          function onItemRemoveMultiSelect(value) {
-            var model = ngModelCtrl.$viewValue;
-            var options = optionsFn(scope.$parent);
-            var option = options[value];
-            value = option ? getOptionValue(option) : value;
-
-            var index = model.indexOf(value);
-            if (index >= 0) {
-              model.splice(index, 1);
-              scope.$evalAsync(function () {
-                ngModelCtrl.$setViewValue(model);
-              });
-            }
-          }
-
-          function getSelectedItems(model) {
-            model = angular.isArray(model) ? model : [model] || [];
-            if (!attrs.ngOptions) {
-              return model.map(function (i) { return selectize.options[i] ? selectize.options[i].value : '' });
-            }
-
-            var options = optionsFn(scope.$parent);
-
-            if (!options) {
-              return [];
-            }
-
-            var selections = options.reduce(function (selected, option, index) {
-              var optionValue = getOptionValue(option);
-              if (model.indexOf(optionValue) >= 0) {
-                selected[optionValue] = index;
-              }
-              return selected;
-            }, {});
-            return Object
-              .keys(selections)
-              .map(function (key) {
-                return selections[key];
-              });
-          }
-
-          function getOptionValue(option) {
-            var optionContext = {};
-            optionContext[valueName] = option;
-            return valueFn(optionContext);
-          }
-
-          function getOptionLabel(option) {
-            var optionContext = {};
-            optionContext[valueName] = option;
-            return displayFn(optionContext);
-          }
-
-          scope.$on('$destroy', function () {
-            if (updateTimer) {
-              $timeout.cancel(updateTimer);
-            }
-          });
-        }
-      };
-    }]);
 })(window, document, angular, jQuery);
 

@@ -1,9 +1,20 @@
+<!-- Copyright © 2018 by Teradata.
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. -->
+
 <link rel="stylesheet" href="/plugins/TeradataAnalyticsPlatform/resource/css/aster-ui.css">
 <link rel="stylesheet" href="/plugins/TeradataAnalyticsPlatform/resource/css/jquery-ui.css">
-<link rel="stylesheet" href="/plugins/TeradataAnalyticsPlatform/resource/css/selectize.default.css">
 <link rel="stylesheet" href="/plugins/TeradataAnalyticsPlatform/resource/css/jquery.tagsinput.min.css" />
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
-<script src="/plugins/TeradataAnalyticsPlatform/resource/js/selectize.js"></script>
 <script src="/plugins/TeradataAnalyticsPlatform/resource/js/jquery.tagsinput.min.js"></script>
 
 
@@ -111,7 +122,7 @@
             </tr>
 
             <tr ng-repeat="item in config.function.required_input" ng-model="config.function.required_input" ng-if="item.hasOwnProperty('name') && item.isRequired">
-              <td >{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+              <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
               <td>
                 <select required ng-model="item.value" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
                       <option value="" selected>--No Selection--</option>
@@ -149,10 +160,6 @@
                   <p class="inner-label">Order by 
                       <button ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column">Add</button>
                   </p>
-                  <!-- <select multiple id="selectize" class="selectize" selectize size="4" ng-model="item.orderByColumn" ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]">
-                        <option value="" selected>--No Selection--</option>
-                    </select> -->
-                    <!--p> Selected {{item.partitionAttributes}} </p-->
                     <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
                         <span ng-show="item.isOrdered">ORDER BY column {{$index+1}}</span>                        
                         <div >
@@ -194,9 +201,6 @@
                       </div>
                
                   </div>
-                <!-- <select required multiple id="selectize"  class="selectize" selectize ng-model="config.function.orderByColumn" ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.unaliased_inputs)">
-                    <option value="" selected>--No Selection--</option>
-                  </select> -->
               </td>
               <!--<td>{{ validation_message('orderByColumn') }}</td>-->
             </tr>
@@ -213,13 +217,6 @@
                   <button ng-disabled="config.function.partitionByAny" ng-click="addPartitionByColumn()" title="Add Partition Column">Add</button>
               </td>
               <td>
-                <!-- <select required class="selectize" id="selectize"  selectize ng-disabled="config.function.partitionByAny" multiple size="8" ng-model="config.function.partitionAttributes"
-                  ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.unaliased_inputs)"
-                  data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
-                  data-placement="right">
-                    <option value="" selected>--No Selection--</option>
-                  </select> -->
-
                   <div ng-repeat="col in config.function.partitionAttributes track by $index ">                     
                       <span>PARTITION BY column {{$index+1}}</span>
                       <div>
@@ -240,7 +237,7 @@
 
 
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired">
-              <td >{{ getArgumentFormattedName(item.name) }}</td>
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
@@ -301,7 +298,7 @@
 
           <tbody ng-show="shouldRender()">
             <tr ng-repeat="item in config.function.required_input" ng-model="config.function.required_input" ng-if="item.hasOwnProperty('name') && !item.isRequired">
-              <td >{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+              <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
               <td>
                 <select ng-model="item.value" ng-options="inputtable.fullName.split('.')[1] as inputtable.fullName.split('.')[1] for inputtable in inputs">
                     <option value="" selected>--No Selection--</option>
@@ -318,10 +315,6 @@
                   <p class="inner-label">Partition by
                       <button ng-init="item.partitionAttributes = initializeColumnArrayOptional(item.partitionAttributes)"ng-click="addPartitionByColumn_TEST(item.partitionAttributes)" title="Add Partition Column">Add</button>
                   </p>
-                  <!-- <select multiple id="selectize" class="selectize" selectize ng-if="validityChanger()" size="4" ng-model="item.partitionAttributes" ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]">
-                  	<option value="" selected>--No Selection--</option>
-                   </select> -->
-                   <!--p> Selected {{item.partitionAttributes}} </p-->
                    <div ng-repeat="col in item.partitionAttributes track by $index ">
                       <span>PARTITION BY column {{$index+1}}</span>                        
                       <div>
@@ -344,9 +337,6 @@
                   <p class="inner-label">Order by
                       <button ng-init="item.orderByColumn = initializeColumnArrayOptional(item.orderByColumn)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column">Add</button>
                   </p>
-                  <!-- <select multiple id="selectize"  class="selectize" selectize size="4" ng-model="item.orderByColumn" ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]">
-                        <option value="" selected>--No Selection--</option>
-                    </select> -->
                     <div ng-repeat="col in item.orderByColumn track by $index ">
                         <span>ORDER BY column {{$index+1}}</span>                        
                         <div>
@@ -367,7 +357,7 @@
               </td>
             </tr>
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired">
-              <td >{{ getArgumentFormattedName(item.name) }}</td>
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
@@ -441,7 +431,7 @@
                 <h4 class="modal-title" id="myModalLabel">Learn More...</h4>
             </div>
             <div class="modal-body">
-                
+                <iframe src="/plugins/TeradataAnalyticsPlatform/resource/documentation/html/book/index.html" height="100%" width="98%"></iframe>
             </div>
         </div>
     </div>
