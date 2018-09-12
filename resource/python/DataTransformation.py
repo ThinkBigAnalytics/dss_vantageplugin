@@ -49,7 +49,7 @@ def do(payload, config, plugin_config, inputs):
             unaliased_inputs = {'desc':{}, 'values':[], 'count':0}
             if 'function_name' in keys:
                 # d["name"]=f['function_name'].upper()
-                d["name"]=f['function_name']
+                d["name"]=f['function_name'].upper()
             if 'input_tables' in keys:
                 d["hasInputTable"] = True
                 input_tab_lst = f['input_tables']
@@ -81,9 +81,9 @@ def do(payload, config, plugin_config, inputs):
                 for argument in arg_lst:
                     arg = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
                     if argument.get('alternateNames', []):
-                        arg["name"] = argument.get('alternateNames', [''])[0]
+                        arg["name"] = argument.get('alternateNames', [''])[0].upper()
                     elif 'name' in argument.keys():
-                        arg["name"]=argument['name']  
+                        arg["name"]=argument['name'].upper()  
                     if 'isRequired' in argument.keys():
                         arg["isRequired"]=argument['isRequired']
                     if 'datatype' in argument.keys():

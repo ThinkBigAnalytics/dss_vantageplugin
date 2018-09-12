@@ -111,7 +111,7 @@
             </tr>
 
             <tr ng-repeat="item in config.function.required_input" ng-model="config.function.required_input" ng-if="item.hasOwnProperty('name') && item.isRequired">
-              <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+              <td >{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
               <td>
                 <select required ng-model="item.value" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
                       <option value="" selected>--No Selection--</option>
@@ -240,7 +240,7 @@
 
 
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired">
-              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+              <td >{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
@@ -301,7 +301,7 @@
 
           <tbody ng-show="shouldRender()">
             <tr ng-repeat="item in config.function.required_input" ng-model="config.function.required_input" ng-if="item.hasOwnProperty('name') && !item.isRequired">
-              <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+              <td >{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
               <td>
                 <select ng-model="item.value" ng-options="inputtable.fullName.split('.')[1] as inputtable.fullName.split('.')[1] for inputtable in inputs">
                     <option value="" selected>--No Selection--</option>
@@ -367,7 +367,7 @@
               </td>
             </tr>
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired">
-              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+              <td >{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
@@ -441,7 +441,7 @@
                 <h4 class="modal-title" id="myModalLabel">Learn More...</h4>
             </div>
             <div class="modal-body">
-                <!-- <iframe src="/plugins/AsterAnalytics7_0/resource/documentation/html/book/index.html" height="100%" width="98%"></iframe> -->
+                
             </div>
         </div>
     </div>

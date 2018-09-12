@@ -772,7 +772,7 @@
 
             const original = $(x).prev().attr('data-original-title') || ''
 
-            const title = original != '' ?
+            const title = original ?
               (original + '<br><br><b>(Press ENTER to add to list)</b>') :
               '<b>(Press ENTER to add to list)</b>'
             $(x).data({

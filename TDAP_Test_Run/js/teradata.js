@@ -355,9 +355,10 @@
 
       getArgumentFormattedName: function (name) {
           let argument = $scope.getArgumentWithName(name);
-          return argument ? argument.name.replace(/([A-Z]+)/g, " $1")
-                  .replace(/([A-Z][a-z])/g, " $1").split('_').join(' ')
-                  : name;
+          return argument ? argument.name : name;
+          // return argument ? argument.name.replace(/([A-Z]+)/g, " $1")
+          //         .replace(/([A-Z][a-z])/g, " $1").split('_').join(' ')
+          //         : name;
       },
 
       getPermittedValues: function (i) {
