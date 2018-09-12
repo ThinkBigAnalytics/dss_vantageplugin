@@ -1,0 +1,304 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "NeuralNet",
+  "function_version": "1.2",
+  "function_type": "driver",
+  "function_alias_name": "NeuralNet",
+  "function_r_name": "aa.neuralnet",
+  "short_description": "Train a Neural Network for input data",
+  "long_description": "Train a Neural Network using back propagation and output Network weight table",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the input data to be trained.",
+      "description": "Specifies the table containing the input data to be trained.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "WeightTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the table that lists the starting values for the neural network weights. The Weights Table is discussed in further detail.",
+      "description": "Specifies the table that lists the starting values for the neural network weights. The Weights Table is discussed in further detail.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "weight.table",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table to output the trained network weight data to.",
+      "description": "Specifies the table to output the trained network weight data to.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.table",
+      "useInR": true,
+      "rOrderNum": 100
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InputColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the columns of the data that contains the numerical predictor variables x1, x2, x3, etc.",
+      "description": "Specifies the name of the columns of the InputTable that contains the numerical predictor variables x1, x2, x3, etc.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "input.columns",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": -1
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ResponseColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the columns of data that contains the numerical dependent variables y1, y2, y3, etc.",
+      "description": "Specifies the name of the columns of InputTable that contains the numerical dependent variables y1, y2, y3, etc.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "response.columns",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": 0
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "GroupByColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the columns that are used to output different neural networks for different groups. These columns should be included in the Weights Table.",
+      "description": "Specifies the columns that are used to output different neural networks for different groups. These columns should be included in the Weights Table.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "group.by.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "defaultValue": [
+        1
+      ],
+      "lowerBound": 1,
+      "upperBound": 1000,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "HiddenLayers",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of hidden neurons in each layer, from left to right, by list of integers. Default value is 1 layer, 1 neuron. For example, hidden.layers('5','5') would produce a 3-layer network with 5 neurons in each hidden layer, while hidden.layers('3') would produce the network",
+      "description": "Specifies the number of hidden neurons in each layer, from left to right, by list of integers. Default value is 1 layer, 1 neuron. For example, HiddenLayers('5','5') would produce a 3-layer network with 5 neurons in each hidden layer, while HiddenLayers('3') would produce the network",
+      "datatype": "INTEGER",
+      "allowsLists": true,
+      "rName": "hidden.layers",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": 0.01,
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Threshold",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the threshold for the partial derivatives of the error function as stopping criteria. Default value is 0.01.",
+      "description": "Specifies the threshold for the partial derivatives of the error function as stopping criteria. Default value is 0.01.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "threshold",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 1,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxIterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum number of steps for the training of the neural network. Default value is 1.",
+      "description": "Specifies the maximum number of steps for the training of the neural network. Default value is 1.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.iter.num",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 0.001,
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "LearningRate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the learning rate used by traditional backpropagation. Default value is 0.001.",
+      "description": "Specifies the learning rate used by traditional backpropagation. Default value is 0.001.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "learning.rate",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "permittedValues": [
+        "logistic",
+        "tanh"
+      ],
+      "defaultValue": "logistic",
+      "isOutputColumn": false,
+      "name": "ActivationFunction",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the differentiable function that is applied to the result of the cross-product of the neurons and the weights. Available choices are \u2018logistic\u2019 (default) and hyperbolic tangent (\u2018tanh\u2019).",
+      "description": "Specifies the name of the differentiable function that is applied to the result of the cross-product of the neurons and the weights. Available choices are \u2018logistic\u2019 (default) and hyperbolic tangent (\u2018tanh\u2019).",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "activation.function",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [
+        "sse",
+        "ce"
+      ],
+      "defaultValue": "sse",
+      "isOutputColumn": false,
+      "name": "ErrorFunction",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the differentiable function that is used for the calculation of the error. Available choices are \u2018sse\u2019 (sum of squared errors, the default) and cross-entropy (\u2018ce\u2019).",
+      "description": "Specifies the name of the differentiable function that is used for the calculation of the error. Available choices are \u2018sse\u2019 (sum of squared errors, the default) and cross-entropy (\u2018ce\u2019).",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "error.function",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [
+        "backprop"
+      ],
+      "defaultValue": "backprop",
+      "isOutputColumn": false,
+      "name": "Algorithms",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "This string contains the algorithm type that is used to calculate the neural network. Currently, only \u2018backprop\u2019 is supported.",
+      "description": "This string contains the algorithm type that is used to calculate the neural network. Currently, only \u2018backprop\u2019 is supported.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "algorithms",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "defaultValue": true,
+      "name": "LinearOutput",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "This logical value defines whether the ActivationFunction should (FALSE) or should not (TRUE) be applied to the output neurons.",
+      "description": "This logical value defines whether the ActivationFunction should (FALSE) or should not (TRUE) be applied to the output neurons.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "linear.output",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "lowerBound": -9223372036854775808,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Seed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the random seed used to initialize the algorithm.",
+      "description": "Specifies the random seed used to initialize the algorithm.",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "seed",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

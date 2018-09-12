@@ -1,0 +1,105 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Sessionize",
+  "function_version": "1.4",
+  "function_type": "non-driver",
+  "function_r_name": "aa.sessionize",
+  "short_description": "Creates sessions for a clickstream data.",
+  "long_description": "Creates sessions for a clickstream data and also detects bots.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table",
+      "description": "Specifies the name of the input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "TIME",
+        "INTEGER"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TimeColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Specifies the name of the input column that contains the click times. Note: The timestamp_column must also be an order_column.",
+      "description": " Specifies the name of the input column that contains the click times. Note: The timestamp_column must also be an order_column.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "time.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "TimeOut",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the number of seconds at which the session times out. If session_timeout seconds elapse after a click, then the next click starts a new session. The data type of session_timeout is DOUBLE PRECISION.",
+      "description": "Specifies the number of seconds at which the session times out. If session_timeout seconds elapse after a click, then the next click starts a new session. The data type of session_timeout is DOUBLE PRECISION.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "time.out",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": true,
+      "name": "ClickLag",
+      "alternateNames": [
+        "RapidFire"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the minimum number of seconds between clicks for the session user to be considered human. If clicks are more frequent, indicating that the user is a “bot,” the function ignores the session. The min_human_click_lag must be less than session_timout. The data type of min_human_click_lag is DOUBLE PRECISION.",
+      "description": "Specifies the minimum number of seconds between clicks for the session user to be considered human. If clicks are more frequent, indicating that the user is a “bot,” the function ignores the session. The min_human_click_lag must be less than session_timout. The data type of min_human_click_lag is DOUBLE PRECISION.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "click.lag",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": false,
+      "name": "EmitNull",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output rows that have NULL values in their session id and rapid fire columns, even if their timestamp_column has a NULL value. The default value is 'false'.",
+      "description": "Specifies whether to output rows that have NULL values in their session id and rapid fire columns, even if their timestamp_column has a NULL value. The default value is 'false'.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "emit.null",
+      "useInR": true,
+      "rOrderNum": 5
+    }
+  ]
+}

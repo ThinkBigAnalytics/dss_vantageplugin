@@ -1,0 +1,201 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "TrainNamedEntityFinder",
+  "function_version": "1.4",
+  "function_type": "driver",
+  "function_r_name": "aa.namedentity.finder.train",
+  "short_description": "Implements the train name finder SQL/MR function.",
+  "long_description": "Implements the train name finder SQL/MR function.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": true,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The input table containing text column to train.",
+      "description": "The input table containing text column to train.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Domain",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The address of the Queen. The host parameter is the Aster Database Queen’s IP address or hostname.",
+      "description": "The address of the Queen. The host parameter is the Aster Database Queen’s IP address or hostname.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Database",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The name of the database where the input table is located.",
+      "description": "The name of the database where the input table is located.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "UserId",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The Aster Database user name of the user running this function.",
+      "description": "The Aster Database user name of the user running this function.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Password",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The Aster Database password of the user.",
+      "description": "The Aster Database password of the user.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "SSLSettings",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "A string that includes all the SSL settings, except the password for the truststore.",
+      "description": "A string that includes all the SSL settings, except the password for the truststore.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "SSLTrustStorePassword",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The password for the SSL truststore.",
+      "description": "The password for the SSL truststore.",
+      "datatype": "DRIVER",
+      "allowsLists": false,
+      "useInR": false,
+      "rOrderNum": 0
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TextColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the text to analyze.",
+      "description": "Specifies the name of the input table column that contains the text to analyze.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "text.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "EntityType",
+      "alternateNames": [
+        "Type"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the entity type to be trained (for example, PERSON). The input training documents must contain the same tag.",
+      "description": "Specifies the entity type to be trained (for example, PERSON). The input training documents must contain the same tag.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "entity.type",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Model",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the data model file to be generated.",
+      "description": "Specifies the name of the data model file to be generated.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "model",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": 100,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "IterNum",
+      "alternateNames": [
+        "Iterator"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the iterator number for training (an openNLP training parameter). The default value is 100.",
+      "description": "Specifies the iterator number for training (an openNLP training parameter). The default value is 100.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "iter.num",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 5,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Cutoff",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the cutoff number for training (an openNLP training parameter). The default value is 5.",
+      "description": "Specifies the cutoff number for training (an openNLP training parameter). The default value is 5.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "cutoff",
+      "useInR": true,
+      "rOrderNum": 6
+    }
+  ]
+}

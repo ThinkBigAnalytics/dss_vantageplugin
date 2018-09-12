@@ -1,0 +1,284 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "nPath",
+  "function_version": "1.1",
+  "function_type": "non-driver",
+  "function_alias_name": "nPath",
+  "function_r_name": "aa.npath",
+  "short_description": "The nPath function matches specified patterns in a sequence of rows from one or more input tables and extracts information from the matched rows.",
+  "long_description": "The nPath function matches specified patterns in a sequence of rows from one or more input tables and extracts information from the matched rows.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input1",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Input table",
+      "description": "Input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data1",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input2",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data2",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input3",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data3",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input4",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data4",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input5",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data5",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input6",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data6",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input7",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data7",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input8",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data8",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input9",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data9",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input10",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Additional optional input table",
+      "description": "Additional optional input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data10",
+      "useInR": true,
+      "rOrderNum": 15
+    }
+  ],
+  "argument_clauses": [
+    {
+      "permittedValues": [
+        "OVERLAPPING",
+        "NONOVERLAPPING"
+      ],
+      "isOutputColumn": false,
+      "name": "Mode",
+      "alternateNames": [],
+      "rDescription": "Specifies the pattern-matching mode: \n OVERLAPPING: The function finds every occurrence of the pattern in the partition, regardless of  whether it is part of a previously found match. Therefore, one row can match multiple symbols in a  given matched pattern. \n NONOVERLAPPING: The function begins the next pattern search at the row that follows the last  pattern match. This is the default behavior of many commonly used pattern matching utilities, including the UNIX grep utility.",
+      "description": "Specifies the pattern-matching mode: \n OVERLAPPING: The function finds every occurrence of the pattern in the partition, regardless of  whether it is part of a previously found match. Therefore, one row can match multiple symbols in a  given matched pattern. \n NONOVERLAPPING: The function begins the next pattern search at the row that follows the last  pattern match. This is the default behavior of many commonly used pattern matching utilities, including the UNIX grep utility.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "isRequired": true,
+      "rName": "mode",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Pattern",
+      "alternateNames": [],
+      "rDescription": "Specifies the pattern for which the function searches. You compose pattern with the symbols that you define in the symbols argument, operators, and parentheses. Table describes the simplest patterns, which you can combine to form more complex patterns. When patterns have multiple operators, the function applies them in order of precedence, and applies operators of equal precedence from left to right. Table also shows operator precedence. To force the function to evaluate a subpattern first, enclose it in parentheses. To specify that a subpattern must appear a specific number of times, use the \u201cRange-Matching Feature\u201d.\n For pattern matching details, refer to \u201cPattern Matching\u201d.",
+      "description": "Specifies the pattern for which the function searches. You compose pattern with the symbols that you define in the Symbols argument, operators, and parentheses. Table describes the simplest patterns, which you can combine to form more complex patterns. When patterns have multiple operators, the function applies them in order of precedence, and applies operators of equal precedence from left to right. Table also shows operator precedence. To force the function to evaluate a subpattern first, enclose it in parentheses. To specify that a subpattern must appear a specific number of times, use the \u201cRange-Matching Feature\u201d \n For pattern matching details, refer to \u201cPattern Matching\u201d.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "isRequired": true,
+      "rName": "pattern",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Symbols",
+      "alternateNames": [],
+      "rDescription": "Defines the symbols that appear in the values of the pattern and result arguments. The col_expr is an expression whose value is a column name, symbol is any valid identifier, and  symbol_predicate is a SQL predicate (often a column name).\n For example, the Symbols argument for analyzing website visits might look like this: \nsymbols \n(\n pagetype = 'homepage' AS H, \npagetype <> 'homepage' AND  pagetype <> 'checkout' AS PP,\n pagetype = 'checkout' AS CO \n)\n The symbol is case-insensitive; however, a symbol of one or two uppercase letters is easy to identify in patterns. \nIf col_expr represents a column that appears in multiple input tables, then you must qualify the ambiguous column name with its table name. For example: \n Symbols \n ( \n weblog.pagetype = 'homepage' AS H, \n weblog.pagetype = 'thankyou' AS T, \n ads.adname = 'xmaspromo' AS X, \n ads.adname = 'realtorpromo' AS R \n) \nFor more information about symbols that appear in the Pattern argument value, refer to \u201csymbols\u201d. For more information about symbols that appear in the Result argument value, refer to \u201cresult: Applying Aggregate Functions\u201d.",
+      "description": "Defines the symbols that appear in the values of the Pattern and Result arguments. The col_expr is an expression whose value is a column name, symbol is any valid identifier, and  symbol_predicate is a SQL predicate (often a column name).\n For example, the Symbols argument for analyzing website visits might look like this: \n Symbols \n (\n pagetype = 'homepage' AS H, \n pagetype <> 'homepage' AND  pagetype <> 'checkout' AS PP, \n pagetype = 'checkout' AS CO \n)\n The symbol is case-insensitive; however, a symbol of one or two uppercase letters is easy to identify in patterns. If col_expr represents a column that appears in multiple input tables, then you must qualify the ambiguous column name with its table name. For example: Symbols ( weblog.pagetype = 'homepage' AS H, weblog.pagetype = 'thankyou' AS T, ads.adname = 'xmaspromo' AS X, ads.adname = 'realtorpromo' AS R ) For more information about symbols that appear in the Pattern argument value, refer to \u201cSymbols\u201d. For more information about symbols that appear in the Result argument value, refer to \u201cResult: Applying Aggregate Functions\u201d.",
+      "datatype": "STRING",
+      "isRequired": true,
+      "allowsLists": true,
+      "rName": "symbols",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "Filter",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies filters to impose on the matched rows. The function combines the filter expressions using the AND operator. \nThe filter_expression syntax is: \nsymbol_expression  comparison_operator symbol_expression \nThe two symbol expressions must be type-compatible. The symbol_expression syntax is: \n{ FIRST | LAST }(column_with_expression OF [ANY](symbol[,...])) \nThe column_with_expression cannot contain the operator AND or OR, and all its columns must come from the same input. If the function has multiple inputs, then column_with_expression and symbol must come from the same input. \nThe comparison_operator is either <, >, <=, >=, =, or !=. \nThis argument can improve or degrade ta.npath performance, depending on several factors. For details, refer to \u201cfilters\u201d",
+      "description": "Specifies filters to impose on the matched rows. The function combines the filter expressions using the AND operator. \nThe filter_expression syntax is: \nsymbol_expression  comparison_operator symbol_expression \nThe two symbol expressions must be type-compatible. The symbol_expression syntax is: \n{ FIRST | LAST }(column_with_expression OF [ANY](symbol[,...])) \nThe column_with_expression cannot contain the operator AND or OR, and all its columns must come from the same input. If the function has multiple inputs, then column_with_expression and symbol must come from the same input. \nThe comparison_operator is either <, >, <=, >=, =, or !=. \nThis argument can improve or degrade nPath performance, depending on several factors. For details, refer to \u201cFilters\u201d",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "filter",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": true,
+      "name": "Result",
+      "alternateNames": [],
+      "rDescription": "Defines the output columns. The col_expr is an expression whose value is a column name; it specifies the values to retrieve from the matched rows. The function applies aggregate_function  to these values. For details, see \u201cresult: Applying Aggregate Functions\u201d. \nThe function evaluates this argument once for every matched pattern in the partition (that is, it outputs one row for each pattern match).",
+      "description": "Defines the output columns. The col_expr is an expression whose value is a column name; it specifies the values to retrieve from the matched rows. The function applies aggregate_function  to these values. For details, see \u201cResult: Applying Aggregate Functions\u201d. \nThe function evaluates this argument once for every matched pattern in the partition (that is, it outputs one row for each pattern match).",
+      "datatype": "STRING",
+      "isRequired": true,
+      "allowsLists": true,
+      "rName": "result",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

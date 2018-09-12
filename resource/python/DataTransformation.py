@@ -81,9 +81,9 @@ def do(payload, config, plugin_config, inputs):
                 for argument in arg_lst:
                     arg = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
                     if argument.get('alternateNames', []):
-                        arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                        arg["name"] = argument.get('alternateNames', [''])[0]
                     elif 'name' in argument.keys():
-                        arg["name"]=argument['name'].upper()  
+                        arg["name"]=argument['name']  
                     if 'isRequired' in argument.keys():
                         arg["isRequired"]=argument['isRequired']
                     if 'datatype' in argument.keys():

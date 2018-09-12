@@ -1,28 +1,28 @@
 #!/bin/bash
 
-echo 'deleting AsterAnalytics child folder'
-rm -rf AsterAnalytics
+echo 'deleting TDAP_Test_Run child folder'
+rm -rf TDAP_Test_Run
 
-echo 'deleting AsterAnalytics.zip'
-rm AsterAnalytics.zip
+echo 'deleting TDAP_Test_Run.zip'
+rm TDAP_Test_Run.zip
 
-echo 'creating AsterAnalytics child directory'
-mkdir AsterAnalytics
+echo 'creating TDAP_Test_Run child directory'
+mkdir TDAP_Test_Run
 
-echo 'copying custom-recipes into AsterAnalytics'
-cp -R custom-recipes AsterAnalytics/ 
+echo 'copying custom-recipes into TDAP_Test_Run'
+cp -R custom-recipes TDAP_Test_Run/ 
 
-echo 'copying js into AsterAnalytics'
-cp -R js AsterAnalytics/
+echo 'copying js into TDAP_Test_Run'
+cp -R js TDAP_Test_Run/
 
-echo 'copying python-lib into AsterAnalytics'
-cp -R python-lib AsterAnalytics/
+echo 'copying python-lib into TDAP_Test_Run'
+cp -R python-lib TDAP_Test_Run/
 
-echo 'copying resource into AsterAnalytics'
-cp -R resource AsterAnalytics/
+echo 'copying resource into TDAP_Test_Run'
+cp -R resource TDAP_Test_Run/
 
-echo 'copying plugin.json into AsterAnalytics'
-cp plugin.json AsterAnalytics/
+echo 'copying plugin.json into TDAP_Test_Run'
+cp plugin.json TDAP_Test_Run/
 
-echo 'zipping AsterAnalytics'
-"C:\Program Files\WinRAR\WinRar.exe" a -ep1 -r "AsterAnalytics.zip" "AsterAnalytics"
+echo 'zipping TDAP_Test_Run'
+zip -r "TDAP_Test_Run.zip" "TDAP_Test_Run"

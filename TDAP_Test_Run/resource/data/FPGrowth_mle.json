@@ -1,0 +1,330 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "FPGrowth",
+  "function_version": "1.9",
+  "function_type": "driver",
+  "function_alias_name": "FPGrowth",
+  "function_r_name": "aa.fpgrowth",
+  "short_description": "This function generates combinations of frequent baskets",
+  "long_description": "This function is used for identifying the associations in two item-set. For every combination, this function generates the score, support, confidence, lift, conviction, leverage, coverage, chi_square and z-score associated with the combination",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the data set",
+      "description": "Specifies the name of the table that contains the data set",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputPatternTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Required if patterns.or.rules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns.",
+      "description": "Required if PatternsOrRules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.pattern.table",
+      "useInR": true,
+      "rOrderNum": 100
+    },
+    {
+      "isOutputTable": true,
+      "name": "OutputRuleTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Required if patterns.or.rules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
+      "description": "Required if PatternsOrRules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.rule.table",
+      "useInR": true,
+      "rOrderNum": 101
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "TranItemColumns"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns that contain transaction items to analyze.",
+      "description": "Specifies the names of the columns that contain transaction items to analyze.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "tran.item.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TransactionIDColumns",
+      "alternateNames": [
+        "TranIdColumns"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns that contain identifiers for the transaction items.",
+      "description": "Specifies the names of the columns that contain identifiers for the transaction items.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "tran.id.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PartitionColumns",
+      "alternateNames": [
+        "GroupByColumns"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the tran.id.column argument, because this causes incorrect counting in the partitions.",
+      "description": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the TRANIDCOLUMN argument, because this causes incorrect counting in the partitions.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "group.by.columns",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [
+        "both",
+        "patterns",
+        "rules"
+      ],
+      "defaultValue": "both",
+      "isOutputColumn": false,
+      "name": "PatternsOrRules",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the function outputs patterns, rules, or both. An example of a pattern is {onions, potatoes, hamburger}. The default value is 'both'.",
+      "description": "Specifies whether the function outputs patterns, rules, or both. An example of a pattern is {onions, potatoes, hamburger}. The default value is 'both'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "patterns.or.rules",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [
+        "low",
+        "medium",
+        "high",
+        "nocompress"
+      ],
+      "defaultValue": "nocompress",
+      "isOutputColumn": false,
+      "name": "CompressionLevel",
+      "alternateNames": [
+        "Compress"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the compression level the output tables. The default value is 'nocompress'. Realized compression ratios depend on both this value and the data characteristics. These ratios typically range from 3x to 12x. ",
+      "description": "Specifies the compression level the output tables. The default value is 'nocompress'. Realized compression ratios depend on both this value and the data characteristics. These ratios typically range from 3x to 12x. ",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "compress",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": 4,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "GroupSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of transaction items to be assigned to each worker. This value must be an INTEGER in the range from 1 to the number of distinct transaction items, inclusive. For a machine with limited RAM, use a relatively small value. The default value is 4.",
+      "description": "Specifies the number of transaction items to be assigned to each worker. This value must be an INTEGER in the range from 1 to the number of distinct transaction items, inclusive. For a machine with limited RAM, use a relatively small value. The default value is 4.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "group.size",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "defaultValue": 0.05,
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MinSupport",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the minimum support value of returned patterns (including the specified support value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.05.",
+      "description": "Specifies the minimum support value of returned patterns (including the specified support value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.05.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "min.support",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "defaultValue": 0.8,
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MinConfidence",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the minimum confidence value of returned patterns (including the specified confidence value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.8.",
+      "description": "Specifies the minimum confidence value of returned patterns (including the specified confidence value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.8.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "min.confidence",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "10",
+      "isOutputColumn": false,
+      "name": "MaxPatternLength",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum length of returned patterns. The length of a pattern is the sum of the item numbers in the antecedent and consequence columns. This value must be an INTEGER greater than 2. The default value is 10. max.pattern.length also limits the length of returned rules to this value.",
+      "description": "Specifies the maximum length of returned patterns. The length of a pattern is the sum of the item numbers in the antecedent and consequence columns. This value must be an INTEGER greater than 2. The default value is 10. MaxPatternLength also limits the length of returned rules to this value.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "max.pattern.length",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "1-INFINITE",
+      "isOutputColumn": false,
+      "name": "AntecedentCountRange",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the range for na, the number of items in the antecedent. The function returns only patterns for which na is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1- infinite'.",
+      "description": "Specifies the range for na, the number of items in the antecedent. The function returns only patterns for which na is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1- infinite'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "antecedent.count.range",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "1-1",
+      "isOutputColumn": false,
+      "name": "ConsequenceCountRange",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the range for nc, the number of items in the consequence. The function returns only patterns for which nc is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1-1'.",
+      "description": "Specifies the range for nc, the number of items in the consequence. The function returns only patterns for which nc is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1-1'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "consequence.count.range",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": ",",
+      "isOutputColumn": false,
+      "name": "Delimiter",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the delimiter that separates items in the output. The default value is ',' (that is, the default delimiter is comma).",
+      "description": "Specifies the delimiter that separates items in the output. The default value is ',' (that is, the default delimiter is comma).",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "delimiter",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": true,
+      "name": "PatternDistributionKeyColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the column to use as the distribution key for output.pattern.table. The default value is 'pattern_targetcolumns'.",
+      "description": "Specifies the name of the column to use as the distribution key for output_pattern_table. The default value is 'pattern_targetcolumns'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "pattern.distribution.key.column",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": true,
+      "name": "RuleDistributionKeyColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the column to use as the distribution key for output.rule.table. The default value is 'antecedent_targetcolumns'.",
+      "description": "Specifies the name of the column to use as the distribution key for output_rule_table. The default value is 'antecedent_targetcolumns'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "rule.distribution.key.column",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SequenceInputBy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}
