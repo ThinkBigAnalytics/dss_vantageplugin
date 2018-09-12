@@ -53,13 +53,13 @@ try:
     def getJson(function_name):
         try:
             return json.loads(open('%s/data/%s' % (get_recipe_resource(),
-                                               function_name + '.json')).read())
+                                               function_name + '_mle.json')).read())
         except:
             return ''
 
 except ImportError:
     def getJson(function_name):
         try:
-            return json.loads(open('%s/data/%s' % ('../resource', function_name + '.json')).read())
+            return json.loads(open('%s/data/%s' % ('../resource', function_name + '_mle.json')).read())
         except:
             return {}

@@ -6,7 +6,7 @@
   "function_version": "1.11",
   "function_type": "SQL-MR",
   "function_alias_name": "JSONParser",
-  "function_r_name": "aa.json.parser",
+  "function_r_name": "aajson.parser",
   "short_description": "Parses JSON string and produces a flattened table.",
   "long_description": "Parses JSON string and produces a flattened table. ",
   "input_tables": [

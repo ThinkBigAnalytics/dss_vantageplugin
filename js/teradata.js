@@ -168,7 +168,7 @@
         }
 
         const promise = $http
-          .get(`${FUNCTION_METADATA_PATH}${selectedFunction}.json`, {
+          .get(`${FUNCTION_METADATA_PATH}${selectedFunction}_mle.json`, {
             transformResponse: [function (data) {
               if (typeof data === 'string') {
                 // strip json vulnerability protection prefix
