@@ -42,7 +42,8 @@ class AsterArgumentFactory(object):
               'LONG' == argumentDef.get('datatype', '')) and\
         not argumentDef.get('allowsLists', False):
             return IntegerArgument(argument, argumentDef)
-        elif 'TABLE_NAME' == argumentDef['datatype'] and not \
+        # elif 'TABLE_NAME' == argumentDef['datatype'] and not \
+        elif 'TABLE_NAME' == argumentDef.get('datatype', '') and not \
         argumentDef.get('allowsLists', False) \
         and not argumentDef.get('isOutputTable', False):
             return TableArgument(argument, argumentDef, inputTables)

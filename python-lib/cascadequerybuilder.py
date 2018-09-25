@@ -55,12 +55,16 @@ def getSelectQuery(dss_function, inputTables, config):
             if 'arguments_nonuserdefined' in fun:
                 carguments += queryutility.getJoinedArgumentsString(fun['arguments_nonuserdefined'],
                                                                     queryutility.getArgumentClausesFromJson(jsonFunction))      
-            cfunction = fun.get('name',"")
-            cquery = """SELECT * FROM {cfunction} (ON {inputInfo} {cpartitionBy} {corderBy} {carguments})""".format(cfunction=getFunctionName(config, cfunction),
+            cfunction = fun.get('name',"")                        
+            coprocessorString = "@coprocessor"            
+            # TODO: ADD OUTPUT TABLE CLAUSE
+            cquery = """SELECT * FROM {cfunction} {coprocessorString} (ON {inputInfo} {cpartitionBy} {corderBy} USING {carguments})""".format(cfunction=getFunctionName(config, cfunction),
+                                                                      coprocessorString=coprocessorString,
                                                                       inputInfo=inputInfo,
                                                                       cpartitionBy=cpartitionBy,
                                                                       corderBy=corderBy,
                                                                       carguments=carguments)
+            print(cquery)
             inputInfo = """({cquery})""".format(cquery=cquery)
         query = inputInfo + ';'
     return query

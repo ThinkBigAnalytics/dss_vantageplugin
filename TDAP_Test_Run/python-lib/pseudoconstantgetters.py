@@ -26,16 +26,17 @@ from pseudoconstants import *
 def getPartitionKind(kind):
     return PARTITION_KEY_MAPPING.get(kind, '')
 
-CREATE_QUERY = '''CREATE {} TABLE {}{}
-AS
-{}'''
+# CREATE_QUERY = '''CREATE {} TABLE {}{}
+# AS
+# {}'''
+CREATE_QUERY = '''{}'''
 
 SELECT_QUERY = '''SELECT *
 FROM   {}
 (
 {}
 {}
-);'''
+) as tmp_alias;'''
 
 ON_SELECT_ONE_PARTITION_BY_ONE = 'ON (SELECT 1) PARTITION BY 1'
 
@@ -49,7 +50,7 @@ DISTRIBUTE_BY_HASH = ' DISTRIBUTE BY HASH({})'
 
 BEGIN_TRANSACTION_QUERY = 'BEGIN TRANSACTION;'
 
-DROP_QUERY = 'DROP TABLE IF EXISTS {outputTablename};'
+DROP_QUERY = 'DROP TABLE {outputTablename};'
 
 COMMIT_QUERY = "COMMIT;"
 

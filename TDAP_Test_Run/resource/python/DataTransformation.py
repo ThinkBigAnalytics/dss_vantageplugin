@@ -39,6 +39,7 @@ def do(payload, config, plugin_config, inputs):
             print('=====================================' + fle + '================================')
             f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle)).read())
             d = {"name":"",
+                 "output_tables":"",
                  "arguments":"",
                  "asterarguments":"",
                  "partitionInputKind":[],
@@ -54,7 +55,8 @@ def do(payload, config, plugin_config, inputs):
             d['partitionInputKind']
             unaliased_inputs = {'desc':{}, 'values':[], 'count':0}
             if 'function_name' in keys:
-                d["name"]=f['function_name'].upper()
+                # d["name"]=f['function_name'].upper()
+                d["name"]=f['function_name']
             if 'input_tables' in keys:
                 d["hasInputTable"] = True
                 input_tab_lst = f['input_tables']
@@ -80,15 +82,47 @@ def do(payload, config, plugin_config, inputs):
                         d['partitionInputKind'] = ['PartitionByOne'] if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne'] else input_tab['requiredInputKind'] if 'requiredInputKind' in input_tab else []
             d["required_input"] = required_input
             d["unaliased_inputs"] = unaliased_inputs
+
+            # Copied Argument clauses code
+            if 'output_tables' in keys:
+                ot = []
+                out_tbl_lst = f['output_tables']
+                for table in out_tbl_lst:
+                    outtbl = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                    if table.get('alternateNames', []):
+                        outtbl["name"] = table.get('alternateNames', [''])[0]
+                        # arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                    elif 'name' in table.keys():
+                        outtbl["name"]=table['name']
+                        # arg["name"]=argument['name'].upper()  
+                    if 'isRequired' in table.keys():
+                        outtbl["isRequired"]=table['isRequired']
+                    if 'datatype' in table.keys():
+                        outtbl["datatype"]=table['datatype']
+                    if 'allowsLists' in table.keys():
+                        outtbl["allowsLists"]=table['allowsLists']
+                    if 'targetTable' in table.keys():
+                        outtbl["targetTable"] = table['targetTable']
+                    if 'isOutputTable' in table and table['isOutputTable']:
+                        outtbl["isOutputTable"] = table['isOutputTable']
+                    if 'defaultValue' in table:
+                        outtbl["value"] = defaultValuesFromArg(table)
+                    if 'permittedValues' in table:
+                        outtbl["permittedValues"] = table['permittedValues']
+                    ot.append(outtbl)
+                d["output_tables"]=ot
+
             if 'argument_clauses' in keys:
                 a = []
                 arg_lst = f['argument_clauses']
                 for argument in arg_lst:
                     arg = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
                     if argument.get('alternateNames', []):
-                        arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                        arg["name"] = argument.get('alternateNames', [''])[0]
+                        # arg["name"] = argument.get('alternateNames', [''])[0].upper()
                     elif 'name' in argument.keys():
-                        arg["name"]=argument['name'].upper()  
+                        arg["name"]=argument['name']
+                        # arg["name"]=argument['name'].upper()  
                     if 'isRequired' in argument.keys():
                         arg["isRequired"]=argument['isRequired']
                     if 'datatype' in argument.keys():

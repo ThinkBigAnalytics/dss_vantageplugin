@@ -28,9 +28,10 @@ def getSelectClause(dss_function, inputTables, config={}):
         dss_function else singlequery.getSelectQuery(dss_function, inputTables, config)
 
 def getCreateQuery(dss_function, inputTables, outputTable, config={}):
-    return CREATE_QUERY.format(outputTable.tableType,
-                       outputTable.tablename,
-                       outputTable.hashKey and DISTRIBUTE_BY_HASH.format(outputTable.hashKey),
+    return CREATE_QUERY.format(
+                    # outputTable.tableType,
+                    #    outputTable.tablename,
+                    #    outputTable.hashKey and DISTRIBUTE_BY_HASH.format(outputTable.hashKey),
                        getSelectClause(dss_function, inputTables, config))
 
 def getDropOutputTableArgumentsStatementFromMultipleArguments(arg):
@@ -39,18 +40,24 @@ def getDropOutputTableArgumentsStatementFromMultipleArguments(arg):
             for x in outputs)
 
 def getDropOutputTableArgumentsStatements(args):
-    return ['BEGIN TRANSACTION;'] + [DROP_QUERY.format(outputTablename=x.get('value', ''))\
+    # beginTXNStatement = ''
+    # return [''] + [DROP_QUERY.format(outputTablename=x.get('value', ''))\
+    return [DROP_QUERY.format(outputTablename=x.get('value', ''))\
             for x in args if x.get('isOutputTable', False) and not x.get('allowsLists', False)\
             and x.get('value','')] + [getDropOutputTableArgumentsStatementFromMultipleArguments(x)\
                                       for x in args if x.get('isOutputTable', False)\
                                       and x.get('allowsLists', False) and x.get('value', '')]\
-                                       + ['COMMIT;']
+                                      
+                                    #    + ['COMMIT;']
 
 def getBeginDropCreateQueries(dss_function, inputTables, outputTable, config):
-     return [BEGIN_TRANSACTION_QUERY,
-                    DROP_QUERY.format(outputTablename=outputTable.tablename),
-                    getCreateQuery(dss_function, inputTables, outputTable, config),
-                    COMMIT_QUERY]
+    #  return [BEGIN_TRANSACTION_QUERY,
+    return [
+                    # DROP_QUERY.format(outputTablename=outputTable.tablename),
+                    getCreateQuery(dss_function, inputTables, outputTable, config)
+                    # getCreateQuery(dss_function, inputTables, outputTable, config),
+                    # COMMIT_QUERY]
+            ]
 
 def getFunctionsQuery(dss_function, inputTables, outputTable, config):
     return getBeginDropCreateQueries(dss_function, inputTables, outputTable, config)

@@ -232,24 +232,24 @@
       /**
        * Checks if there is a version mismatch in function_version
        */
-      checkVersionMismatch: function () {
-    	  if (!$scope.config.function) {
-            return false;
-            }
-        var previousVersion = $scope.config.function.function_version ? $scope.config.function.function_version : '';
-        console.log($scope.config.function.function_version ? $scope.config.function.function_version : '');
-        // console.log(functionVersion);
-        if (($scope.config.function.function_version ? $scope.config.function.function_version : '') === functionVersion || ($scope.config.function.function_version ? $scope.config.function.function_version : '') === '') {
-          console.log('False');
-          return false;
-        } else {
-          console.log('True')
-          console.warn('Function version mismatch');
-          console.warn('Previous Version:', previousVersion)
-          console.warn('Installed Version:', functionVersion)
-          return true;
-        }
-      },
+      // checkVersionMismatch: function () {
+    	//   if (!$scope.config.function) {
+      //       return false;
+      //       }
+      //   var previousVersion = $scope.config.function.function_version ? $scope.config.function.function_version : '';
+      //   console.log($scope.config.function.function_version ? $scope.config.function.function_version : '');
+      //   // console.log(functionVersion);
+      //   if (($scope.config.function.function_version ? $scope.config.function.function_version : '') === functionVersion || ($scope.config.function.function_version ? $scope.config.function.function_version : '') === '') {
+      //     console.log('False');
+      //     return false;
+      //   } else {
+      //     console.log('True')
+      //     console.warn('Function version mismatch');
+      //     console.warn('Previous Version:', previousVersion)
+      //     console.warn('Installed Version:', functionVersion)
+      //     return true;
+      //   }
+      // },
       addPartitionByColumn_TEST: function(partitionArray) {
         console.log('Partition array type');
         console.log(typeof partitionArray);
@@ -321,8 +321,8 @@
        * Checks if function is a driver function
        */
       checkIfDriverFunction: function () {
-          return functionMetadata && functionMetadata.argument_clauses &&
-              functionMetadata.argument_clauses.filter(arg => arg.isOutputTable).length;
+          return functionMetadata && functionMetadata.output_tables &&
+              functionMetadata.output_tables.filter(arg => arg.isOutputTable).length;
       },
 
 
@@ -415,7 +415,7 @@
           : []
 
       },
-
+      // TODO: FIX THIS
       findTableNameInArgumentsList: function (argumentsList, tableNameAlias) {
         //Get alternate names
         var tableNameAliases = [];
@@ -632,8 +632,10 @@
 
         if (!$scope.config.function.arguments || !$scope.config.function.arguments.length)
           return false
-
-        return $scope.config.function.arguments.filter(x => x.isRequired).length > 0
+        
+        const hasRequiredArgument = $scope.config.function.arguments.filter(x => x.isRequired).length > 0
+        const hasRequiredOutputTable = $scope.config.function.output_tables.filter(x => x.isRequired).length > 0
+        return hasRequiredArgument || hasRequiredOutputTable
 
       },
 
@@ -650,7 +652,11 @@
           && $scope.config.function.arguments.length
           && ($scope.config.function.arguments.filter(x => !x.isRequired).length > 0);
 
-        return hasOptionalInputTable || hasOptionalArgument;
+          const hasOptionalOutputTable = $scope.config.function.output_tables
+          && $scope.config.function.output_tables.length
+          && ($scope.config.function.output_tables.filter(x => !x.isRequired).length > 0);
+
+        return hasOptionalInputTable || hasOptionalArgument || hasOptionalOutputTable;
 
       },
 
@@ -849,7 +855,7 @@
 
         const $a = $('.mainPane > div:first > div:first > div.recipe-settings-section2 > a');
         $a
-          .text('Aster Analytics Foundation 7.00\nLearn more about Teradata Aster')
+          .text('Vantage Functions\nLearn more about Teradata Analytics PLatform')
           .css('color', 'orange')
           .attr('target', '_blank');
         $a.html($a.html().replace(/\n/g,'<br/>'));

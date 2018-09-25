@@ -41,12 +41,26 @@ def getArgumentClause(cargument, arg_dict, inputTables):
     asterarg = AsterArgumentFactory.createArg(cargument, argumentdef, inputTables)
     return asterarg.argumentclause
 
+def getOutTableClause(cargument, arg_dict, inputTables):
+    argumentdef  = next(iter(x for x in arg_dict if isArgumentDictionaryEntry(cargument, x)), {})
+    asterarg = AsterArgumentFactory.createArg(cargument, argumentdef, inputTables)
+    return asterarg.argumentclause
+
 def getJoinedArgumentsString(cargumentslist, arg_dict, inputTables=[]):
-    return ''.join(map(lambda x: getArgumentClause(x, arg_dict, inputTables), \
+    arguments = ''.join(map(lambda x: getArgumentClause(x, arg_dict, inputTables), \
+                         cargumentslist))
+    return arguments # and 'USING\n' + arguments
+
+def getJoinedOutputTableString(cargumentslist, arg_dict, inputTables=[]):
+    # return ''.join(map(lambda x: 'OUT TABLE ' + str(getOutTableClause(x, arg_dict, inputTables)), \
+    return ''.join(map(lambda x: '' + str(getOutTableClause(x, arg_dict, inputTables)), \
                          cargumentslist))
 
 def getArgumentClausesFromJson(f):
     return f.get('argument_clauses',[])
+
+def getOutputTableClausesFromJson(f):
+    return f.get('output_tables',[])
 
 try:
     from dataiku.customrecipe import *

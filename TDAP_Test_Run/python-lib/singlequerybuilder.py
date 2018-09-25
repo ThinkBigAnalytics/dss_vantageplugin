@@ -69,9 +69,21 @@ def getMultipleUnaliasedInputsClause(dss_function, inputTables):
                                                 len(unaliasedinputs)))]))
     
 def getArgumentClauses(dss_function, jsonfile, inputTables):
-    return queryutility.getJoinedArgumentsString(dss_function.get('arguments', []),
+    return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('arguments', []),
                                                  queryutility.getArgumentClausesFromJson(jsonfile),
                                                  inputTables)
+
+def getOutClause(dss_function, jsonfile, inputTables):
+    if dss_function.get('output_tables', []) != []:
+        return '\n' + queryutility.getJoinedOutputTableString(dss_function.get('output_tables', []),
+                                                 queryutility.getOutputTableClausesFromJson(jsonfile),
+                                                 inputTables)   
+    else:
+        return ''
+
+    # return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('output_tables', []),
+    #                                              queryutility.getArgumentClausesFromJson(jsonfile),
+    #                                              inputTables)                                                 
 
 def getOnClause(dss_function, jsonfile, inputTables):
     return (getMultipleUnaliasedInputsClause(dss_function, inputTables) +
@@ -81,10 +93,16 @@ def getOnClause(dss_function, jsonfile, inputTables):
 def getFunctionName(config, dss_function):
     aafschema = config.get('aafschema', '')
     functionname = dss_function.get('name', '')
-    return (aafschema and (aafschema + '.')) + functionname
+    coprocessorString = "@coprocessor"
+    return (aafschema and (aafschema + '.')) + functionname + coprocessorString
             
 def getSelectQuery(dss_function, inputTables, config):
     jsonfile= queryutility.getJson(dss_function.get('name',''))
-    return SELECT_QUERY.format(getFunctionName(config, dss_function),
+    outTableClauses = getOutClause(dss_function, jsonfile, inputTables)
+    argumentClauses = getArgumentClauses(dss_function, jsonfile, inputTables)
+    fullUsingClause = (outTableClauses or argumentClauses) and 'USING ' + outTableClauses + argumentClauses
+    #TODO ADD USING CLAUSE SOMEWHERE
+    return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
                        getOnClause(dss_function, jsonfile, inputTables),
-                       getArgumentClauses(dss_function, jsonfile, inputTables))
+                       fullUsingClause
+                       )

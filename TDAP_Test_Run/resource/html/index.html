@@ -26,7 +26,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
       <label class="control-label">Function Name</label>
       <div class="controls">
         <select ng-model="config.function" ng-options="cleanName(choice.name) for choice in choices track by choice.name" ng-change="refresh(config.function.name)">
-          <option value="" disabled selected>Select an Aster function...</option>
+          <option value="" disabled selected>Select a Vantage function...</option>
         </select>
         <a href="#" class="link1" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-question-sign"></span></a>
       </div>
@@ -40,12 +40,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
   </div>
   
   <div class="control-group" ng-if="checkIfDriverFunction()">
-      <label class="control-label">Drop Output Table If Exists</label>
+      <!-- <label class="control-label">Drop Output Table If Exists</label> -->
+      <label class="control-label">Drop Output Table/s</label>
       <div class="controls">
         <input type="checkbox" ng-model="config.function.dropIfExists"></input>
       </div>
     </div>
-
+<!-- 
   <div class="control-group">
     <label class="control-label">Distribution Type</label>
     <div class="controls">
@@ -55,7 +56,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
           <option value="dimension">Dimension</option>
         </select>
     </div>
-  </div>
+  </div> -->
 
   <!--<div><p >Test</p></div>-->
   <div class="control-group" ng-if="config.distribution == 'fact'">
@@ -66,12 +67,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     </div>
   </div>
 
-  <div class="control-group">
+  <!-- <div class="control-group">
     <label class="control-label">AAF Schema</label>
-    <div class="controls" style="max-width: 40%; text-align: justify">
-      <!--input type="text" ng-model="config.aafschema" data-toggle="tooltip"
-      placeholder="Default" data-container="body" data-html="false"
-        title="AAF_schema" data-placement="right" /-->
+    <div class="controls" style="max-width: 40%; text-align: justify">      
         <label class="control-label">{{aafschema}}</label>
     </div>
   </div>
@@ -79,14 +77,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     <em><small>*The AAF schema can be changed in the DSS Connections page, JDBC properties,
     using the keyword aafschema_700. If left blank, it will be set to the default search path.
     </small></em>
-  </label>
+  </label> -->
 
 
   <hr ng-if="config.function">
 
-  <div class="warning-div" ng-if="checkVersionMismatch()">
+  <!-- <div class="warning-div" ng-if="checkVersionMismatch()">
     <span class="label label-warning" >Function version mismatch! Some argument values may not be transferred.</span>
-  </div>
+  </div> -->
 
   <div class="control-group" ng-if="config.function">
 
@@ -234,6 +232,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                         </div>     
               </td>
             </tr>
+            <!-- Added output_table stuff -->
+            <tr ng-repeat="item in config.function.output_tables" ng-model="config.function.output_tables" ng-if="item.isRequired">
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+              <td>
+                <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" />
+              </td>
+            </tr>
 
 
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired">
@@ -356,6 +363,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 </div>
               </td>
             </tr>
+            <!-- Output tables -->
+            <tr ng-repeat="item in config.function.output_tables" ng-model="config.function.output_tables" ng-if="!item.isRequired">
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+              <td>
+                <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" />
+              </td>
+            </tr>
+
+            
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
               <td>

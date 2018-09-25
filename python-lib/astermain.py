@@ -70,17 +70,30 @@ def asterDo():
         
     # actual query
     query = getFunctionsQuery(dss_function, inputTables, outputTable, get_recipe_config() or {})
-    print('\n'.join(query))
+    
+    # raise RuntimeError("""I Just wanted to make this execution stop: """)
+    
+    # Uncomment below
     executor = SQLExecutor2(dataset=input_dataset)   
     if dss_function.get('dropIfExists', False):
-        dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('arguments', []))
-        executor.query_to_df('END TRANSACTION;', dropAllQuery)
-    executor.query_to_df("END TRANSACTION;", pre_queries=query)
+        # dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('arguments', []))
+        dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('output_tables', []))
+        print(dropAllQuery)
+        executor.query_to_df('SELECT \'DROPPING output_tables\';', dropAllQuery)
+    # executor.query_to_df("END TRANSACTION;", pre_queries=query)
     
-    # write table schema
-    nQuery = '''SELECT * FROM {} LIMIT (1);'''.format(outputTable.tablename)
-    selectResult = executor.query_to_df(nQuery);
-    output_schema = []
-    for column in selectResult.columns:
-        output_schema.append({"name":column, "type":"string"})
-    output_dataset.write_schema(output_schema)
+    # write table schema ACTUAL COMMENT
+    # nQuery = '''SELECT * FROM {} LIMIT (1);'''.format(outputTable.tablename)
+    # selectResult = executor.query_to_df(nQuery);
+    # output_schema = []
+    # for column in selectResult.columns:
+    #     output_schema.append({"name":column, "type":"string"})
+    # output_dataset.write_schema(output_schema)
+    print('\n'.join(query))
+    selectResult = executor.query_to_df(query)
+    print('Moving results to output...')
+    pythonrecipe_out = output_dataset
+    pythonrecipe_out.write_with_schema(selectResult)
+    print('Complete!')  
+
+# Uncomment end
