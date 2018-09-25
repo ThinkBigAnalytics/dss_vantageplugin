@@ -4,3 +4,5 @@
 .pydevproject
 .settings
 *.pyc
+*.sh
+/TDAP_Test_Run
