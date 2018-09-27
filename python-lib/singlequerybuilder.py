@@ -69,16 +69,25 @@ def getMultipleUnaliasedInputsClause(dss_function, inputTables):
                                                 len(unaliasedinputs)))]))
     
 def getArgumentClauses(dss_function, jsonfile, inputTables):
-    return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('arguments', []),
+    if dss_function.get('arguments', []) != []:
+        print('Has arguments')
+        return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('arguments', []),
                                                  queryutility.getArgumentClausesFromJson(jsonfile),
                                                  inputTables)
+    else:
+        print('No arguments')
+        return ''
+    
 
 def getOutClause(dss_function, jsonfile, inputTables):
     if dss_function.get('output_tables', []) != []:
+        print(dss_function.get('output_tables', []))
+        print('This happens in getoutclause')
         return '\n' + queryutility.getJoinedOutputTableString(dss_function.get('output_tables', []),
                                                  queryutility.getOutputTableClausesFromJson(jsonfile),
                                                  inputTables)   
     else:
+        print('NOthing happens in getoutclause')
         return ''
 
     # return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('output_tables', []),
@@ -98,10 +107,32 @@ def getFunctionName(config, dss_function):
             
 def getSelectQuery(dss_function, inputTables, config):
     jsonfile= queryutility.getJson(dss_function.get('name',''))
-    outTableClauses = getOutClause(dss_function, jsonfile, inputTables)
+    outTableClauses = getOutClause(dss_function, jsonfile, inputTables)     
     argumentClauses = getArgumentClauses(dss_function, jsonfile, inputTables)
-    fullUsingClause = (outTableClauses or argumentClauses) and 'USING ' + outTableClauses + argumentClauses
-    #TODO ADD USING CLAUSE SOMEWHERE
+    if(outTableClauses == '\n'):
+        outTableClauses = ''
+    if(argumentClauses == '\n'):
+        argumentClauses = ''
+    print('outTableClauses')
+    print('START'+outTableClauses+'END')
+    print('argumentClauses')
+    print('START'+argumentClauses + 'END')
+    completeClause = 'USING ' + outTableClauses + argumentClauses
+    fullUsingClause = (outTableClauses or argumentClauses) and completeClause
+    # if completeClause == 'USING ':
+    #     fullUsingClause = ''
+    #     print('Why isn\'t this  working')
+    if outTableClauses or argumentClauses:
+        print('This should work')
+    print('fullUsingClause')
+    print(fullUsingClause)
+    print('The and statements')
+    print('(outTableClauses or argumentClauses)')
+    print((outTableClauses or argumentClauses))
+    print('everything')
+    print((outTableClauses or argumentClauses) and completeClause)
+    print(fullUsingClause)
+    #TODO ADD USING CLAUSE SOMEWHERE    
     return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
                        getOnClause(dss_function, jsonfile, inputTables),
                        fullUsingClause

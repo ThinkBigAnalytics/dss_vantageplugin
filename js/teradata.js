@@ -251,20 +251,20 @@
       //   }
       // },
       addPartitionByColumn_TEST: function(partitionArray) {
-        console.log('Partition array type');
-        console.log(typeof partitionArray);
-        console.log(partitionArray);
+        // console.log('Partition array type');
+        // console.log(typeof partitionArray);
+        // console.log(partitionArray);
         if(typeof partitionArray == undefined || typeof partitionArray == 'string'){
-          console.log('Originally undefined/string');          
+          // console.log('Originally undefined/string');          
           partitionArray = [];
-          console.log(partitionArray)
+          // console.log(partitionArray)
           partitionArray.push('');
-          console.log(partitionArray)
+          // console.log(partitionArray)
           
         } else {          
           partitionArray.push('');
-          console.log('Added to partition array');
-          console.log(partitionArray);
+          // console.log('Added to partition array');
+          // console.log(partitionArray);
           
         
         }
@@ -286,14 +286,14 @@
     
     removePartitionByColumn_TEST: function(partitionArray,index) {
       if (index > -1) {
-        console.log('Removed from partition array')
-        console.log(partitionArray)
+        // console.log('Removed from partition array')
+        // console.log(partitionArray)
         partitionArray.splice(index, 1);
       }
     },
 
     addPartitionByColumn: function() {
-      console.log('Added one column')
+      // console.log('Added one column')
       $scope.config.function.partitionAttributes.push('');
   },
   removePartitionByColumn: function(index) {
@@ -303,7 +303,7 @@
   },
 
   addOrderByColumn: function() {
-    console.log('Added one column')
+    // console.log('Added one column')
     $scope.config.function.orderByColumn.push('');
   },
   removeOrderByColumn: function(index) {
@@ -321,9 +321,19 @@
        * Checks if function is a driver function
        */
       checkIfDriverFunction: function () {
+        // Move check above with IF statement and IF FALSE, set recipe output = ""
           return functionMetadata && functionMetadata.output_tables &&
               functionMetadata.output_tables.filter(arg => arg.isOutputTable).length;
       },
+
+      // /**
+      //  * Checks if function is a driver function
+      //  */
+      // setOutputTableForRecipe: function (tableName) {
+      //     // $scope.function.output_table_name = tableName;
+      //     console.log('setOutputTableForRecipe')
+      //     console.log(tableName);          
+      // },
 
 
       /**
@@ -451,7 +461,7 @@
       openTabs: function(evt, tabName) {
         // Declare all variables
         var i, tabcontent, tablinks;
-        console.log(evt); 
+        // console.log(evt); 
         // Get all elements with class="tabcontent" and hide them
         tabcontent = document.getElementsByClassName("plugintabcontent");
         for (i = 0; i < tabcontent.length; i++) {
@@ -482,12 +492,12 @@
         //console.log('Get Schema runs');
         aliasedInputsList = aliasedInputsList || []
         argumentsList = argumentsList || []
-        console.log('getSchema');
+        // console.log('getSchema');
         // console.log(functionMetadata)
-        console.log(functionArgument);
-        console.log(aliasedInputsList);
-        console.log(unaliasedInputsList);
-        console.log(argumentsList);
+        // console.log(functionArgument);
+        // console.log(aliasedInputsList);
+        // console.log(unaliasedInputsList);
+        // console.log(argumentsList);
         const hasTargetTable = KEYS.TARGET_TABLE in functionArgument
         let targetTableName = ''
         var isAliasedInputsPopulated;
@@ -497,15 +507,15 @@
           var targetTableAlias;
           if (typeof functionArgument.targetTable === 'string') {
             targetTableAlias = [(functionArgument.targetTable || '').toUpperCase()];
-            console.log('Table name');
-            console.log(targetTableAlias);
+            // console.log('Table name');
+            // console.log(targetTableAlias);
           } else {
             targetTableAlias = functionArgument.targetTable.map(function (table_name) {
 
               return (table_name || '').toUpperCase();
             })
-            console.log('Table name');
-            console.log(targetTableAlias);
+            // console.log('Table name');
+            // console.log(targetTableAlias);
           }
 
           // if (KEYS.ALTERNATE_NAMES in func)
@@ -517,7 +527,7 @@
             aliasedInputsList.map((input) => {
               // if (input.name.toUpperCase() === targetTableAlias.toUpperCase()) {
               if (targetTableAlias.includes(input.name.toUpperCase())) {
-                console.log('true');
+                // console.log('true');
                 isInAliasedInputsList = true;
               }
             }
@@ -531,7 +541,7 @@
           //console.log(targetTableAlias);
 
           if (isAliased) {
-            console.log('isAliased');
+            // console.log('isAliased');
             // let matchingInputs = aliasedInputsList.filter(input => targetTableAlias === input.name.toUpperCase());
             let matchingInputs = aliasedInputsList.filter(input => targetTableAlias.includes(input.name.toUpperCase()));
             if (matchingInputs.length > 0) {
@@ -543,7 +553,7 @@
               });
             } else {
               //console.log('Matching inputs < 0');
-              console.log('Does Matching <= 0 happen?')
+              // console.log('Does Matching <= 0 happen?')
               targetTableName = $scope.findTableNameInArgumentsList(argumentsList, targetTableAlias);
             }
 
@@ -552,7 +562,7 @@
             //console.log('isNotAliased');
             //console.log(unaliasedInputsList);
             if (unaliasedInputsList.count && unaliasedInputsList.values && unaliasedInputsList.values.length) {
-              console.log('Went to unaliased');
+              // console.log('Went to unaliased');
 
               targetTableName = [unaliasedInputsList.values[0]];
               //console.log(targetTableName);
@@ -560,8 +570,8 @@
 
             else {
               targetTableName = $scope.findTableNameInArgumentsList(argumentsList, targetTableAlias);
-              console.log('Went to arguments');
-              console.log(targetTableName);
+              // console.log('Went to arguments');
+              // console.log(targetTableName);
             }
 
 
@@ -593,13 +603,13 @@
               currentInputSchemas = currentInputSchemas.map(function (eachInput) {
                 return $.extend(eachInput, { "tableName": targetTableName[i] });
               })
-              console.log('Current');
-              console.log(currentInputSchemas);
+              // console.log('Current');
+              // console.log(currentInputSchemas);
               forReturnInputSchemas.push.apply(forReturnInputSchemas, currentInputSchemas)
             }
           }
-          console.log('Schema');
-          console.log(forReturnInputSchemas)
+          // console.log('Schema');
+          // console.log(forReturnInputSchemas)
           return forReturnInputSchemas;
 
         }
@@ -855,7 +865,7 @@
 
         const $a = $('.mainPane > div:first > div:first > div.recipe-settings-section2 > a');
         $a
-          .text('Vantage Functions\nLearn more about Teradata Analytics PLatform')
+          .text('Teradata Vantage Analytic Functions\nLearn more about Teradata Vantage')
           .css('color', 'orange')
           .attr('target', '_blank');
         $a.html($a.html().replace(/\n/g,'<br/>'));
