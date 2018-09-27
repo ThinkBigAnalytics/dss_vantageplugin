@@ -91,7 +91,7 @@ def asterDo():
     # output_dataset.write_schema(output_schema)
     print('\n'.join(query))
     print(dss_function)
-    recipe_output_table = dss_function.get('recipe_output_table', "")
+    recipe_output_table = dss_function.get('recipeOutputTable', "")
     print('recipe_output_table before IF')
     print(recipe_output_table)
     if recipe_output_table == "" or recipe_output_table == None:                   

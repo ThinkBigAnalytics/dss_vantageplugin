@@ -43,7 +43,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     <!-- <label class="control-label">Drop Output Table If Exists</label> -->
     <label class="control-label">Output Table to be used</label>
     <div class="controls">        
-        <select ng-model="config.function.recipe_output_table" ng-options="table_name as output_table.name for output_table in config.function.output_tables track by output_table.name" title="Select an output table to be used as the recipe's main output.">
+        <select ng-model="config.function.recipeOutputTable" ng-options="output_table.name for output_table in config.function.output_tables" title="Select an output table to be used as the recipe's main output.">
+            <!-- <select ng-model="config.function.recipe_output_table" ng-options="output_table.name for output_table.name in config.function.output_tables" ng-change="setOutputTableForRecipe(config.function.recipe_output_table)" title="Select an output table to be used as the recipe's main output."> -->
             <option value="" selected>Default Function Output</option>
           </select>
     </div>
