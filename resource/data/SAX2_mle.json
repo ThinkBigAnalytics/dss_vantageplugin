@@ -3,12 +3,220 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "SAX2",
-  "function_version": "1.5",
+  "function_version": "1.6",
   "function_type": "non-driver",
   "function_alias_name": "SAX",
   "function_r_name": "aa.sax",
   "short_description": "Implements the SAX algorithm for creating symbolic representations of time series.",
   "long_description": "Implements the SAX algorithm for creating symbolic representations of time series. Time series can be represented as string, byte arrays, JSON bitmaps, or character sequences.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputType)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "string"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "time_column_start",
+                    "dataType": "bytea",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "time_column_end",
+                    "dataType": "bytea",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_saxcode",
+                    "dataType": "varchar",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_mean",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_stdev",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputType)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "bytes"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "time_column_start",
+                    "dataType": "bytea",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "time_column_end",
+                    "dataType": "bytea",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_saxcode",
+                    "dataType": "varchar",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_mean",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_stdev",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputType)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "bitmap"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "time_column_start",
+                    "dataType": "varchar(3200)",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "time_column_end",
+                    "dataType": "varchar(3200)",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_bitmap",
+                    "dataType": "varchar",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputType)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "characters"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "inputTable",
+                    "name": "input.PartitionBy.*",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "time_column_start",
+                    "dataType": "varchar(128)",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "time_column_end",
+                    "dataType": "varchar(128)",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "saxchar_n",
+                    "dataType": "char(1)",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_mean",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "predefined",
+                    "name": "target_column_n_stdev",
+                    "dataType": "double precision",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [
@@ -80,7 +288,7 @@
       ],
       "isRequired": true,
       "rDescription": "Specifies the names of the input table columns that contain the time series data to be transformed.",
-      "description": "Specifies the names of the input table columns that contain the time series data to be transformed.",
+      "description": "Specify the names of the input table columns that contain the time series data to transform.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "value.columns",
@@ -103,7 +311,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the name of the input table column that contains the time axis of the data.",
-      "description": "Specifies the name of the input table column that contains the time axis of the data.",
+      "description": " Specify the name of the input table column that contains the time axis of the data.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "time.column",
@@ -125,7 +333,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "The names of the input table columns that are to appear in the output table. For each sequence in the input table, ta.sax2 choose the value corresponding to the first time point in the sequence to output as the accumulate value.",
-      "description": "The names of the input table columns that are to appear in the output table. For each sequence in the input table, SAX2 choose the value corresponding to the first time point in the sequence to output as the accumulate value.",
+      "description": " Specify the names of the input table columns that are to appear in the output table. For each sequence in the input table, SAX choose the value corresponding to the first time point in the sequence to output as the accumulate value.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -143,7 +351,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Determines how much data the function processes at one time: 'global' (default): The function computes the SAX code using a single mean and standard deviation for the entire data set.'sliding': The function recomputes the mean and standard deviation for a sliding window of the data set.",
-      "description": "Determines how much data the function processes at one time: 'global' (default): The function computes the SAX code using a single mean and standard deviation for the entire data set.'sliding': The function recomputes the mean and standard deviation for a sliding window of the data set.",
+      "description": " Specify how much data the function processes at one time: Option Description 'global' (Default) Function computes SAX code using single mean and standard deviation for entire data set. 'sliding' Function recomputes mean and standard deviation for sliding window of data set.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "window.type",
@@ -165,7 +373,7 @@
       ],
       "isRequired": false,
       "rDescription": "Determines how the function outputs the results:'string' (default): The function outputs a list of SAX codes for each window.'bytes': The function outputs the list of SAX codes as compact byte arrays (which are not \u201chuman-readable\u201d).'bitmap': The function outputs a JSON representation of a SAX bitmap.'characters': The function outputs one character for each line.",
-      "description": "Determines how the function outputs the results:'string' (default): The function outputs a list of SAX codes for each window.'bytes': The function outputs the list of SAX codes as compact byte arrays (which are not \u201chuman-readable\u201d).'bitmap': The function outputs a JSON representation of a SAX bitmap.'characters': The function outputs one character for each line.",
+      "description": " Specify how the function outputs the results: Option Description 'string' (Default) Function outputs list of SAX codes for each window. 'bytes' Function outputs list of SAX codes as compact byte arrays (which humans cannot read). 'bitmap' Function outputs JSON representation of SAX bitmap. 'characters' Function outputs one character for each line.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "output",
@@ -186,7 +394,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the global mean values that the function uses to calculate the SAX code for every partition. A mean_value has the data type DOUBLE PRECISION. If mean specifies only one value and value.columns specifies multiple columns, then the specified value applies to every value_column. If mean specifies multiple values, then it must specify a value for each value_column. The nth mean_value corresponds to the nth value_column. Tip: To specify a different global mean value for each partition, use the multiple-input syntax and put the values in the meanstats table.",
-      "description": "Specifies the global mean values that the function uses to calculate the SAX code for every partition. A mean_value has the data type DOUBLE PRECISION. If Mean specifies only one value and ValueColumns specifies multiple columns, then the specified value applies to every value_column. If Mean specifies multiple values, then it must specify a value for each value_column. The nth mean_value corresponds to the nth value_column. Tip: To specify a different global mean value for each partition, use the multiple-input syntax and put the values in the meanstats table.",
+      "description": "[Single-input syntax only] Specify the global mean values that the function uses to calculate the SAX code for every partition. A mean_value has the data type DOUBLE PRECISION. If Mean specifies only one value and TargetColumns specifies multiple columns, the specified value applies to every target_column . If Mean specifies multiple values, it must specify a value for each target_column . The n th mean_value corresponds to the n th target_column . Tip: To specify a different global mean value for each partition, use the multiple-input syntax and put the values in the meanstats table.",
       "datatype": "DOUBLE",
       "allowsLists": true,
       "rName": "mean",
@@ -209,7 +417,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the global standard deviation values that the function uses to calculate the SAX code for every partition. A stdev_value has the data type DOUBLE PRECISION and its value must be greater than 0. If Stdev specifies only one value and value.columns specifies multiple columns, then the specified value applies to every value_column. If Stdev specifies multiple values, then it must specify a value for each value_column. The nth stdev_value corresponds to the nth value_column. Tip: To specify a different global standard deviation value for each partition, use the multiple-input syntax and put the values in the stdevstats table.",
-      "description": "Specifies the global standard deviation values that the function uses to calculate the SAX code for every partition. A stdev_value has the data type DOUBLE PRECISION and its value must be greater than 0. If Stdev specifies only one value and ValueColumns specifies multiple columns, then the specified value applies to every value_column. If Stdev specifies multiple values, then it must specify a value for each value_column. The nth stdev_value corresponds to the nth value_column. Tip: To specify a different global standard deviation value for each partition, use the multiple-input syntax and put the values in the stdevstats table.",
+      "description": "[Single-input syntax only] Specify the global standard deviation values that the function uses to calculate the SAX code for every partition. A stdev_value has the data type DOUBLE PRECISION and its value must be greater than 0. If Stdev specifies only one value and TargetColumns specifies multiple columns, the specified value applies to every target_column . If Stdev specifies multiple values, it must specify a value for each target_column . The n th stdev_value corresponds to the n th target_column . Tip: To specify a different global standard deviation value for each partition, use the multiple-input syntax and put the values in the stdevstats table.",
       "datatype": "DOUBLE",
       "allowsLists": true,
       "rName": "st.dev",
@@ -226,7 +434,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the size of the sliding window. The value must be an integer greater than 0.",
-      "description": "Specifies the size of the sliding window. The value must be an integer greater than 0.",
+      "description": "[Required if WindowType is 'sliding', disallowed otherwise.] Specify the size of the sliding window. The value must be an integer greater than 0.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "window.size",
@@ -244,7 +452,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of data points that the window slides between successive outputs. The value must be an integer greater than 0. The default value is 1. Note: window.type value must be 'sliding' and Output value cannot be 'characters'. If window.type is 'sliding' and Output value is 'characters', then output.frequency is automatically set to the value of window.size, to ensure that a single character is assigned to each time point. If the number of data points in the time series is not an integer multiple of the window size, then the function ignores the leftover parts.",
-      "description": "Specifies the number of data points that the window slides between successive outputs. The value must be an integer greater than 0. The default value is 1. Note: WindowType value must be 'sliding' and Output value cannot be 'characters'. If WindowType is 'sliding' and Output value is 'characters', then OutputFrequency is automatically set to the value of Window_Size, to ensure that a single character is assigned to each time point. If the number of data points in the time series is not an integer multiple of the window size, then the function ignores the leftover parts.",
+      "description": " Specify the number of data points that the window slides between successive outputs. The value must be an integer greater than 0. Default: 1 Note: WindowType value must be 'sliding' and OutputType value cannot be 'characters'. If WindowType is 'sliding' and OutputType value is 'characters', OutputFrequency is automatically set to the value of WindowSize, so that a single character is assigned to each time point. If the number of data points in the time series is not an integer multiple of the window size, the function ignores the leftover parts.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "output.frequency",
@@ -265,7 +473,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of data points to be converted into one SAX symbol. Each value must be an integer greater than 0. The default value is 1. Note: window.type value must be 'global'.",
-      "description": "Specifies the number of data points to be converted into one SAX symbol. Each value must be an integer greater than 0. The default value is 1. Note: WindowType value must be 'global'.",
+      "description": " Specify the number of data points to convert into one SAX symbol. Each value must be an integer greater than 0. Default: 1 Note: WindowType value must be 'global'.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "points.persymbol",
@@ -283,7 +491,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of SAX symbols to be generated for each window. Each value must be an integer greater than 0. The default value is the value of window.size. Note: window.type value must be 'sliding'.",
-      "description": "Specifies the number of SAX symbols to be generated for each window. Each value must be an integer greater than 0. The default value is the value of WindowSize. Note: WindowType value must be 'sliding'.",
+      "description": " Specify the number of SAX symbols to create for each window. Each value must be an integer greater than 0. Note: WindowType value must be 'sliding'. Default: window_size (the value of WindowSize)",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "symbols.perwindow",
@@ -306,7 +514,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of symbols in the SAX alphabet. The value must be an integer in the range [2, 20]. The default value is 4.",
-      "description": "Specifies the number of symbols in the SAX alphabet. The value must be an integer in the range [2, 20]. The default value is 4.",
+      "description": " Specify the number of symbols in the SAX alphabet. The value must be an integer in the range [2,\u00a020]. Default: 4",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "alphabet.size",
@@ -329,7 +537,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of consecutive symbols to be converted to one symbol on a bitmap. For bitmap level 1, the bitmap contains the symbols 'a', 'b', 'c', and so on; for bitmap level 2, the bitmap contains the symbols 'aa', 'ab', 'ac', and so on. The input value must be an integer in the range [1, 4]. The default value is 2. Note: Output value must be 'bitmap'.",
-      "description": "Specifies the number of consecutive symbols to be converted to one symbol on a bitmap. For bitmap level 1, the bitmap contains the symbols 'a', 'b', 'c', and so on; for bitmap level 2, the bitmap contains the symbols 'aa', 'ab', 'ac', and so on. The input value must be an integer in the range [1, 4]. The default value is 2. Note: Output value must be 'bitmap'.",
+      "description": " Specify the number of consecutive symbols to convert to one symbol on a bitmap. For bitmap level 1, the bitmap contains the symbols 'a', 'b', 'c', and so on; for bitmap level 2, the bitmap contains the symbols 'aa', 'ab', 'ac', and so on. The input value must be an integer in the range [1,\u00a04]. Default: 2 Note: OutputType value must be 'bitmap'.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "bitmap.level",
@@ -344,7 +552,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies whether the function prints the mean and standard deviation. The default value is 'false'. Note: Output value must be 'string'.",
-      "description": "Specifies whether the function prints the mean and standard deviation. The default value is 'false'. Note: Output value must be 'string'.",
+      "description": " Specify whether the function prints the mean and standard deviation. Default: 'false' Note: OutputType value must be 'string'.",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "print.stats",

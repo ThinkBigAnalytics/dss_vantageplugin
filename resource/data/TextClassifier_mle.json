@@ -9,7 +9,7 @@
   "function_r_name": "aa.text.classifier.predict",
   "ref_function_r_name": "aa.text.classifier.train",
   "short_description": "Text classification SQL/MR function",
-  "long_description": "Predict the category of the document in each text column",
+  "long_description": "The TextClassifier function classifies input text, using a model output by the function TextClassifierTrainer.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -46,7 +46,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the column of the input table that contains the text to be used for predicting classification.",
-      "description": "Specifies the column of the input table that contains the text to be used for predicting classification.",
+      "description": "Specify the column of the input table that contains the text to use for predicting classification.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "text.column",
@@ -68,7 +68,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the input columns to copy to the output table.",
-      "description": "Specifies the names of the input columns to copy to the output table.",
+      "description": " Specify the names of the input columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -82,7 +82,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the model (which you must install in the database before calling the function).",
-      "description": "Specifies the model (which you must install in the database before calling the function).",
+      "description": "Specify the model created by TextClassifierTrainer, which is installed on the ML Engine when it is created.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "model.file",

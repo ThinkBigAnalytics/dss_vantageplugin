@@ -3,13 +3,103 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "CoxPredict",
-  "function_version": "1.2",
+  "function_version": "1.3",
   "function_type": "non-driver",
   "function_alias_name": "CoxHazardRatio",
   "function_r_name": "aa.cox.predict",
   "ref_function_r_name": "aa.coxph",
   "short_description": "This function calculates relative hazard ratio from given new predictors, referneces and cox proportional model",
   "long_description": "This function calculates relative hazard ratio from given new predictors, referneces and cox proportional model",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "inputTable",
+            "name": "predicts.Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(PredictFeatureColumns)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "inputTable",
+                    "name": "predicts.PredictFeatureNames.*",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  },
+                  {
+                    "source": "inputTable",
+                    "name": "refs.RefFeatureColumns.*",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(PredictFeatureUnitsColumns)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "inputTable",
+                    "name": "predicts.PredictFeatureUnitsColumns.*",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "hazardratio",
+            "dataType": "double precision",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [
@@ -80,7 +170,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by predict.feature.names. The ith predict_feature corresponds to the ith pf_value_column.",
-      "description": "Specifies the names of the columns that contain the values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by Predict_Feature_Names. The ith predict_feature corresponds to the ith pf_value_column.",
+      "description": "[Required if PredictFeatureUnits Columns is omitted, disallowed otherwise.] Specify the names of the columns that contain the values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by PredictFeatureNames. The i th predict_feature corresponds to the i th pf_value_column .",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "predict.feature.columns",
@@ -102,7 +192,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the unit values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by predict.feature.names. The ith predict_feature corresponds to the ith pf_unit_column.s",
-      "description": "Specifies the names of the columns that contain the unit values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by Predict_Feature_Names. The ith predict_feature corresponds to the ith pf_unit_column.",
+      "description": "[Required if PredictFeatureColumns is omitted, disallowed otherwise.] Specify the names of the columns that contain the unit values of the features in the Cox coefficient model. This argument must specify a column for each feature specified by PredictFeatureNames. The i th predict_feature corresponds to the i th pf_unit_column .",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "predict.feature.units.columns",
@@ -125,7 +215,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the reference values. This argument must specify a column for each feature specified by predict.feature.names. The ith predict.feature corresponds to the ith rf_value_column. The default reference values are the distinct featurevalue combinations. Note: The function ignores this argument if you specify predict.feature.units.columns.",
-      "description": "Specifies the names of the columns that contain the reference values. This argument must specify a column for each feature specified by Predict_Feature_Names. The ith predict_feature corresponds to the ith rf_value_column. The default reference values are the distinct featurevalue combinations. Note: The function ignores this argument if you specify Predict_Feature_Units_Columns.",
+      "description": " The function ignores this argument if you specify PredictFeatureUnitsColumns. Specify the names of the columns that contain the reference values. This argument must specify a column for each feature specified by PredictFeatureNames. The i th predict_feature corresponds to the i th rf_value_column . Default behavior: The reference values are the distinct feature-value combinations.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "ref.feature.columns",
@@ -147,7 +237,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns in predict_feature_table that the function copies to the output table.",
-      "description": "Specifies the names of the columns in predict_feature_table that the function copies to the output table.",
+      "description": " Specify the names of the columns in predict_feature_table that the function copies to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -163,7 +253,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the names of the features in the Cox coefficient model (the coefficient table generated by the ta.coxph function).",
-      "description": "Specifies the names of the features in the Cox coefficient model (the coefficient table generated by the CoxPH function).",
+      "description": "Specify the names of the features in the Cox coefficient model (the coefficient table output by the CoxPH function).",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "predict.feature.names",

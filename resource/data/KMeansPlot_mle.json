@@ -9,7 +9,7 @@
   "function_r_name": "aa.kmeans.plot",
   "ref_function_r_name": "aa.kmeans",
   "short_description": "Implements the KMeansPlot SQL-MR function.",
-  "long_description": "KMeansPlot is a SQL-GR for assigning data points to Kmeans clusters.",
+  "long_description": "The KMeansPlot function takes a model\u2014a table of cluster centroids output by the KMeans function\u2014and an input table of test data, and uses the model to assign the test data points to the cluster centroids.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -53,7 +53,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether to print the distance between each data point and the nearest cluster. The default value is 'false'.",
-      "description": "Specifies whether to print the distance between each data point and the nearest cluster. The default value is 'false'.",
+      "description": " Specify whether to print the distance between each data point and the nearest cluster. Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "print.distance",

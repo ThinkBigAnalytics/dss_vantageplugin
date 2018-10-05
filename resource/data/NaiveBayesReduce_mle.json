@@ -11,6 +11,66 @@
   "long_description": "Trains a Naive Bayes classifier on a dense matrix of training data.",
   "function_operation": "reduce",
   "partner_function": "NaiveBayesMap",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "class_nb",
+            "dataType": "varchar(128)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "variable_nb",
+            "dataType": "varchar(128)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "type_nb",
+            "dataType": "varchar(128)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "category",
+            "dataType": "varchar(32)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "cnt",
+            "dataType": "bigint",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "sum_nb",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "sum_sq",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "total_cnt",
+            "dataType": "bigint",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [

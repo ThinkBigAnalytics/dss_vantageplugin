@@ -3,12 +3,30 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Forest_Drive",
-  "function_version": "2.10",
+  "function_version": "2.13",
   "function_type": "driver",
   "function_alias_name": "DecisionForest",
   "function_r_name": "aa.forest",
   "short_description": "This function trains a random forest tree model.",
   "long_description": "This function takes as input a training set of data and uses it to generate a predictive model.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "message",
+            "dataType": "varchar(500)",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [],
@@ -38,7 +56,43 @@
       "allowsLists": false,
       "rName": "predictive.model",
       "useInR": true,
-      "rOrderNum": 100
+      "rOrderNum": 100,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "OutputTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "worker_ip",
+                "dataType": "varchar(20)",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "task_index",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "tree_num",
+                "dataType": "varchar(20)",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "tree",
+                "dataType": "varchar",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "isOutputTable": true,
@@ -52,7 +106,25 @@
       "allowsLists": false,
       "rName": "monitor.table",
       "useInR": true,
-      "rOrderNum": 101
+      "rOrderNum": 101,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "MonitorTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "message",
+                "dataType": "varchar(500)",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "argument_clauses": [
@@ -72,7 +144,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the column that contains the response variable. (that is, the quantity that you want to predict).",
-      "description": "Specifies the name of the column that contains the response variable. (that is, the quantity that you want to predict).",
+      "description": "Specify the name of the column that contains the response variable (that is, the quantity that you want to predict).",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "response.column ",
@@ -95,7 +167,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the numeric predictor variables (which must be numeric values).",
-      "description": "Specifies the names of the columns that contain the numeric predictor variables (which must be numeric values).",
+      "description": "[Required if CategoricalInputs is omitted.] Specify the names of the columns that contain the numeric predictor variables (which must be numeric values).",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "numeric.inputs",
@@ -118,7 +190,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases.",
-      "description": "Specifies the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases.",
+      "description": "[Required if NumericInputs is omitted.] Specify the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "categorical.inputs",
@@ -133,7 +205,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether the analysis is a regression (continuous response variable) or a multiclass classification (predicting result from the number of classes). The default value is 'regression' if the response variable is numeric and 'classification' if the response variable is nonnumeric.",
-      "description": "Specifies whether the analysis is a regression (continuous response variable) or a multiclass classification (predicting result from the number of classes). The default value is 'regression' if the response variable is numeric and 'classification' if the response variable is nonnumeric.",
+      "description": " Specify whether the analysis is a regression (continuous response variable) or a multiple-class classification (predicting result from the number of classes). Default: 'regression' if the response variable is numeric, 'classification' otherwise",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "tree.type",
@@ -142,7 +214,7 @@
     },
     {
       "lowerBound": 1,
-      "upperBound": 2147483647,
+      "upperBound": 10000,
       "lowerBoundType": "INCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
@@ -150,7 +222,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of trees to grow in the forest model. When specified, number_of_trees must be greater than or equal to the number of vworkers.When not specified, the function builds the minimum number of trees that provides the input dataset with full coverage.",
-      "description": "Specifies the number of trees to grow in the forest model. When specified, number_of_trees must be greater than or equal to the number of vworkers.When not specified, the function builds the minimum number of trees that provides the input dataset with full coverage.",
+      "description": " Specify the number of trees to grow in the forest model. When specified, number_of_trees must be greater than or equal to the number of vworkers. When not specified, the function builds the minimum number of trees that provides the input data set with full coverage.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "ntree",
@@ -167,7 +239,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of rows that each tree uses as its input data set. If not specified, the function builds a tree using either the number of rows on a vworker or the number of rows that fit into the vworker\u2019s memory, whichever is less.",
-      "description": "Specifies the number of rows that each tree uses as its input data set. If not specified, the function builds a tree using either the number of rows on a vworker or the number of rows that fit into the vworker\u2019s memory, whichever is less.",
+      "description": " Specify the number of rows that each tree uses as its input data set. Default behavior: The function builds a tree using either the number of rows on a vworker or the number of rows that fit into the vworker\u2019s memory, whichever is less.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "tree.size",
@@ -185,7 +257,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a decision tree stopping criterion; the minimum size of any node within each decision tree The default value is 1.",
-      "description": "Specifies a decision tree stopping criterion; the minimum size of any node within each decision tree The default value is 1.",
+      "description": " Specify a decision tree stopping criterion; the minimum size of any node within each decision tree. Default: 1",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "nodesize",
@@ -203,7 +275,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a decision tree stopping criterion. If the variance within any nodedips below this value, the algorithm stops looking for splits in the branch. The default value is 0.",
-      "description": "Specifies a decision tree stopping criterion. If the variance within any nodedips below this value, the algorithm stops looking for splits in the branch. The default value is 0.",
+      "description": " Specify a decision tree stopping criterion. If the variance within any node dips below this value, the algorithm stops looking for splits in the branch. Default: 0",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "variance",
@@ -213,7 +285,7 @@
     {
       "defaultValue": 12,
       "lowerBound": 1,
-      "upperBound": 2147483647,
+      "upperBound": 500,
       "lowerBoundType": "INCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
@@ -221,7 +293,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a decision tree stopping criterion. If the tree reaches a depth pastthis value, the algorithm stops looking for splits. Decision trees can grow to (2(max_depth+1) - 1) nodes. This stopping criteria has the greatest effect on the performance of the function. The default value is 12.",
-      "description": "Specifies a decision tree stopping criterion. If the tree reaches a depth pastthis value, the algorithm stops looking for splits. Decision trees can grow to (2(max_depth+1) - 1) nodes. This stopping criteria has the greatest effect on the performance of the function. The default value is 12.",
+      "description": " Specify a decision tree stopping criterion. If the tree reaches a depth past this value, the algorithm stops looking for splits. Decision trees can grow to (2 ( max_depth +1) - 1) nodes. This stopping criteria has the greatest effect on the performance of the function. Default: 12",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "max.depth",
@@ -252,7 +324,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether to display the number of processed rows of input table. The default value is 'false'.",
-      "description": "Specifies whether to display the number of processed rows of input table. The default value is 'false'.",
+      "description": " Specify whether to output the number of input rows allocated to each worker and the number of input rows processed by each worker (excluding rows skipped because they contained NULL values). Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "display.num.processed.rows",
@@ -269,7 +341,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of variables to randomly sample from each inputvalue. For example, if mtry is 3, then the function randomly samples 3variables from each input at each split. The mtry must be an INTEGER.",
-      "description": "Specifies the number of variables to randomly sample from each inputvalue. For example, if mtry is 3, then the function randomly samples 3variables from each input at each split. The mtry must be an INTEGER.",
+      "description": " Specify the number of variables to randomly sample from each input value. For example, if mtry is 3, then the function randomly samples 3 variables from each input at each split. The mtry must be an INTEGER. Default behavior: The function randomly samples all predictors. Tip: Calculate the initial value for mtry , where p is number of variables used for prediction, as follows: Tree Type mtry Initial Value Classification round(sqrt( p )) Regression round( p /3)",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "mtry",
@@ -286,7 +358,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a LONG value to use in determining the random seed for mtry",
-      "description": "Specifies a LONG value to use in determining the random seed for mtry",
+      "description": " Specify a LONG value to use in determining the random seed for mtry .",
       "datatype": "LONG",
       "allowsLists": false,
       "rName": "mtry.seed",
@@ -303,7 +375,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a LONG value to use in determining the seed for the random number generator. If you specify this value, you can specify the same value in future calls to this function and the function will build the same tree.",
-      "description": "Specifies a LONG value to use in determining the seed for the random number generator. If you specify this value, you can specify the same value in future calls to this function and the function will build the same tree.",
+      "description": " Specify the random seed the algorithm uses for repeatable results (for more information, see Nondeterministic Results). The seed must be a LONG value.",
       "datatype": "LONG",
       "allowsLists": false,
       "rName": "seed",
@@ -316,7 +388,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether to output the out-of-bag estimate of error rate.",
-      "description": "Specifies whether to output the out-of-bag estimate of error rate.",
+      "description": " Specify whether to output the out-of-bag estimate of error rate. The bootstrapping technique provides a convenient method for estimating the test error that does not require cross-validation. When creating a decision forest, each tree is built on a subset of the original data set that is created by sampling with replacement. The points in the original data set that were not used in creating a particular tree are called the out-of-bag observations for that tree. You can use this set of data points as a test set for this particular tree. By creating such a test set for each tree in the forest, you can estimate the test error of the model. If OutOfBag is 'true', the function calculates the out-of-bag error for a decision forest model with this procedure: For each observation i , use each tree for which the observation was out-of-bag to predict a response. Combine the responses to make an out-of-bag prediction for observation i : For classification trees, take the majority vote of the predicted responses. For regression trees, take the average of the predicted responses. Compare the out-of-bag predictions to the actual response for all observations to calculate the overall mean squared error or misclassification rate. The preceding calculations increase the time that the function takes to complete. Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "outofbag",

@@ -3,12 +3,42 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Attribution",
-  "function_version": "2.7",
+  "function_version": "2.8",
   "function_type": "non-driver",
   "function_alias_name": "Attribution",
   "function_r_name": "aa.attribution",
   "short_description": "This function is used to perform click stream analysis.",
   "long_description": "This function is used to perform click stream analysis.It has many kinds of computation models and distribution models.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "inputTable",
+            "name": "input.*",
+            "dataType": "varchar",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "attribution",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "time_to_conversion",
+            "dataType": "integer",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [
@@ -148,7 +178,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the clickstream events.",
-      "description": "Specifies the name of the input column that contains the clickstream events.",
+      "description": "Specify the name of the input column that contains the clickstream events.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "event.column",
@@ -172,7 +202,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
-      "description": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
+      "description": "Specify the name of the input column that contains the timestamps of the clickstream events.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "timestamp.column",
@@ -186,7 +216,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies how to determine the maximum window size for the attribution calculation: rows:K: Consider the maximum number of events to be attributed, excluding events of types specified in excluding_event_table, which means assigning attributions to at most K effective events before the current impact event.seconds:K: Consider the maximum time difference between the current impact event and the earliest effective event to be attributed. rows:K&seconds:K2: Consider both constraints and comply with the stricter one.",
-      "description": "Specifies how to determine the maximum window size for the attribution calculation: rows:K: Consider the maximum number of events to be attributed, excluding events of types specified in excluding_event_table, which means assigning attributions to at most K effective events before the current impact event.seconds:K: Consider the maximum time difference between the current impact event and the earliest effective event to be attributed. rows:K&seconds:K2: Consider both constraints and comply with the stricter one.",
+      "description": "Specify how to determine the maximum window size for the attribution calculation: Option Description rows: K Assign attributions to at most K events before conversion event, excluding events of types specified in excluding_event_table . seconds: K Assign attributions only to rows not more than K seconds before conversion event. rows: K &seconds: K2 Apply both constraints and comply with stricter one.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "window.size",
@@ -202,7 +232,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": " Specifies the conversion events. Each conversion_event is a string or integer",
-      "description": " Specifies the conversion events. Each conversion_event is a string or integer",
+      "description": "Specify the conversion events. Each conversion_event is a string or integer.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "conversion.events",
@@ -218,7 +248,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the events to exclude from the attribution calculation. Each exclude_event is a string or integer. An exclude_event cannot be a conversion_event.",
-      "description": "Specifies the events to exclude from the attribution calculation. Each exclude_event is a string or integer. An exclude_event cannot be a conversion_event.",
+      "description": " Specify the events to exclude from the attribution calculation. Each exclude_event is a string or integer. An exclude_event cannot be a conversion_event .",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "exclude.events",
@@ -234,7 +264,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the optional events. Each optional_event is a string or integer. An optional_event cannot be a conversion_event or exclude_event. The function attributes a conversion event to\t an optional event only if it cannot attribute it to a regular event.",
-      "description": "Specifies the optional events. Each optional_event is a string or integer. An optional_event cannot be a conversion_event or exclude_event. The function attributes a conversion event to\t an optional event only if it cannot attribute it to a regular event.",
+      "description": " Specify the optional events. Each optional_event is a string or integer. An optional_event cannot be a conversion_event or exclude_event . The function attributes a conversion event to an optional event only if it cannot attribute it to a regular event.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "optional.events",

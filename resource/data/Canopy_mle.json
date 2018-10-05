@@ -8,7 +8,7 @@
   "function_alias_name": "Canopy",
   "function_r_name": "aa.canopy",
   "short_description": "Implements the canopy algorithm for clustering data points.",
-  "long_description": "The canopy algorithm finds cluster centers for data based on a tight distance and a loose distance.",
+  "long_description": "Canopy clustering is a simple, fast, accurate method for grouping objects into preliminary clusters. It is often performed in preparation for more rigorous clustering techniques, such as The canopy clustering algorithm uses a fast approximate distance metric and two distance thresholds, T For distance measurement, the Canopy function uses Euclidean distance. If there are more than 10,000 canopy centers, the function fails. Run the function again, increasing the value of T 2 (specified by the TightDistance argument). The canopy clustering algorithm is nondeterministic, and the randomness of the canopy assignments cannot be controlled by a seed argument (for more information, see Nondeterministic Results).",
   "input_tables": [
     {
       "requiredInputKind": [],
@@ -37,7 +37,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the maximum distance that any point can be from a canopy center to be considered part of that canopy",
-      "description": "Specifies the maximum distance that any point can be from a canopy center to be considered part of that canopy",
+      "description": "Specify the maximum distance that any point can be from a canopy center to be considered part of that canopy (T 1 ).",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "loose.distance",
@@ -54,7 +54,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": " Specifies the minimum distance that separates two canopy centers.",
-      "description": " Specifies the minimum distance that separates two canopy centers.",
+      "description": "Specify the minimum distance that separates two canopy centers (T 2 ).",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "tight.distance",

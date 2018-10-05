@@ -8,7 +8,7 @@
   "function_alias_name": "WSRecommender",
   "function_r_name": "aa.recommender",
   "short_description": "This function is an item-based and collaborative filtering and used to create recommendations for users",
-  "long_description": "This function predicts the rating a user would give to an item by calculating the average of ratings the user has given similar items, weighted by a similarity score between the items.",
+  "long_description": "The WSRecommender function is an item-based, collaborative filtering function that uses a weighted-sum algorithm to make recommendations (for example, items or products for users to consider purchasing).",
   "input_tables": [
     {
       "requiredInputKind": [

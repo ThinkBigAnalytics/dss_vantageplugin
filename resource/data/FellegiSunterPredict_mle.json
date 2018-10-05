@@ -9,7 +9,7 @@
   "function_r_name": "aa.fellegi.sunter.predict",
   "ref_function_r_name": "aa.fellegi.sunter.train",
   "short_description": "SQL/MR function to predict if two objects are match or un-match using a Fellegi-Sunter model",
-  "long_description": "SQL/MR function to predict if two objects are match or un-match using a Fellegi-Sunter model",
+  "long_description": "The FellegiSunterPredict function predicts whether a pair of objects are duplicates.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -62,7 +62,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of input table columns to be copied to the output table.",
-      "description": "Specifies the names of input table columns to be copied to the output table.",
+      "description": " Specify the names of input table columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",

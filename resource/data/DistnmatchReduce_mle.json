@@ -41,7 +41,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of the top matching distributions you want the function to output. Default value is 1",
-      "description": "Specifies the number of the top matching distributions you want the function to output. Default value is 1",
+      "description": " Specify the number of the top matching distributions for the function to output. Default: 1",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "top",

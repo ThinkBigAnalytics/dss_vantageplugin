@@ -91,36 +91,43 @@ def asterDo():
     # output_dataset.write_schema(output_schema)
     print('\n'.join(query))
     print(dss_function)
-    recipe_output_table = dss_function.get('recipeOutputTable', "")
-    print('recipe_output_table before IF')
-    print(recipe_output_table)
-    if recipe_output_table == "" or recipe_output_table == None:                   
-        print('Default')
-        selectResult = executor.query_to_df(query)
-    else: #Perform Recipe output table select query
-        print('Recipe output Table')
-        print(recipe_output_table)
-        print(recipe_output_table[u'name'])
-        arg = dss_function.get('output_tables', [])
-        print('arg')
-        print(arg)        
-        recipeOutputTableName = list(filter(lambda d: d[u'name'] == recipe_output_table.get('name'), arg))[0].get('value')
-        # outputs = arg[0].get('value', '').split(',') #Check this
-        print('outputs')
-        print(recipeOutputTableName)        
-        # print(outputs['recipe_output_table'])
-        # recipeOutputTableName = outputs[recipe_output_table.name]
-        customOutputTableSQL = 'SELECT * from '+ recipeOutputTableName
-        print('Performing SELECT on Selected Table')
-        print(customOutputTableSQL)
-        selectResult = executor.query_to_df(customOutputTableSQL,query) 
+    # recipe_output_table = dss_function.get('recipeOutputTable', "")
+    # print('recipe_output_table before IF')
+    # print(recipe_output_table)
+    selectResult = executor.query_to_df(query)
     
-    #if driver_function
-        #if usethistable_checked
-            #then use that as select query
     print('Moving results to output...')
     pythonrecipe_out = output_dataset
     pythonrecipe_out.write_with_schema(selectResult)
+    outtables = dss_function.get('output_tables', [])
+
+    if(outtables != []):
+        tableCounter = 1
+        print('Working on output tables')
+        print(get_output_names_for_role('main'))
+        print(outtables)
+        for table in outtables:
+            if table.get('value') != '' and table.get('value') != None:
+                try:
+                    print('Table')
+                    print(table)
+                    #Need to change this to max of split in order for multiple database or no-database table inputs
+                    main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[1] == table.get('value').split('.')[1].strip('\"'),get_output_names_for_role('main')))[0]
+                    print('Output name 2')
+                    print(main_output_name2)
+                    output_dataset2 =  dataiku.Dataset(main_output_name2)   
+                except:
+                    #Need to change this error
+                    print('Error: Dataset for' + table.get('name') + ' not found')                
+                customOutputTableSQL = 'SELECT * from '+ table.get('value') + ' SAMPLE 0'
+                print('Working on table number:')
+                print(tableCounter)
+                print(customOutputTableSQL)
+                selRes = executor.query_to_df(customOutputTableSQL)
+                tableCounter += 1
+                pythonrecipe_out2 = output_dataset2
+                pythonrecipe_out2.write_schema_from_dataframe(selRes)
     print('Complete!')  
+
 
 # Uncomment end

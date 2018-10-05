@@ -9,7 +9,7 @@
   "function_r_name": "aa.text.classifier.evaluate",
   "ref_function_r_name": "aa.text.classifier.predict",
   "short_description": "Evaluate the text classification SQL/MR function",
-  "long_description": "Evaluate the text classification SQL/MR function",
+  "long_description": "The TextClassifierEvaluator function evaluates the precision, recall, and F-measure of the trained model output by the function TextClassifier.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -46,7 +46,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the expected (correct) category.",
-      "description": "Specifies the name of the input column that contains the expected (correct) category.",
+      "description": "Specify the name of the input column that contains the expected (correct) category.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "obs.column",
@@ -69,7 +69,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the predicted category.",
-      "description": "Specifies the name of the input column that contains the predicted category.",
+      "description": "Specify the name of the input column that contains the predicted category (assigned by the function TextClassifier).",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "predict.column",

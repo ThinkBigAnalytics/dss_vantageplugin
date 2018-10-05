@@ -3,12 +3,30 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "XGBoost_Drive",
-  "function_version": "2.5",
+  "function_version": "2.7",
   "function_type": "driver",
   "function_alias_name": "XGBoost",
   "function_r_name": "aa.xgboost.drive",
   "short_description": "XGBoost is a driver function to build a gradient boost model",
   "long_description": "XGBoost function takes the entire data set as training input and builds a strong classifier from an ensemble of weak classifiers.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "message",
+            "dataType": "varchar",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [],
@@ -54,7 +72,49 @@
       "allowsLists": false,
       "rName": "model.table",
       "useInR": true,
-      "rOrderNum": 100
+      "rOrderNum": 100,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "OutputTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "parameter",
+                "name": "NumBoostedTrees.*",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "parameter",
+                "name": "IterNum.*",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "parameter",
+                "name": "LossFunction.*",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "tree",
+                "dataType": "varchar",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "region_prediction",
+                "dataType": "varchar",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "argument_clauses": [
@@ -74,7 +134,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the response table column that contains the responses (labels) of the data.",
-      "description": "Specifies the name of the response table column that contains the responses (labels) of the data.",
+      "description": "Specify the name of the InputTable column that contains the response variable for each data point in the training data set.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "response.column",
@@ -97,7 +157,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the numeric predictor variables (which must be numeric values).",
-      "description": "Specifies the names of the columns that contain the numeric predictor variables (which must be numeric values).",
+      "description": "[Not for sparse format input data. With dense format input data, required if you omit CategoricalInputs.] Specify the names of the InputTable columns that contain the numeric predictor variables. These variables must be numeric values.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "numeric.inputs",
@@ -120,7 +180,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases.",
-      "description": "Specifies the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases.",
+      "description": "[Not for sparse format input data. With dense format input data, required if you omit NumericInputs.] Specify the names of the InputTable columns that contain the categorical predictor variables. These variables can be either numeric or VARCHAR values. Each categorical_column can have at most 20 distinct values. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "categorical.inputs",
@@ -144,7 +204,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the name of the partitioning column of input table. This column is used as a row identifier to distribute data among different vworkers for parallel boosted trees. ",
-      "description": "Specifies the name of the partitioning column of input table. This column is used as a row identifier to distribute data among different vworkers for parallel boosted trees. ",
+      "description": " Used with NumBoostedTrees. Specify the name of the InputTable column that contains a unique identifier for each data point in the test data set.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "id.column",
@@ -167,7 +227,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Required for sparse data format, if the data set is in sparse format, this argument indicates the column containing the attributes in the input table",
-      "description": "Required for sparse data format, if the data set is in sparse format, this argument indicates the column containing the attributes in the input table",
+      "description": "[Required if the input data set is in sparse format] Specify the name of the InputTable column that contains the names of the attributes of the input data set.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "attribute.name.column",
@@ -190,7 +250,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "If the data is in the sparse format, this argument indicates the column containing the attribute values in the input table",
-      "description": "If the data is in the sparse format, this argument indicates the column containing the attribute values in the input table",
+      "description": "[Required if the input data set is in sparse format] Specify the name of the InputTable column that contains the values of the attributes of the input data set.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "attribute.value.column",
@@ -207,7 +267,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of boosted trees to be trained. By default, the number of boosted trees equals the number of vworkers available for the functions.",
-      "description": "Specifies the number of boosted trees to be trained. By default, the number of boosted trees equals the number of vworkers available for the functions.",
+      "description": " Requires IDColumn. Specify the number of parallel boosted trees. The num_trees is an INTEGER value in the range [1, 100]. If num_trees is greater than 1, each boosting operates on a sample of the input data. Samples are determined by input data partitioning. The number of partitions equals the number of boosted trees. A higher num_trees value might improve function run time but decrease prediction accuracy. Default: 1 if InputTable is a DIMENSION table; otherwise, the number of vworkers available in the cluster",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "num.boosted.trees",
@@ -225,7 +285,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "loss function",
-      "description": "loss function",
+      "description": " Specify the learning task and corresponding learning objective: Option Description 'softmax' (Default) For multiple-class classification. 'binomial' Negative binomial likelihood, for binary classification.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "loss.function",
@@ -242,7 +302,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "prediction type",
-      "description": "prediction type",
+      "description": " Specify whether the function predicts the result from the number of classes ('classification') or from a continuous response variable ('regression'). The function supports only 'classification'.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "prediction.type",
@@ -260,7 +320,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "regularization",
-      "description": "regularization",
+      "description": " Specify the L2 regularization that the loss function uses while boosting trees. The lambda is a DOUBLE PRECISION value in the range [0, 100000]. The higher the lambda , the stronger the regularization effect. The value 0 specifies no regularization. Default: 100000",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "reg.lambda",
@@ -278,7 +338,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "shrinkage factor",
-      "description": "shrinkage factor",
+      "description": " Specify the learning rate (weight) of a learned tree in each boosting step. After each boosting step, the algorithm multiplies the learner by shrinkage to make the boosting process more conservative. The shrinkage is a DOUBLE PRECISION value in the range (0, 1]. The value 1 specifies no shrinkage. Default: 0.1",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "shrinkage.factor",
@@ -296,7 +356,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "column subsampling",
-      "description": "column subsampling",
+      "description": "Specify the fraction of features to subsample during boosting. The sample_fraction is a DOUBLE PRECISION value in the range (0, 1]. Default: 1.0 (no subsampling)",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "column.subsampling",
@@ -314,7 +374,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of iterations to boost the weak classifiers, which is also the number of weak classifiers in the ensemble (T). The number must an INTEGER in the range [1, 100000]. The default value is 10.",
-      "description": "Specifies the number of iterations to boost the weak classifiers, which is also the number of weak classifiers in the ensemble (T). The number must an INTEGER in the range [1, 100000]. The default value is 10.",
+      "description": " Specify the number of iterations (rounds) to boost the weak classifiers. The iterations must be an INTEGER in the range [1,\u00a0100000]. Default: 10",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "iter.num",
@@ -332,7 +392,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the minimum size of any particular node within each decision tree. The min_node_size must an INTEGER. The default value is 100.",
-      "description": "Specifies the minimum size of any particular node within each decision tree. The min_node_size must an INTEGER. The default value is 100.",
+      "description": " Specify a decision-tree stopping criterion, the minimum size of any node within each decision tree. If the size of any node becomes less than min_node_size , the algorithm stops looking for splits. The min_node_size must be an INTEGER of at least 1. Default: 1",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "min.node.size",
@@ -350,7 +410,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the maximum depth of the tree. The max_depth must an INTEGER in the range [1, 100000]. The default value is 12.",
-      "description": "Specifies the maximum depth of the tree. The max_depth must an INTEGER in the range [1, 100000]. The default value is 12.",
+      "description": " Specify the decision-tree stopping criterion that has the greatest effect on function performance, the maximum tree depth. If the tree depth exceeds max_depth , the algorithm stops looking for splits. A decision tree can grow to 2( max_depth +1)-1 nodes. The max_depth must be an INTEGER in the range [1, 100000]. Default: 12",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "max.depth",
@@ -368,7 +428,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies a decision tree stopping criterion. If the variance within any nodedips below this value, the algorithm stops looking for splits in the branch. The default value is 0.",
-      "description": "Specifies a decision tree stopping criterion. If the variance within any nodedips below this value, the algorithm stops looking for splits in the branch. The default value is 0.",
+      "description": " Specify a decision-tree stopping criterion, the minimum variance for any node. If the variance within any node becomes less than variance , the algorithm stops looking for splits. The variance is a nonnegative DOUBLE PRECISION value. Default: 0",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "variance",
@@ -386,7 +446,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the seed to use to create a random number. The seed must be a positive BIGINT value.",
-      "description": "Specifies the seed to use to create a random number. The seed must be a positive BIGINT value.",
+      "description": " Specify the random seed the algorithm uses for repeatable results (for more information, see Nondeterministic Results). If you omit Seed or specify its default value, 1, the function uses a faster algorithm but does not ensure repeatability. The seed must be a LONG value greater than or equal to 1. To ensure repeatability, specify a seed greater than 1. Default: 1",
       "datatype": "LONG",
       "allowsLists": false,
       "rName": "seed",

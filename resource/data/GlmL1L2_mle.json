@@ -3,12 +3,12 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "GlmL1L2",
-  "function_version": "1.5",
+  "function_version": "1.8",
   "function_type": "driver",
   "function_alias_name": "GLML1L2",
   "function_r_name": "aa.glml1l2",
   "short_description": "The GlmL1L2 function supports the regularization models ridge, lasso and elastic net.",
-  "long_description": "The GlmL1L2 function supports the regularization models ridge, lasso and elastic net.",
+  "long_description": "The GLML1L2 function differs from the GLM function in these ways: GLML1L2 supports the regularization models ridge, LASSO, and elastic net. GLML1L2 outputs a model table and, optionally, a factor table (GLM outputs only a model table). You can input the model table and factor table to the GLML1L2Predict function.",
   "outputSchema": {
     "property": "outputSchema",
     "outputId": "standard",
@@ -69,7 +69,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifing the output table will output factorized table based on the argument specified in either Randomization or CategoricalColumns. Then in the future, the table can be used as the input table without the need of performing randomization or categorical-to-numerical conversion again.",
-      "description": "Specifing the output table will output factorized table based on the argument specified in either Randomization or CategoricalColumns. Then in the future, the table can be used as the input table without the need of performing randomization or categorical-to-numerical conversion again.",
+      "description": " Specify the name for the output table that contains the result. The result is based on either CategoricalColumns or Randomization; therefore, you must also specify either CategoricalColumns or Randomization ('true'). You can use factor_table as InputTable for future GLML1L2 function calls, thereby saving the function from repeating the categorical-to-numerical conversion or randomization.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "factor.table",
@@ -94,18 +94,52 @@
                 "name": "ResponseColumn.*",
                 "dataType": "double precision",
                 "manipulations": []
+              }
+            ]
+          },
+          {
+            "instruction": "CASE",
+            "arguments": [
+              {
+                "condition": [
+                  {
+                    "leftOperand": "valueFromParameter(Randomization)",
+                    "operator": "=",
+                    "valueType": "string",
+                    "rightOperand": "false"
+                  }
+                ],
+                "action": [
+                  {
+                    "instruction": "ADD",
+                    "placement": "end",
+                    "arguments": [
+                      {
+                        "source": "inputTable",
+                        "name": "InputTable.PartitionBy.*",
+                        "dataType": "unchanged",
+                        "manipulations": []
+                      }
+                    ]
+                  }
+                ]
               },
               {
-                "source": "inputTable",
-                "name": "InputTable.PartitionBy.*",
-                "dataType": "unchanged",
-                "manipulations": []
-              },
-              {
-                "source": "predefined",
-                "name": "td_randomized_id",
-                "dataType": "integer",
-                "manipulations": []
+                "condition": [],
+                "action": [
+                  {
+                    "instruction": "ADD",
+                    "placement": "end",
+                    "arguments": [
+                      {
+                        "source": "predefined",
+                        "name": "td_randomized_id",
+                        "dataType": "integer",
+                        "manipulations": []
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
@@ -129,7 +163,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the names of the input table columns that contain the variables to use as predictors (independent variables).",
-      "description": "Specifies the names of the input_table columns that contain the variables to use as predictors (independent variables).",
+      "description": "Specify the names of the InputTable columns that contain the variables to use as predictors (independent variables) in the model.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "feature.columns",
@@ -153,7 +187,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input table column that contains the responses.",
-      "description": "Specifies the name of the input_table column that contains the responses.",
+      "description": "Specify the name of the InputTable column that contains the responses.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "response.column",
@@ -177,7 +211,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the input table columns that contain the categorical values.",
-      "description": "Specifies the names of the input table columns that contain the categorical values.",
+      "description": " Specify the names of the InputTable columns that contain categorical variables, and which of their categories to use in the model. categorical_column_and_categories Descriptions ' categorical_column : max_cardinality ' Uses most common categories in categorical_column and groups other categories into category 'others'. For example, 'column_a:3' specifies that for column_a, function uses 3 most common categories and sets category of rows that do not belong to those 3 categories to 'others'. ' categorical_column :( category [,...])' Uses specified categories of categorical_column and groups other categories into category 'others'. For example, 'column_a : (red, yellow, blue)' specifies that for column_a, function uses categories red, yellow, and blue, and sets category of rows that do not belong to those categories to 'others'. ' categorical_column ' Uses all categories in categorical_column . If you use this argument, you must also specify the FactorTable argument, and in the FeatureColumns argument, you must specify each categorical_column . Default behavior: The function treats all variables as numerical. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "categorical.columns",
@@ -196,7 +230,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specify whether to use Lasso, Ridge or Elastic Net. If the value is 0, Ridge is used. If the value is 1, Lasso is used. If any value in between, Elastic Net is applied. ",
-      "description": "Specify whether to use Lasso, Ridge or Elastic Net. If the value is 0, Ridge is used. If the value is 1, Lasso is used.  If any value in between, Elastic Net is applied. ",
+      "description": " Specify the mixing parameter for penalty computation (see the following table). The alpha must be in [0, 1]. If alpha is in (0,1), it represents \u03b1 in the elastic net regularization formula in GLM2. alpha Regularization Type Parameter Description 0 Ridge \u00bd (0,1) Elastic net 1 LASSO Default: 0",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "alpha",
@@ -214,7 +248,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Disallowed if num.lambdas is specified. Specifies the regularization parameter sequence. Each lambda must be a nonnegative DOUBLE PRECISION value. A value of zero disables regularization. Default behavior: The function computes the regularization parameter sequence using the num.lambdas and min.lambda.ratio argument values.",
-      "description": "Disallowed if NumLambdas is specified. Specifies the regularization parameter sequence. Each lambda must be a nonnegative DOUBLE PRECISION value. A value of zero disables regularization. Default behavior: The function computes the regularization parameter sequence using the NumLambdas and MinLambdaRatio argument values.",
+      "description": " Specify the parameter that controls the magnitude of the regularization term. A value of zero disables regularization. Default: 0",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "lambda",
@@ -232,7 +266,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the maximum number of iterations over the data for all lambda values. The parameter max_iterations must be a positive INTEGER value. Default: 100000.",
-      "description": "Specifies the maximum number of iterations over the data for all lambda values. The parameter max_iterations must be a positive INTEGER value. Default: 100000.",
+      "description": " Specify the maximum number of iterations over the data. The parameter max_iterations must be a positive INTEGER value in the range [1, 100000]. Default: 10000",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "max.iter.num",
@@ -250,7 +284,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the convergence threshold",
-      "description": "Specifies the convergence threshold",
+      "description": " Specify the convergence threshold. The threshold must be a nonnegative DOUBLE PRECISION value. Default: 1.0e -7",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "stop.threshold",
@@ -268,7 +302,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Family such as Binomila or Gaussian",
-      "description": "Family such as Binomila or Gaussian",
+      "description": " Specify the distribution exponential family. Default: 'GAUSSIAN'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "family",
@@ -281,7 +315,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specify to perform randomization on the input table. The default is false. If the specified input data has been randomized, it is not necessary to use the argument clause. ",
-      "description": "Specify to perform randomization on the input table. The default is false. If the specified input data has been randomized, it is not necessary to use the argument clause. ",
+      "description": " Specify whether to randomize the InputTable data. If you use this argument, you must also specify the FactorTable argument. Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "randomization",

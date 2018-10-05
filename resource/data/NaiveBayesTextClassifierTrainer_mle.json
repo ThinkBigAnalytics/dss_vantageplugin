@@ -8,7 +8,7 @@
   "function_alias_name": "NaiveBayesTextClassifierTrainer",
   "function_r_name": "aa.naivebayes.textclassifier.train",
   "short_description": "Trains a naive Bayes text classifier model.",
-  "long_description": "Trains a naive Bayes text classifier model.",
+  "long_description": "The NaiveBayesTextClassifierTrainer function takes training data as input and outputs a model table.",
   "partner_function": "NaiveBayesTextClassifierPredict",
   "input_tables": [
     {

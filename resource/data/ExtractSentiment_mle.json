@@ -3,13 +3,101 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "ExtractSentiment",
-  "function_version": "3.5",
+  "function_version": "3.6",
   "function_type": "non-driver",
   "function_alias_name": "SentimentExtractor",
   "function_r_name": "aa.sentiment.extract",
   "ref_function_r_name": "aa.sentiment.train",
   "short_description": "Sentiment extraction SQL/MR function.",
-  "long_description": "Extract setiment of each text column.The sentiment analysis level can be document and sentence.",
+  "long_description": "Extract sentiment of each text column.The sentiment analysis level can be document and sentence.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "out_polarity",
+            "dataType": "varchar",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "out_strength",
+            "dataType": "varchar",
+            "manipulations": []
+          },
+          {
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "AnalysisType",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "sentence"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "out_content",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "ModelFile",
+                "operator": "Contains",
+                "valueType": "string",
+                "rightOperand": "dictionary"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "out_sentiment_words",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [
@@ -63,7 +151,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains text from which to extract sentiments.",
-      "description": "Specifies the name of the input column that contains text from which to extract sentiments.",
+      "description": "Specify the name of the input column that contains text from which to extract sentiments.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "text.column",
@@ -85,7 +173,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the input columns to copy to the output table.",
-      "description": "Specifies the names of the input columns to copy to the output table.",
+      "description": " Specify the names of the input columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -106,7 +194,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the language of the input text:  en (English, the default),  zh_CN (Simplified Chinese),  zh_TW (Traditional Chinese)",
-      "description": "Specifies the language of the input text:  en (English, the default),  zh_CN (Simplified Chinese),  zh_TW (Traditional Chinese)",
+      "description": " Specify the language of the input text: Option Description 'en' (Default) English 'zh_CN' Simplified Chinese 'zh_TW' Traditional Chinese",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "language",
@@ -122,7 +210,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file, then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file, then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification:model_file, model_file must be the name of a model file generated and installed on the database by the function aa.sentiment.train. Note: Before running the function, add the location of dict_file or model_file to the user/session default search path.",
-      "description": "Specifies the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file, then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file, then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification:model_file, model_file must be the name of a model file generated and installed on the database by the function \u201cTrainSentimentExtractor\u201d on page 780. Note: Before running the function, add the location of dict_file or model_file to the user/session default search path.",
+      "description": " Specify the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file , then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file , then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification model_file , then model_file must be the name of a model file created and installed on the ML Engine by the function SentimentTrainer.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "object",
@@ -142,7 +230,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the level of analysis\u2014whether to analyze each document (the default) or each sentence.",
-      "description": "Specifies the level of analysis\u2014whether to analyze each document (the default) or each sentence.",
+      "description": " Specify the level of analysis\u2014whether to analyze each document (the default) or each sentence.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "level",
@@ -165,7 +253,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the highest priority when returning results:  NEGATIVE_RECALL: Give highest priority to negative results, including those with lowerconfidence sentiment classifications (maximizes the number of negative results returned), NEGATIVE_PRECISION: Give highest priority to negative results with high-confidence sentiment classifications. POSITIVE_RECALL: Give highest priority to positive results, including those with lowerconfidence sentiment classifications (maximizes the number of positive results returned). POSITIVE_PRECISION: Give highest priority to positive results with high-confidence sentiment classifications. NONE: Give all results the same priority.",
-      "description": "Specifies the highest priority when returning results:  NEGATIVE_RECALL: Give highest priority to negative results, including those with lowerconfidence sentiment classifications (maximizes the number of negative results returned), NEGATIVE_PRECISION: Give highest priority to negative results with high-confidence sentiment classifications. POSITIVE_RECALL: Give highest priority to positive results, including those with lowerconfidence sentiment classifications (maximizes the number of positive results returned). POSITIVE_PRECISION: Give highest priority to positive results with high-confidence sentiment classifications. NONE: Give all results the same priority.",
+      "description": " Specify the highest priority when returning results: Option Description 'NONE' (Default) Give all results same priority. 'NEGATIVE_RECALL' Give highest priority to negative results, including those with lower-confidence sentiment classifications (maximizes number of negative results returned). 'NEGATIVE_PRECISION' Give highest priority to negative results with high-confidence sentiment classifications. 'POSITIVE_RECALL' Give highest priority to positive results, including those with lower-confidence sentiment classifications (maximizes number of positive results returned). 'POSITIVE_PRECISION' Give highest priority to positive results with high-confidence sentiment classifications.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "high.priority",
@@ -186,7 +274,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the kind of results to return: POSITIVE: Return only results with positive sentiments. NEGATIVE: Return only results with negative sentiments. ALL: Return all results (default)",
-      "description": "Specifies the kind of results to return: POSITIVE: Return only results with positive sentiments. NEGATIVE: Return only results with negative sentiments. ALL: Return all results (default)",
+      "description": " Specify the kind of results to return: Option Description 'ALL' (Default) Return all results. 'POSITIVE' Return only results with positive sentiments. 'NEGATIVE' Return only results with negative sentiments.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "filter",

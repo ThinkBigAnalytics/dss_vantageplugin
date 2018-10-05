@@ -8,7 +8,7 @@
   "function_alias_name": "AntiSelect",
   "function_r_name": "aa.antiselect",
   "short_description": "Outputs columns except for excluded ones.",
-  "long_description": "Outputs columns from input table or inputselect query and removes columns in exclude list.",
+  "long_description": "AntiSelect returns all columns",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -44,7 +44,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the names of the columns not to return.",
-      "description": "Specifies the names of the columns not to return.",
+      "description": "Specify the names of the input table columns to exclude from the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "exclude",

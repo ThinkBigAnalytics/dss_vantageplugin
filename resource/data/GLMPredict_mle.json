@@ -9,7 +9,7 @@
   "function_r_name": "aa.glm.predict",
   "ref_function_r_name": "aa.glm",
   "short_description": "This function gives score according to generalized linear model.",
-  "long_description": "This function gives score according to generalized linear model.",
+  "long_description": "The GLMPredict function uses the model output by the function GLM to perform generalized linear model prediction on new input data. This function can be used with real-time applications. See AMLGenerator.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -62,7 +62,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of input table columns to copy to the output table.",
-      "description": "Specifies the names of input table columns to copy to the output table.",
+      "description": " Specify the names of input table columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "terms",
@@ -84,7 +84,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the distribution exponential family. The default value is read from model table. If you specify this argument, you must give it the same value that you used for the Family argument of the function  when you generated the model table.",
-      "description": "Specifies the distribution exponential family. The default value is read from model table. If you specify this argument, you must give it the same value that you used for the Family argument of the function  when you generated the model table.",
+      "description": " Specify the distribution exponential family. Note: If you specify this argument, you must give it the same value that you used for the Family argument of the function GLM when you created the model table. Default: Read from the model table",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "family",
@@ -110,7 +110,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",
-      "description": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",
+      "description": " Specify the link function. For the canonical link functions (default link functions) and the link functions allowed for each exponential family, see Supported Family/Link Function Combinations. Note: If you specify this argument, you must give it the same value that you used for the LinkFunction argument of the function GLM when you created the model table. Default: 'CANONICAL'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "linkfunction",

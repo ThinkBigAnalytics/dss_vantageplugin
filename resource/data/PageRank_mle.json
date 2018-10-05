@@ -3,12 +3,36 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "PageRank",
-  "function_version": "1.5",
+  "function_version": "1.6",
   "function_type": "graph",
   "function_alias_name": "PageRank",
   "function_r_name": "aa.pagerank",
   "short_description": "Computes the page rank for all pages in a web graph.",
-  "long_description": "Computes the page rank for all pages in a web graph represented by two database tables. The assumption is that the function is provided input as follows: TABLE vertices (vertex keys, ...) TABLE edges (source vertex keys, target vertex keys, edge weight, ...). The function only supports edge weights. If EdgeWeight is not specified, PageRank takes the input as unweighted.",
+  "long_description": "The PageRank function computes the PageRank values for a directed graph, weighted or unweighted. PageRank is a link analysis algorithm. It assigns a numerical weight (between 0 and 1) to each node in a directed graph, for the purpose of measuring the relative importance of the node to the graph. The sum of the PageRank values of the nodes is 1. PageRank is applicable to any collection of entities with reciprocal quotations and references.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "pagerank",
+            "dataType": "double precision",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [
@@ -61,7 +85,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the target key columns in the edges table",
-      "description": "Specifies the target key columns in the edges table",
+      "description": "Specify the target key columns in the edges table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "  target.key",
@@ -84,7 +108,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": " Specifies the column in the edges table that contains the edge weight, which must be a positive value. By default, all edges have the same weight (that is, the graph is unweighted). ",
-      "description": " Specifies the column in the edges table that contains the edge weight, which must be a positive value. By default, all edges have the same weight (that is, the graph is unweighted). ",
+      "description": " Specify the column in the edges table that contains the edge weight, which must be a positive value. Default behavior: All edges have the same weight (that is, the graph is unweighted).",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "weights",
@@ -106,7 +130,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the vertices table columns to copy to the output table.",
-      "description": "Specifies the vertices table columns to copy to the output table.",
+      "description": " Specify the vertices table columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -124,7 +148,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": " Specifies the value to use in the PageRank formula. The damp_factor must be a DOUBLE PRECISION value between 0 and 1. The default value is 0.85.",
-      "description": " Specifies the value to use in the PageRank formula. The damp_factor must be a DOUBLE PRECISION value between 0 and 1. The default value is 0.85.",
+      "description": " Specify the value to use in the PageRank formula. The damp_factor must be a DOUBLE PRECISION value between 0 and 1. Default: 0.85",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "damping",
@@ -143,7 +167,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the maximum number of iterations for which the algorithm runs before the function completes. The max_iterations must be a positive INTEGER value. The default value is 1000. Note: max_iterations is the number of SQL-GR iterations (that is, the algorithm iterations shown in AMC minus 3). ",
-      "description": "Specifies the maximum number of iterations for which the algorithm runs before the function completes. The max_iterations must be a positive INTEGER value. The default value is 20. Note: max_iterations is the number of SQL-GR iterations (that is, the algorithm iterations shown in AMC minus 3). ",
+      "description": " Specify the maximum number of function iterations before the function completes. The max_iterations must be a positive INTEGER value. Note: The max_iterations is the number of function iterations (that is, the SQL-GR iterations minus 3). Default: 20",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "niter",
@@ -164,7 +188,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the convergence criteria value. The threshold must be a DOUBLE PRECISION value. The default value is 0.001.",
-      "description": "Specifies the convergence criteria value. The threshold must be a DOUBLE PRECISION value. The default value is 0.0001.",
+      "description": " Specify the convergence criteria value. The threshold must be a DOUBLE PRECISION value. Default: 0.0001",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "eps",

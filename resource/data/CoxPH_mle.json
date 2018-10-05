@@ -3,12 +3,72 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "CoxPH",
-  "function_version": "1.7",
+  "function_version": "1.8",
   "function_type": "driver",
   "function_alias_name": "CoxPH",
   "function_r_name": "aa.coxph",
   "short_description": "Cox Proportitional Hazard Model function",
-  "long_description": "Cox Proportitional Hazard Model function. ",
+  "long_description": "The CoxPH function is named for the Cox proportional hazards model, a statistical survival model. The function estimates coefficients by learning a set of explanatory variables. The output of the CoxPH function is input to the functions CoxHazardRatio and CoxSurvival. This function does not work in an SSL-enabled cluster. The CoxPH and CoxHazardRatio functions do not support interaction terms (for example, using AGE*AGE as an item in the Cox proportional hazard model.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "predictor",
+            "dataType": "varchar(1024)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "category",
+            "dataType": "varchar(1024)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "coefficient",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "exp_coef",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "std_error",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "z_score",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "p_value",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "significance",
+            "dataType": "varchar(100)",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [],
@@ -33,12 +93,72 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the table where the function outputs the estimated coefficients of the input parameters.",
-      "description": "Specifies the name of the table where the function outputs the estimated coefficients of the input parameters.",
+      "description": "Specify the name of the table where the function outputs the estimated coefficients of the input parameters.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "coefficient.table",
       "useInR": true,
-      "rOrderNum": 100
+      "rOrderNum": 100,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "CoefficientTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "id",
+                "dataType": "varchar(128)",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "predictor",
+                "dataType": "varchar(1024)",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "coefficient",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "exp_coef",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "std_error",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "z_score",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "p_value",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "significance",
+                "dataType": "varchar(100)",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "isOutputTable": true,
@@ -46,12 +166,48 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "The linear_predictor_table is a required argument clause.",
-      "description": "The linear_predictor_table is a required argument clause.",
+      "description": "Specify the name of the table where the function outputs the product \u00dfX.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "linear.predictor.table",
       "useInR": true,
-      "rOrderNum": 101
+      "rOrderNum": 101,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "LinearPredictorTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "linear_predictor",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "event",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "time_interval",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "parameter",
+                "name": "Accumulate.*",
+                "dataType": "unchanged",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "argument_clauses": [
@@ -71,7 +227,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the column in input_table that contains the time intervals of the input parameters; that is, end_time - start_time, in any unit of time (for example, years, months, or days).",
-      "description": "Specifies the name of the column in input_table that contains the time intervals of the input parameters; that is, end_time - start_time, in any unit of time (for example, years, months, or days).",
+      "description": "Specify the name of the column in input_table that contains the time intervals of the input parameters; that is, end_time - start_time , in any unit of time (for example, years, months, or days).",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "time.interval.column",
@@ -94,7 +250,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the name of the column in input_table that contains 1 if the event occurred by end_time and 0 if it did not. (0 represents survival or right-censorship.) The function ignores values other than 1 and 0.",
-      "description": "Specifies the name of the column in input_table that contains 1 if the event occurred by end_time and 0 if it did not. (0 represents survival or right-censorship.) The function ignores values other than 1 and 0.",
+      "description": "Specify the name of the column in input_table that contains 1 if the event occurred by end_time and 0 if it did not. (0 represents survival or right-censorship.) The function ignores values other than 1 and 0.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": false,
       "rName": "event.column",
@@ -116,7 +272,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the names of the input table columns that contain the features of the input parameters.",
-      "description": "Specifies the names of the input table columns that contain the features of the input parameters.",
+      "description": "Specify the names of the input table columns that contain the features of the input parameters.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "feature.columns",
@@ -139,7 +295,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the input table columns that contain categorical predictors. Each categorical_column must also be a feature_column. By default, the function detects the categorical columns by their SQL data types.",
-      "description": "Specifies the names of the input table columns that contain categorical predictors. Each categorical_column must also be a feature_column. By default, the function detects the categorical columns by their SQL data types.",
+      "description": " Specify the names of the input table columns that contain categorical predictors. Each categorical_column must also be a feature_column . Default behavior: The function detects the categorical columns by their SQL data types. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "categorical.columns",
@@ -161,7 +317,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the columns in input_table that the function copies to linear_predictor_table.",
-      "description": "Specifies the names of the columns in input_table that the function copies to linear_predictor_table.",
+      "description": " Specify the names of the columns in input_table that the function copies to linear_predictor_table .",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "accumulate",
@@ -179,7 +335,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the maximum number of iterations that the function runs before finishing, if the convergence threshold has not been met. The default value is 10.",
-      "description": "Specifies the maximum number of iterations that the function runs before finishing, if the convergence threshold has not been met. The default value is 10.",
+      "description": " Specify the maximum number of iterations that the function runs before finishing, if the convergence threshold has not been met. Default: 10",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "max.iter.num",
@@ -199,7 +355,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the convergence threshold. The default value is 0.000000001.",
-      "description": "Specifies the convergence threshold. The default value is 0.000000001.",
+      "description": " Specify the convergence threshold. Default: 0.000000001",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "threshold",

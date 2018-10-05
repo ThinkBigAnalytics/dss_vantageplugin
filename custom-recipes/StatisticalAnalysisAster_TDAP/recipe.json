@@ -29,7 +29,7 @@
     "outputRoles" : [
         {
             "name": "main",
-            "arity": "UNARY",
+            "arity": "NARY",
             "required": true,
             "acceptsDataset": true
         }

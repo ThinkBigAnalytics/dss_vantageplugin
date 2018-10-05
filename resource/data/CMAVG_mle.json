@@ -44,7 +44,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the input column names for which the moving average is to be computed. If you omit this argument, then the function copies every input column to the output table but does not compute moving average.",
-      "description": "Specifies the input column names for which the moving average is to be computed. If you omit this argument, then the function copies every input column to the output table but does not compute moving average.",
+      "description": " Specify the names of the input columns for which to compute the cumulative moving average. Default behavior: The function only copies all input columns to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "target.columns",

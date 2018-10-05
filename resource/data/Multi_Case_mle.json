@@ -38,7 +38,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies a label for each case. Each case corresponds to a condition, which is a SQL predicate that includes input column names. When an input value satisfies condition, that is a match, and the function outputs the input row and the corresponding label.",
-      "description": "Specifies a label for each case. Each case corresponds to a condition, which is a SQL predicate that includes input column names. When an input value satisfies condition, that is a match, and the function outputs the input row and the corresponding label.",
+      "description": "Specify a label for each case . Each case corresponds to a condition , which is a SQL predicate that includes input column names. When an input value satisfies condition , that is a match, and the function outputs the input row and the corresponding label.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "labels",

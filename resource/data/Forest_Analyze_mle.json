@@ -41,7 +41,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies number of levels to analyze and the default value is 5.",
-      "description": "Specifies number of levels to analyze and the default value is 5.",
+      "description": " Specify the number of levels to analyze. Default: 5",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "num.levels",

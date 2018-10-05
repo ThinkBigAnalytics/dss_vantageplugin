@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Corr_Reduce",
-  "function_version": "1.8",
+  "function_version": "1.9",
   "function_type": "non-driver",
   "function_alias_name": "CorrelationReduce",
   "function_r_name": "aa.cor",

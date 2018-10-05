@@ -42,7 +42,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of principal components to return (an integer). If num_components is k, then the function returns the top k components. By default, the function returns every principle component.",
-      "description": "Specifies the number of principal components to return (an integer). If num_components is k, then the function returns the top k components. By default, the function returns every principle component.",
+      "description": " Specify the number of principal components to return (an integer). If num_components is k , then the function returns the top k components. Default: Every principal component",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "components",

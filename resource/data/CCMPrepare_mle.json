@@ -8,7 +8,7 @@
   "function_alias_name": "CCMPrepare",
   "function_r_name": "aa.ccm.prepare",
   "short_description": "Prepares time-series data for the CCM function.",
-  "long_description": "Prepares time-series data for the CCM function.",
+  "long_description": "The CCMPrepare function prepares an input table for the CCM function by adding a partition column, aster_ccm_id, and partitioning the data. Using the CCMPrepare function is optional. However, partitioning the data, instead of having all sequences on one vworker, may increase the speed of the CCM function for large data sets consisting of multiple sequences.",
   "input_tables": [
     {
       "requiredInputKind": [

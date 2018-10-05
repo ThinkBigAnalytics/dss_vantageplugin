@@ -44,7 +44,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies the names of the input columns that contain numeric values to be converted to VARCHAR.",
-      "description": "Specifies the names of the input columns that contain numeric values to be converted to VARCHAR.",
+      "description": "Specify the names of the input columns that contain numeric values to convert to VARCHAR.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "columns",

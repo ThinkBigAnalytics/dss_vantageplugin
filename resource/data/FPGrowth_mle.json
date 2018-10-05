@@ -3,12 +3,30 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "FPGrowth",
-  "function_version": "1.9",
+  "function_version": "1.11",
   "function_type": "driver",
   "function_alias_name": "FPGrowth",
   "function_r_name": "aa.fpgrowth",
   "short_description": "This function generates combinations of frequent baskets",
-  "long_description": "This function is used for identifying the associations in two item-set. For every combination, this function generates the score, support, confidence, lift, conviction, leverage, coverage, chi_square and z-score associated with the combination",
+  "long_description": "The FPGrowth (frequent pattern growth) function uses an FP-growth algorithm to create association rules from patterns in a data set, and then determines their interestingness.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "output_information",
+            "dataType": "varchar",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
   "input_tables": [
     {
       "requiredInputKind": [],
@@ -33,12 +51,54 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Required if patterns.or.rules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns.",
-      "description": "Required if PatternsOrRules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns",
+      "description": "[Required if PatternsOrRules is 'patterns' or 'both', disallowed otherwise] Specify the name of the table where the function outputs the patterns.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "output.pattern.table",
       "useInR": true,
-      "rOrderNum": 100
+      "rOrderNum": 100,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "OutputPatternTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "parameter",
+                "name": "PartitionColumns.*",
+                "dataType": "unchanged",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "pattern_target_column",
+                "dataType": "varchar",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "length_of_pattern",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "count",
+                "dataType": "bigint",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "support",
+                "dataType": "double precision",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "isOutputTable": true,
@@ -46,12 +106,126 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Required if patterns.or.rules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
-      "description": "Required if PatternsOrRules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
+      "description": "[Required if PatternsOrRules is 'patterns' or 'both', disallowed otherwise] Specify the name of the table where the function outputs the rules.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "output.rule.table",
       "useInR": true,
-      "rOrderNum": 101
+      "rOrderNum": 101,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "OutputRuleTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "parameter",
+                "name": "PartitionColumns.*",
+                "dataType": "unchanged",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "antecedent_target_column",
+                "dataType": "varchar",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "consequence_target_column",
+                "dataType": "varchar",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "count_of_antecedent",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "count_of_consequence",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "cntb",
+                "dataType": "bigint",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "cnt_antecedent",
+                "dataType": "bigint",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "cnt_consequence",
+                "dataType": "bigint",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "score",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "support",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "confidence",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "lift",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "conviction",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "leverage",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "coverage",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "chi_square",
+                "dataType": "double precision",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "z_score",
+                "dataType": "double precision",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "argument_clauses": [
@@ -72,7 +246,7 @@
       ],
       "isRequired": true,
       "rDescription": "Specifies the names of the columns that contain transaction items to analyze.",
-      "description": "Specifies the names of the columns that contain transaction items to analyze.",
+      "description": "Specify the names of the columns that contain transaction items to analyze.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "tran.item.columns",
@@ -96,7 +270,7 @@
       ],
       "isRequired": true,
       "rDescription": "Specifies the names of the columns that contain identifiers for the transaction items.",
-      "description": "Specifies the names of the columns that contain identifiers for the transaction items.",
+      "description": "Specify the names of the columns that contain identifiers for the transaction items. Note: Do not specify the same column in both this argument and the PartitionColumns argument, because this causes incorrect counting in the partitions.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "tran.id.columns",
@@ -120,7 +294,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the tran.id.column argument, because this causes incorrect counting in the partitions.",
-      "description": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the TRANIDCOLUMN argument, because this causes incorrect counting in the partitions.",
+      "description": " Specify the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. Note: Do not specify the same column in both this argument and the TransactionIDColumns argument, because this causes incorrect counting in the partitions. Default behavior: The function considers all input data to be in a single partition.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "group.by.columns",
@@ -139,7 +313,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether the function outputs patterns, rules, or both. An example of a pattern is {onions, potatoes, hamburger}. The default value is 'both'.",
-      "description": "Specifies whether the function outputs patterns, rules, or both. An example of a pattern is {onions, potatoes, hamburger}. The default value is 'both'.",
+      "description": " Specify whether the function outputs patterns, rules, or both. An example of a pattern is {onions, potatoes, hamburger}. Default: 'both'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "patterns.or.rules",
@@ -161,7 +335,7 @@
       ],
       "isRequired": false,
       "rDescription": "Specifies the compression level the output tables. The default value is 'nocompress'. Realized compression ratios depend on both this value and the data characteristics. These ratios typically range from 3x to 12x. ",
-      "description": "Specifies the compression level the output tables. The default value is 'nocompress'. Realized compression ratios depend on both this value and the data characteristics. These ratios typically range from 3x to 12x. ",
+      "description": " Specify the compression level the output tables. Realized compression ratios depend on both this value and the data characteristics. These ratios typically range from 3x to 12x. For more information about compression, see the Teradata Database documentation. Default: 'nocompress'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "compress",
@@ -179,7 +353,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the number of transaction items to be assigned to each worker. This value must be an INTEGER in the range from 1 to the number of distinct transaction items, inclusive. For a machine with limited RAM, use a relatively small value. The default value is 4.",
-      "description": "Specifies the number of transaction items to be assigned to each worker. This value must be an INTEGER in the range from 1 to the number of distinct transaction items, inclusive. For a machine with limited RAM, use a relatively small value. The default value is 4.",
+      "description": " Specify the number of transaction items to assign to each worker. This value must be an INTEGER in the range from 1 to the number of distinct transaction items, inclusive. For a machine with limited RAM, use a relatively small value. Default: 4",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "group.size",
@@ -197,7 +371,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the minimum support value of returned patterns (including the specified support value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.05.",
-      "description": "Specifies the minimum support value of returned patterns (including the specified support value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.05.",
+      "description": " Specify the minimum support value of returned patterns (including the specified support value). This value must be a NUMERIC in the range [0, 1]. Default: 0.05",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "min.support",
@@ -215,7 +389,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the minimum confidence value of returned patterns (including the specified confidence value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.8.",
-      "description": "Specifies the minimum confidence value of returned patterns (including the specified confidence value). This value must be a DECIMAL in the range [0, 1]. The default value is 0.8.",
+      "description": " Specify the minimum confidence value of returned patterns (including the specified confidence value). This value must be a NUMERIC in the range [0, 1]. Default: 0.8",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "min.confidence",
@@ -230,7 +404,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the maximum length of returned patterns. The length of a pattern is the sum of the item numbers in the antecedent and consequence columns. This value must be an INTEGER greater than 2. The default value is 10. max.pattern.length also limits the length of returned rules to this value.",
-      "description": "Specifies the maximum length of returned patterns. The length of a pattern is the sum of the item numbers in the antecedent and consequence columns. This value must be an INTEGER greater than 2. The default value is 10. MaxPatternLength also limits the length of returned rules to this value.",
+      "description": " Specify the maximum length of returned patterns. The length of a pattern is the sum of the item numbers in the antecedent and consequence columns. This value must be an INTEGER greater than 2. MaxPatternLength also limits the length of returned rules to this value. Default: 10",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "max.pattern.length",
@@ -245,7 +419,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the range for na, the number of items in the antecedent. The function returns only patterns for which na is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1- infinite'.",
-      "description": "Specifies the range for na, the number of items in the antecedent. The function returns only patterns for which na is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1- infinite'.",
+      "description": " Specify the range for na , the number of items in the antecedent. The function returns only patterns for which na is in the range [ lower_bound , upper_bound ]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. Default: '1-infinite'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "antecedent.count.range",
@@ -260,7 +434,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the range for nc, the number of items in the consequence. The function returns only patterns for which nc is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1-1'.",
-      "description": "Specifies the range for nc, the number of items in the consequence. The function returns only patterns for which nc is in the range [lower_bound, upper_bound]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. The default value is '1-1'.",
+      "description": " Specify the range for nc , the number of items in the consequence. The function returns only patterns for which nc is in the range [ lower_bound , upper_bound ]. The lower_bound must be greater an integer greater than 0. The lower_bound and upper_bound can be equal. Default: '1-1'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "consequence.count.range",
@@ -275,7 +449,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the delimiter that separates items in the output. The default value is ',' (that is, the default delimiter is comma).",
-      "description": "Specifies the delimiter that separates items in the output. The default value is ',' (that is, the default delimiter is comma).",
+      "description": " Specify the delimiter that separates items in the output. Default: ',' (comma)",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "delimiter",
@@ -289,7 +463,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the name of the column to use as the distribution key for output.pattern.table. The default value is 'pattern_targetcolumns'.",
-      "description": "Specifies the name of the column to use as the distribution key for output_pattern_table. The default value is 'pattern_targetcolumns'.",
+      "description": " Specify the name of the column to use as the distribution key for output_pattern_table . Default: 'pattern_tranitemcolumns'.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "pattern.distribution.key.column",
@@ -303,7 +477,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the name of the column to use as the distribution key for output.rule.table. The default value is 'antecedent_targetcolumns'.",
-      "description": "Specifies the name of the column to use as the distribution key for output_rule_table. The default value is 'antecedent_targetcolumns'.",
+      "description": " Specify the name of the column to use as the distribution key for output_rule_table . Default: 'antecedent_tranitemcolumns'",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "rule.distribution.key.column",

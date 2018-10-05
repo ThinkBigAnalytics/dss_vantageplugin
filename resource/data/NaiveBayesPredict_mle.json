@@ -9,7 +9,7 @@
   "function_r_name": "aa.naivebayes.predict",
   "ref_function_r_name": "aa.naivebayes.train",
   "short_description": "Score rows of data with a Naive Bayes classifier",
-  "long_description": "Score rows of data with a Naive Bayes classifier",
+  "long_description": "The NaiveBayesPredict function uses the model output by the NaiveBayesReduce function to predict the outcomes for a test set of data. This function can be used with real-time applications. See AMLGenerator.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -86,7 +86,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specify the same categorical_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
-      "description": "Specify the same categorical_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to generate the model table from the training data.",
+      "description": "[Required if NumericInputs is omitted.] Specify the same categorical_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to create the model table from the training data. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "categorical.inputs",
@@ -108,7 +108,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specify the same numeric_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
-      "description": "Specify the same numeric_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to generate the model table from the training data.",
+      "description": "[Required if CategoricalInputs is omitted.] Specify the same numeric_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to create the model table from the training data.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "numeric.inputs",
@@ -124,7 +124,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specify a list of Responses to output.",
-      "description": "Specify a list of Responses to output.",
+      "description": "Specify the responses to output. You must specify this argument if you provide the model table as an input table.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "responses",

@@ -8,7 +8,7 @@
   "function_alias_name": "StringSimilarity",
   "function_r_name": "aa.string.similarity",
   "short_description": "SQL/MR function to compare 2 strings.",
-  "long_description": "SQL/MR function to compare 2 strings.",
+  "long_description": "The StringSimilarity function calculates the similarity between two strings, using either the Jaro, Jaro-Winkler, N-Gram, or Levenshtein distance. The similarity is a value in the range [0,\u00a01].",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -44,7 +44,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of input table columns to be copied to the output table",
-      "description": "Specifies the names of input table columns to be copied to the output table",
+      "description": " Specify the names of input table columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
@@ -60,7 +60,7 @@
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "Specifies pairs of input table columns that contain strings to be compared (column1 and column2), how to compare them (comparison_type), and (optionally) a constant and the name of the output column for their similarity (output_column). The similarity is a value in the range [0, 1]. For comparison_type, use one of these values:  'jaro': Jaro distance,  'jaro_winkler': Jaro-Winkler distance (1 for an exact match, 0 otherwise),  'n-gram': N-gram similarity. If you specify this comparison type, you can specify the value of N with constant.  'LD': Levenshtein distance (the number of edits needed to transform one string into the other, where edits include insertions, deletions, or substitutions of individual characters) You can specify a different comparison_type for every pair of columns. The default output_column is 'sim_i', where i is the sequence number of the column pair.",
-      "description": "Specifies pairs of input table columns that contain strings to be compared (column1 and column2), how to compare them (comparison_type), and (optionally) a constant and the name of the output column for their similarity (output_column). The similarity is a value in the range [0, 1]. For comparison_type, use one of these values:  'jaro': Jaro distance,  'jaro_winkler': Jaro-Winkler distance (1 for an exact match, 0 otherwise),  'n-gram': N-gram similarity. If you specify this comparison type, you can specify the value of N with constant.  'LD': Levenshtein distance (the number of edits needed to transform one string into the other, where edits include insertions, deletions, or substitutions of individual characters) You can specify a different comparison_type for every pair of columns. The default output_column is 'sim_i', where i is the sequence number of the column pair.",
+      "description": "Specify pairs of input table columns that contain strings to compare ( column1 and column2 ), how to compare them ( comparison_type ), and (optionally) a constant and the name of the output column for their similarity ( output_column ). The similarity is a value in the range [0,\u00a01]. For comparison_type , use one of these values: comparison_type Description 'jaro' Jaro distance. 'jaro_winkler' Jaro-Winkler distance: 1 for an exact match, 0 otherwise. 'n-gram' N -gram similarity. If you specify this comparison type, you can specify the value of N with constant . Default: N = 2 'LD' Levenshtein distance: Number of edits needed to transform one string into the other. Edits are insertions, deletions, or substitutions of individual characters. You can specify a different comparison_type for every pair of columns. Default: output_column is 'sim_ i ', where i is the sequence number of the column pair.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "comparison.columns",
@@ -74,7 +74,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether string comparison is case-sensitive. The default value is 'false'. You can specify either one value for all pairs or one value for each pair. If you specify one value for each pair, then the ith value applies to the ith pair.",
-      "description": "Specifies whether string comparison is case-sensitive. The default value is 'false'. You can specify either one value for all pairs or one value for each pair. If you specify one value for each pair, then the ith value applies to the ith pair.",
+      "description": " Specify whether string comparison is case-sensitive. You can specify either one value for all pairs or one value for each pair. If you specify one value for each pair, the i th value applies to the i th pair. Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": true,
       "rName": "case.sensitive",

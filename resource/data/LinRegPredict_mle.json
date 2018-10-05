@@ -9,7 +9,7 @@
   "function_r_name": "aa.lm.predict",
   "ref_function_r_name": "aa.lm",
   "short_description": "This function gives score according to linear regression model.",
-  "long_description": "This function gives score according to linear regression model.",
+  "long_description": "The LinRegPredict function takes a model built by the Linear Regression function and a test data set whose input attributes are the same as those in the model, and predicts the response variable for each observation in the test data set.",
   "input_tables": [
     {
       "requiredInputKind": [
@@ -62,7 +62,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of the input table columns that contain the input variables.",
-      "description": "Specifies the names of the input table columns that contain the input variables.",
+      "description": " Specify the names of the input table columns that contain the input variables. You must specify these column names in the same order in which they appear in the model table. For example, suppose that the coefficient_index column of the model table has these values in this order:intercepthousesizelotsizebedroomsgraniteupgradedbathroom Then the InputColumns argument must be: InputColumns ('housesize', 'lotsize', 'bedrooms','granite', 'upgradedbathroom'). Otherwise, the function creates incorrect predictions. Default: All input columns",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "input.columns",
@@ -84,7 +84,7 @@
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies the names of input table columns to copy to the output table.",
-      "description": "Specifies the names of input table columns to copy to the output table.",
+      "description": " Specify the names of input table columns to copy to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "accumulate",
