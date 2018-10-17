@@ -102,11 +102,14 @@ def getOnClause(dss_function, jsonfile, inputTables):
 def getFunctionName(config, dss_function):
     aafschema = config.get('aafschema', '')
     functionname = dss_function.get('name', '')
-    coprocessorString = "@coprocessor"
+    if dss_function.get('useCoprocessor'):
+        coprocessorString = "@coprocessor"
+    else:
+        coprocessorString = ""
     return (aafschema and (aafschema + '.')) + functionname + coprocessorString
             
 def getSelectQuery(dss_function, inputTables, config):
-    jsonfile= queryutility.getJson(dss_function.get('name',''))
+    jsonfile= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))
     outTableClauses = getOutClause(dss_function, jsonfile, inputTables)     
     argumentClauses = getArgumentClauses(dss_function, jsonfile, inputTables)
     if(outTableClauses == '\n'):

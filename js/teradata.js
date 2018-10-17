@@ -326,14 +326,43 @@
               functionMetadata.output_tables.filter(arg => arg.isOutputTable).length;
       },
 
-      // /**
-      //  * Checks if function is a driver function
-      //  */
-      // setOutputTableForRecipe: function (tableName) {
-      //     // $scope.function.output_table_name = tableName;
-      //     console.log('setOutputTableForRecipe')
-      //     console.log(tableName);          
-      // },
+      /**
+       * Checks if argument has Native JSON
+       */
+      hasNativeJSON: function (functionName) {          
+        if (functionName == null || functionName == "") {
+          return false;
+        }
+        console.log('functionName');
+        console.log(functionName);
+        var filteredChoices = $scope.choices.filter(choice => choice.name == functionName);      
+        console.log(filteredChoices);        
+        if(filteredChoices[0].hasNativeJSON == false){
+          $scope.config.function.useCoprocessor = true;
+        }
+        return filteredChoices[0].hasNativeJSON;
+    },
+
+    useNativeOrNot: function(inNative){
+      console.log('useNativeOrNot')
+      console.log($scope.config.function.useCoprocessor)
+      console.log(inNative)
+      // if()
+      if (!$scope.config.function.useCoprocessor){
+        console.log('Native')
+        if(inNative){ 
+          console.log('IN Native')
+          return true;
+        } else {
+          console.log('NOT IN Native')
+          return false;
+        }
+      } else {
+        console.log('Coprocessor')
+        return true;
+      }
+
+    },
 
 
       /**
@@ -660,12 +689,17 @@
 
         const hasOptionalArgument = $scope.config.function.arguments
           && $scope.config.function.arguments.length
-          && ($scope.config.function.arguments.filter(x => !x.isRequired).length > 0);
-
+          && ($scope.config.function.arguments.filter(x => !x.isRequired).length > 0)
+          && ($scope.config.function.useCoprocessor || ($scope.config.function.arguments.filter(x => x.inNative && !x.isRequired).length > 0));
+          console.log('hasOptionalArguments');
+          console.log($scope.config.function.useCoprocessor);
+          console.log(($scope.config.function.arguments.filter(x => x.inNative).length > 0));
           const hasOptionalOutputTable = $scope.config.function.output_tables
           && $scope.config.function.output_tables.length
           && ($scope.config.function.output_tables.filter(x => !x.isRequired).length > 0);
-
+        console.log(hasOptionalInputTable);
+        console.log(hasOptionalArgument);
+        console.log(hasOptionalOutputTable);
         return hasOptionalInputTable || hasOptionalArgument || hasOptionalOutputTable;
 
       },

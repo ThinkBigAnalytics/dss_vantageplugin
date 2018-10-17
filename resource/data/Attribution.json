@@ -1,0 +1,197 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Attribution",
+  "function_version": "1.0",
+  "function_type": "fastpath",
+  "function_alias_name": "Attribution",
+  "function_r_name": "aa.attribution",
+  "short_description": "This function is used to perform click stream analysis.",
+  "long_description": "This function is used to perform click stream analysis.It has many kinds of computation models and distribution models.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input2",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data.optional",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "conversion",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains one varchar column (conversion_events) containing conversion event values.",
+      "description": "Contains one varchar column (conversion_events) containing conversion event values.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "conversion.data",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "excluding",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains one varchar column (excluding_events) containing excluding cause event values.",
+      "description": "Contains one varchar column (excluding_events) containing excluding cause event values.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "excluding.data",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "optional",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains one varchar column (optional_events) containing optional cause event values.",
+      "description": "Contains one varchar column (optional_events) containing optional cause event values.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "optional.data",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "model1",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Defines the type and specification of the first model. For example: model1.data ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
+      "description": "Defines the type and specification of the first model. For example: Model1 ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "model1.type",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "model2",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Defines the type and distributions of the second model. For example: model2.data ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
+      "description": "Defines the type and distributions of the second model. For example: Model2 ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "model2.type",
+      "useInR": true,
+      "rOrderNum": 7
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING",
+        "INTEGER"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "EventColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input column that contains the clickstream events.",
+      "description": "Specifies the name of the input column that contains the clickstream events.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "event.column",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "INTEGER",
+        "TIME"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "TimestampColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
+      "description": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "timestamp.column",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "WindowSize",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies how to determine the maximum window size for the attribution calculation: rows:K: Consider the maximum number of events to be attributed, excluding events of types specified in excluding_event_table, which means assigning attributions to at most K effective events before the current impact event.seconds:K: Consider the maximum time difference between the current impact event and the earliest effective event to be attributed. rows:K&seconds:K2: Consider both constraints and comply with the stricter one.",
+      "description": "Specifies how to determine the maximum window size for the attribution calculation: rows:K: Consider the maximum number of events to be attributed, excluding events of types specified in excluding_event_table, which means assigning attributions to at most K effective events before the current impact event.seconds:K: Consider the maximum time difference between the current impact event and the earliest effective event to be attributed. rows:K&seconds:K2: Consider both constraints and comply with the stricter one.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "window.size",
+      "useInR": true,
+      "rOrderNum": 12
+    }
+  ]
+}

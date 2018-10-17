@@ -47,7 +47,7 @@ def getSelectQuery(dss_function, inputTables, config):
                 if not corderByNode['isSetByUser']:
                     corderBy = "ORDER BY {}".format(corderByNode['key'])
             carguments = ""
-            jsonFunction = queryutility.getJson(fun.get('name',''))
+            jsonFunction = queryutility.getJson(fun.get('name',''), dss_function.get('useCoprocessor',''))
             if 'arguments_clauses' in fun:
                 cargumentslist = [n for n in dss_function['arguments'] if n.get('name',"").upper() in fun['arguments_clauses']]
                 carguments += queryutility.getJoinedArgumentsString(cargumentslist,
@@ -55,8 +55,11 @@ def getSelectQuery(dss_function, inputTables, config):
             if 'arguments_nonuserdefined' in fun:
                 carguments += queryutility.getJoinedArgumentsString(fun['arguments_nonuserdefined'],
                                                                     queryutility.getArgumentClausesFromJson(jsonFunction))      
-            cfunction = fun.get('name',"")                        
-            coprocessorString = "@coprocessor"            
+            cfunction = fun.get('name',"")
+            if dss_function['useCoprocessor']:
+                coprocessorString = "@coprocessor"
+            else:
+                coprocessorString = ""            
             # TODO: ADD OUTPUT TABLE CLAUSE
             cquery = """SELECT * FROM {cfunction} {coprocessorString} (ON {inputInfo} {cpartitionBy} {corderBy} USING {carguments})""".format(cfunction=getFunctionName(config, cfunction),
                                                                       coprocessorString=coprocessorString,

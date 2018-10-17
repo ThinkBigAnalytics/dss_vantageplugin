@@ -1,3 +1,6 @@
+TDAP_ForUpload/
+/resource/mapping.json_orig
+/resource/mapping_modded.json
 *.zip
 *.DS_Store
 .project
@@ -5,4 +8,5 @@
 .settings
 *.pyc
 *.sh
+*.diff
 /TDAP_Test_Run

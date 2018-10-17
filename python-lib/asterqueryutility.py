@@ -64,16 +64,25 @@ def getOutputTableClausesFromJson(f):
 
 try:
     from dataiku.customrecipe import *
-    def getJson(function_name):
+    def getJson(function_name, useCoprocessor):
         try:
-            return json.loads(open('%s/data/%s' % (get_recipe_resource(),
+            if useCoprocessor:
+                return json.loads(open('%s/data/%s' % (get_recipe_resource(),
                                                function_name + '_mle.json')).read())
+            else: 
+                return json.loads(open('%s/data/%s' % (get_recipe_resource(),
+                                               function_name + '.json')).read())
         except:
             return ''
 
 except ImportError:
-    def getJson(function_name):
+    def getJson(function_name, useCoprocessor):
         try:
-            return json.loads(open('%s/data/%s' % ('../resource', function_name + '_mle.json')).read())
+            if useCoprocessor:
+                return json.loads(open('%s/data/%s' % (get_recipe_resource(),
+                                               function_name + '_mle.json')).read())
+            else: 
+                return json.loads(open('%s/data/%s' % (get_recipe_resource(),
+                                               function_name + '.json')).read())
         except:
             return {}

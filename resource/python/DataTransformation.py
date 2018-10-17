@@ -36,8 +36,8 @@ def do(payload, config, plugin_config, inputs):
     choices = []
     for fle in files:
         try:
-            print('=====================================' + fle + '================================')
-            f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle)).read())
+            print('=====================================' + fle.get("coprocessor") + '================================')
+            f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("coprocessor"))).read())
             d = {"name":"",
                  "output_tables":"",
                  "arguments":"",
@@ -48,7 +48,8 @@ def do(payload, config, plugin_config, inputs):
                  "orderByColumn":"",
                  "hasInputTable":False,
                  "isQueryMode": False,
-                 "queries": []
+                 "queries": [],
+                 "hasNativeJSON": False
                 }
             keys = f.keys()
             required_input = []
@@ -137,15 +138,49 @@ def do(payload, config, plugin_config, inputs):
                         arg["value"] = defaultValuesFromArg(argument)
                     if 'permittedValues' in argument:
                         arg["permittedValues"] = argument['permittedValues']
-                    a.append(arg)
-                d["arguments"]=a
+                    arg["inNative"] = False
+                    a.append(arg)                     
+                    print('args')
+                    print(a)                               
+                if "native" in fle.keys():
+                    d["hasNativeJSON"] = True
+                    f_native = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("native"))).read())
+                    keys_native = f_native.keys()
+                    if 'argument_clauses' in keys_native:
+                        a_n = []
+                        arg_lst_native = f_native['argument_clauses']
+                        for argument_native in arg_lst_native:
+                            arg_n = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                            if argument_native.get('alternateNames', []):
+                                arg_n["name"] = argument_native.get('alternateNames', [''])[0]
+                                # arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                            elif 'name' in argument_native.keys():
+                                arg_n["name"]=argument_native['name']
+                                # arg["name"]=argument['name'].upper()  
+                            if 'isRequired' in argument_native.keys():
+                                arg_n["isRequired"]=argument_native['isRequired']
+                            if 'datatype' in argument_native.keys():
+                                arg_n["datatype"]=argument_native['datatype']
+                            if 'allowsLists' in argument_native.keys():
+                                arg_n["allowsLists"]=argument_native['allowsLists']
+                            if 'targetTable' in argument_native.keys():
+                                arg_n["targetTable"] = argument_native['targetTable']
+                            if 'isOutputTable' in argument_native and argument_native['isOutputTable']:
+                                arg_n["isOutputTable"] = argument_native['isOutputTable']
+                            if 'defaultValue' in argument_native:
+                                arg_n["value"] = defaultValuesFromArg(argument_native)
+                            if 'permittedValues' in argument_native:
+                                arg_n["permittedValues"] = argument_native['permittedValues']
+                            a_n.append(arg_n)                                                           
+                        a = inNativeCheck(a, a_n)   
+                d['arguments'] = a    
             if 'cascaded_functions' in keys:
                 d["cascaded_functions"] = f['cascaded_functions']
             choices.append(d);
         except ValueError, e:
             logging.info("file is not valid json");
             
-    print('=====================================end of ' + fle + '================================')
+    print('=====================================end of ' + fle.get("coprocessor") + '================================')
 
     # Get input table metadata.
     input_table_name = inputs[0]['fullName'].split('.')[1]
@@ -193,3 +228,16 @@ def defaultValuesFromArg(item):
     #if isinstance(defaultvalues, basestring):
     #   defaultvalues = json.dumps(defaultvalues)
     return defaultvalues
+def inNativeCheck(a, a_n):
+    print("Native check")
+    arg_native_names = map(lambda d: d.get('name'), a_n)
+    print(a_n)
+    print(arg_native_names)
+    print(a)
+    for arg in a:                
+        if arg.get('name') in arg_native_names:
+            arg["inNative"] = True            
+            print(True)
+            print(arg)
+    print(a)
+    return a 

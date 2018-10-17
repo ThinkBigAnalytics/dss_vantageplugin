@@ -48,13 +48,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     </div>
   </div> -->
 
-  <div class="control-group">
+  <div class="control-group" ng-if="hasNativeJSON(config.function.name)">
     <!-- <label class="control-label">Drop Output Table If Exists</label> -->
     <label class="control-label">Use @Coprocessor Alias</label>
     <div class="controls">
-      <input type="checkbox" ng-model="config.function.useCoprocessor" title="Overrides Native function usage with the @coprocessor alias"></input>
+      <input type="checkbox" ng-model="config.function.useCoprocessor" title="Override Native Function with @Coprocessor Function Alias"></input>
     </div>
   </div>
+
 
   <div class="control-group" ng-if="checkIfDriverFunction()">
       <!-- <label class="control-label">Drop Output Table If Exists</label> -->
@@ -263,7 +264,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
             </tr>
 
 
-            <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired">
+            <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired && useNativeOrNot(item.inNative)">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
@@ -394,7 +395,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
             </tr>
 
             
-            <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired">
+            
+            <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired && useNativeOrNot(item.inNative)">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
               <td>
                 <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"

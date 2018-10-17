@@ -231,7 +231,7 @@
       "alternateNames": [],
       "rDescription": "Specifies the pattern-matching mode: \n OVERLAPPING: The function finds every occurrence of the pattern in the partition, regardless of  whether it is part of a previously found match. Therefore, one row can match multiple symbols in a  given matched pattern. \n NONOVERLAPPING: The function begins the next pattern search at the row that follows the last  pattern match. This is the default behavior of many commonly used pattern matching utilities, including the UNIX grep utility.",
       "description": "Specify the pattern-matching mode: Option Description OVERLAPPING Find every occurrence of pattern in partition, regardless of whether it is part of a previously found match. One row can match multiple symbols in a given matched pattern. NONOVERLAPPING Start next pattern search at row that follows last pattern match.",
-      "datatype": "SQLEXPR",
+      "datatype": "STRING",
       "allowsLists": false,
       "isRequired": true,
       "rName": "mode",
