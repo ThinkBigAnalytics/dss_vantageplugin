@@ -229,6 +229,23 @@
 
       },
 
+      multiColumnNamesCheck: function(item){
+        var result = (item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists;
+        if (result && (item.value == null || item.value == "")){
+          item.value = [""];
+        }
+        // console.log('Multi check');
+        // console.log(item.name);
+        // console.log(result);
+        return result;
+      },
+
+      resetSelectToStar() {
+        
+        $scope.config.function.select_clause = '*';
+ 
+      },
+
       /**
        * Checks if there is a version mismatch in function_version
        */
@@ -274,6 +291,35 @@
         
 
     },
+
+    addColumnArgument: function(item) {
+      console.log('Adding column');
+      console.log(item.name);
+      console.log(item.value);
+      item.value.push("");
+    },
+
+    removeColumnArgument: function(item, index) {
+      if (index > -1) {
+          item.value.splice(index, 1);
+      }
+  },
+
+  addAdditionalSQLClause: function() {    
+    if($scope.config.function.additionalSQLClause == null){
+      $scope.config.function.additionalSQLClause = [""];
+    } else{ 
+      $scope.config.function.additionalSQLClause.push("");
+    }
+    
+  },
+
+  removeAdditionalSQLClause: function(index) {
+    if (index > -1) {
+      $scope.config.function.additionalSQLClause.splice(index, 1);
+    }
+},
+  
     initializeColumnArray: function(columnArray){
       columnArray = columnArray || [''];
       return columnArray;
@@ -333,10 +379,10 @@
         if (functionName == null || functionName == "") {
           return false;
         }
-        console.log('functionName');
-        console.log(functionName);
+        // console.log('functionName');
+        // console.log(functionName);
         var filteredChoices = $scope.choices.filter(choice => choice.name == functionName);      
-        console.log(filteredChoices);        
+        // console.log(filteredChoices);        
         if(filteredChoices[0].hasNativeJSON == false){
           $scope.config.function.useCoprocessor = true;
         }
@@ -344,21 +390,21 @@
     },
 
     useNativeOrNot: function(inNative){
-      console.log('useNativeOrNot')
-      console.log($scope.config.function.useCoprocessor)
-      console.log(inNative)
+      // console.log('useNativeOrNot')
+      // console.log($scope.config.function.useCoprocessor)
+      // console.log(inNative)
       // if()
       if (!$scope.config.function.useCoprocessor){
-        console.log('Native')
+        // console.log('Native')
         if(inNative){ 
-          console.log('IN Native')
+          // console.log('IN Native')
           return true;
         } else {
-          console.log('NOT IN Native')
+          // console.log('NOT IN Native')
           return false;
         }
       } else {
-        console.log('Coprocessor')
+        // console.log('Coprocessor')
         return true;
       }
 
@@ -691,15 +737,15 @@
           && $scope.config.function.arguments.length
           && ($scope.config.function.arguments.filter(x => !x.isRequired).length > 0)
           && ($scope.config.function.useCoprocessor || ($scope.config.function.arguments.filter(x => x.inNative && !x.isRequired).length > 0));
-          console.log('hasOptionalArguments');
-          console.log($scope.config.function.useCoprocessor);
-          console.log(($scope.config.function.arguments.filter(x => x.inNative).length > 0));
+          // console.log('hasOptionalArguments');
+          // console.log($scope.config.function.useCoprocessor);
+          // console.log(($scope.config.function.arguments.filter(x => x.inNative).length > 0));
           const hasOptionalOutputTable = $scope.config.function.output_tables
           && $scope.config.function.output_tables.length
           && ($scope.config.function.output_tables.filter(x => !x.isRequired).length > 0);
-        console.log(hasOptionalInputTable);
-        console.log(hasOptionalArgument);
-        console.log(hasOptionalOutputTable);
+        // console.log(hasOptionalInputTable);
+        // console.log(hasOptionalArgument);
+        // console.log(hasOptionalOutputTable);
         return hasOptionalInputTable || hasOptionalArgument || hasOptionalOutputTable;
 
       },
@@ -811,6 +857,13 @@
         $scope.callPythonDo({}).then(
           data => $.extend($scope, data),
           () => { }
+        ).then(
+          () => { 
+                  if($scope.config.function.select_clause == null || $scope.config.function.select_clause == undefined){
+                    $scope.resetSelectToStar()
+                  }
+                },
+          () => {}
         );
 
       },
@@ -857,13 +910,44 @@
         });
 
       },
-
+      testPrint: function(element){
+        $delay(() => {
+        console.log('Testprint')
+        $('input.flexdatalist').trigger('change');
+        $('input.flexdatalist').trigger('input');
+        console.log(element.value);
+        $scope.config.test_model = element.value;
+        console.log($scope.config.test_model);
+        });
+      },
       /**
        * Activates the multi-string input boxes.
        */
       activateMultiTagsInput: function () {
     	  $delay(() => {
         try {
+            $('.flexdatalist').flexdatalist({
+            minLength: 1,
+            onChange: x => $(x).trigger('change')
+            });
+            
+            $('input.flexdatalist').on('change:flexdatalist', function(event, set, options) {
+              // console.log('The thing changed')
+              // console.log(set.value);
+              // console.log(set.text);
+              // console.log(set);
+              // console.log(event);
+              // console.log(options);
+              $(event.currentTarget).trigger('change');
+              $(event.currentTarget).trigger('input');
+              var ipt = event.currentTarget;
+              // console.log(ipt);
+              // console.log(event.target);
+              // $(event.target).trigger('change');
+              // $(event.target).trigger('input');
+              // $scope.testPrint(event.currentTarget);
+              // console.log($scope.config.test_model);
+          });
 
             $('input.teradata-tags').tagsInput({
               interactive: true,

@@ -25,6 +25,7 @@ from integerargument import *
 from booleanargument import *
 from ListArgument import *
 from sqlexprargument import *
+from columnnamesargument import *
 from tableargument import *
 
 class AsterArgumentFactory(object):
@@ -46,9 +47,12 @@ class AsterArgumentFactory(object):
         elif 'TABLE_NAME' == argumentDef.get('datatype', '') and not \
         argumentDef.get('allowsLists', False) \
         and not argumentDef.get('isOutputTable', False):
-            return TableArgument(argument, argumentDef, inputTables)
+            return TableArgument(argument, argumentDef, inputTables)        
         elif isinstance(argument.get('value',''), (list, tuple)):
             return ListArgument(argument, argumentDef)
         else:
             return AsterArgument(argument, argumentDef)
     createArg = staticmethod(createArg)
+    # elif 'COLUMN_NAMES' == argumentDef.get('datatype', '').upper() and\
+        #     argumentDef.get('allowsLists', False):
+        #     return ColumnNamesArgument(argument, argumentDef)

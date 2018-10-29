@@ -16,50 +16,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 '''
 
 '''
-Created on Jun 7, 2017
+Created on Jun 6, 2017
 
 @author: DT186022
 '''
 
-from pseudoconstants import *
+from asterargument import *
 
-def getPartitionKind(kind):
-    return PARTITION_KEY_MAPPING.get(kind, '')
+class ColumnNamesArgument(AsterArgument):
+    '''
+    Aggregate Functions, specifically for Npath
+    Main difference from normal argument is that they should not be enclosed in single quotes
+    '''
 
-# CREATE_QUERY = '''CREATE {} TABLE {}{}
-# AS
-# {}'''
-CREATE_QUERY = '''{}'''
-
-# Update to:
-# SELECT_QUERY = '''SELECT {}
-# FROM   {}
-# (
-# {}
-# {}
-# ) as tmp_alias
-#{};'''
-SELECT_QUERY = '''SELECT *
-FROM   {}
-(
-{}
-{}
-) as tmp_alias;'''
-
-ON_SELECT_ONE_PARTITION_BY_ONE = 'ON (SELECT 1) PARTITION BY 1'
-
-ALIASED_ON_CLAUSE = '''ON {input_table} {input_name} {partitionKeys} {orderKeys}'''
-
-UNALIASED_ON_CLAUSE = '''ON {input_table} {partitionKeys} {orderKeys}'''
-
-UNALIASED_QUERY_ON_CLAUSE = '''ON {input_query}'''
-
-DISTRIBUTE_BY_HASH = ' DISTRIBUTE BY HASH({})'
-
-BEGIN_TRANSACTION_QUERY = 'BEGIN TRANSACTION;'
-
-DROP_QUERY = 'DROP TABLE {outputTablename};'
-
-COMMIT_QUERY = "COMMIT;"
-
-DELIMITER = chr(0)
+    def __init__(self, argument, argumentDef):
+        super(ColumnNamesArgument, self).__init__(argument, argumentDef)
+    
+    @property
+    def value(self):        
+        # DELIMITER = chr(0)
+        # valString = ""        
+        return ", ".join('{}'.format(self._argument.get('value','')))
+        

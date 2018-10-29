@@ -60,7 +60,7 @@ def getSelectQuery(dss_function, inputTables, config):
                 coprocessorString = "@coprocessor"
             else:
                 coprocessorString = ""            
-            # TODO: ADD OUTPUT TABLE CLAUSE
+            # TODO: SELECT CLAUSE and additional clauses
             cquery = """SELECT * FROM {cfunction} {coprocessorString} (ON {inputInfo} {cpartitionBy} {corderBy} USING {carguments})""".format(cfunction=getFunctionName(config, cfunction),
                                                                       coprocessorString=coprocessorString,
                                                                       inputInfo=inputInfo,

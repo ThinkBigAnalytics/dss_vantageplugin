@@ -150,27 +150,28 @@ def do(payload, config, plugin_config, inputs):
                         a_n = []
                         arg_lst_native = f_native['argument_clauses']
                         for argument_native in arg_lst_native:
-                            arg_n = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                            # arg_n = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                            arg_n = {"name":"","alternateNames":""}
                             if argument_native.get('alternateNames', []):
-                                arg_n["name"] = argument_native.get('alternateNames', [''])[0]
+                                arg_n["alternateNames"] = argument_native.get('alternateNames', [''])[0]
                                 # arg["name"] = argument.get('alternateNames', [''])[0].upper()
-                            elif 'name' in argument_native.keys():
+                            if 'name' in argument_native.keys():
                                 arg_n["name"]=argument_native['name']
                                 # arg["name"]=argument['name'].upper()  
-                            if 'isRequired' in argument_native.keys():
-                                arg_n["isRequired"]=argument_native['isRequired']
-                            if 'datatype' in argument_native.keys():
-                                arg_n["datatype"]=argument_native['datatype']
-                            if 'allowsLists' in argument_native.keys():
-                                arg_n["allowsLists"]=argument_native['allowsLists']
-                            if 'targetTable' in argument_native.keys():
-                                arg_n["targetTable"] = argument_native['targetTable']
-                            if 'isOutputTable' in argument_native and argument_native['isOutputTable']:
-                                arg_n["isOutputTable"] = argument_native['isOutputTable']
-                            if 'defaultValue' in argument_native:
-                                arg_n["value"] = defaultValuesFromArg(argument_native)
-                            if 'permittedValues' in argument_native:
-                                arg_n["permittedValues"] = argument_native['permittedValues']
+                            # if 'isRequired' in argument_native.keys():
+                            #     arg_n["isRequired"]=argument_native['isRequired']
+                            # if 'datatype' in argument_native.keys():
+                            #     arg_n["datatype"]=argument_native['datatype']
+                            # if 'allowsLists' in argument_native.keys():
+                            #     arg_n["allowsLists"]=argument_native['allowsLists']
+                            # if 'targetTable' in argument_native.keys():
+                            #     arg_n["targetTable"] = argument_native['targetTable']
+                            # if 'isOutputTable' in argument_native and argument_native['isOutputTable']:
+                            #     arg_n["isOutputTable"] = argument_native['isOutputTable']
+                            # if 'defaultValue' in argument_native:
+                            #     arg_n["value"] = defaultValuesFromArg(argument_native)
+                            # if 'permittedValues' in argument_native:
+                            #     arg_n["permittedValues"] = argument_native['permittedValues']
                             a_n.append(arg_n)                                                           
                         a = inNativeCheck(a, a_n)   
                 d['arguments'] = a    
@@ -231,11 +232,17 @@ def defaultValuesFromArg(item):
 def inNativeCheck(a, a_n):
     print("Native check")
     arg_native_names = map(lambda d: d.get('name'), a_n)
+    arg_native_alt_names = map(lambda d: d.get('alternateNames'), a_n)
     print(a_n)
     print(arg_native_names)
+    print(arg_native_alt_names)
     print(a)
     for arg in a:                
         if arg.get('name') in arg_native_names:
+            arg["inNative"] = True            
+            print(True)
+            print(arg)
+        elif arg.get('name') in arg_native_alt_names:
             arg["inNative"] = True            
             print(True)
             print(arg)

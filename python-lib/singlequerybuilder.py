@@ -46,11 +46,19 @@ def getOrderByClause(inputdef):
 def getAliasedInputONClause(input_, jsonfile, inputTables):
     table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
     table.setPropertiesFromDef(input_)
-    return ALIASED_ON_CLAUSE.format(input_table=table.tablename,
+    print('Input tables check')
+    print(inputTables)
+    if table.orderKey == [] or table.orderKey == [""] or table.orderKey == '':           
+        return ALIASED_ON_CLAUSE.format(input_table=table.tablename,
            input_name=table.alias and ('AS "' + table.alias + '"'),
            partitionKeys=table.partitionKey,
-           orderKeys = table.orderKey and
-               " ".join(["ORDER BY", table.orderKey])).rstrip() + "\n" if table else ''
+           orderKeys = '').rstrip() + "\n" if table else ''
+    else:
+        return ALIASED_ON_CLAUSE.format(input_table=table.tablename,
+            input_name=table.alias and ('AS "' + table.alias + '"'),
+            partitionKeys=table.partitionKey,
+            orderKeys = table.orderKey and
+                " ".join(["ORDER BY", table.orderKey])).rstrip() + "\n" if table else ''
            
 def getMultipleAliasedInputsClause(dss_function, jsonfile, inputTables):
     aliasedinputs = [x for x in dss_function.get('required_input', []) if
@@ -136,6 +144,14 @@ def getSelectQuery(dss_function, inputTables, config):
     print((outTableClauses or argumentClauses) and completeClause)
     print(fullUsingClause)
     #TODO ADD USING CLAUSE SOMEWHERE    
+    # Update to:
+
+    # return SELECT_QUERY.format(dss_function.get('customSelectClause')
+    #                    getFunctionName(config, dss_function),                       
+    #                    getOnClause(dss_function, jsonfile, inputTables),
+    #                    fullUsingClause,
+    #                    getAdditionClauses(dss_function)
+    #                    )
     return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
                        getOnClause(dss_function, jsonfile, inputTables),
                        fullUsingClause
