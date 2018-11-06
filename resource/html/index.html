@@ -305,11 +305,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     <option value="" selected>--No Selection--</option>
                   </select>
 
-
-                  <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
+                    <!-- REMOVED POTENTIAL ERRONEOUS CODE -->
+                  <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
                   data-placement="right" data-container="body" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
-                  </select>
+                  </select> -->
 
                 <!-- <select required multiple  size="8" ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
@@ -490,7 +490,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                         <option value="" selected>--No Selection--</option>
                     </select>                      
-                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
+                    <span ng-if="item.value.length == 0">No columns added, click the + button to add a column</span>
+                    <button style="border:none;background: none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
                       title="Remove Column">
                       <!--  && multiColumnNamesCheck(item)" -->
                       <span class="glyphicon glyphicon-minus-sign orange"></span>

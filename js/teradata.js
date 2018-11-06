@@ -231,9 +231,9 @@
 
       multiColumnNamesCheck: function(item){
         var result = (item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists;
-        if (result && (item.value == null || item.value == "")){
-          item.value = [""];
-        }
+        // if (result && (item.value == null || item.value == "")){
+        //   item.value = [""];
+        // }
         // console.log('Multi check');
         // console.log(item.name);
         // console.log(result);
@@ -1061,7 +1061,18 @@
             	}
             }
             
-
+            // if (result && (item.value == null || item.value == "")){
+            //     item.value = [""];
+            //   }
+            console.log('Checking COLUMN NAMES');
+            console.log(argument.name);
+            console.log(argument.datatype == "COLUMN_NAMES");
+            console.log(argument.allowsLists);
+            console.log(!(argument.value.constructor === Array));
+            if((argument.datatype == "COLUMN_NAMES" || argument.datatype == "COLUMNS") && argument.allowsLists && !(argument.value.constructor === Array)){
+              argument.value = [""];
+              console.log(argument.value);
+            }
            /* try {
 
               if (functionMetadata.argument_clauses[i]

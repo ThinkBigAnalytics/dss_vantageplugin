@@ -32,19 +32,19 @@ def getPartitionKind(kind):
 CREATE_QUERY = '''{}'''
 
 # Update to:
-# SELECT_QUERY = '''SELECT {}
-# FROM   {}
-# (
-# {}
-# {}
-# ) as tmp_alias
-#{};'''
-SELECT_QUERY = '''SELECT *
+SELECT_QUERY = '''SELECT {}
 FROM   {}
 (
 {}
 {}
-) as tmp_alias;'''
+) as tmp_alias
+{};'''
+# SELECT_QUERY = '''SELECT *
+# FROM   {}
+# (
+# {}
+# {}
+# ) as tmp_alias;'''
 
 ON_SELECT_ONE_PARTITION_BY_ONE = 'ON (SELECT 1) PARTITION BY 1'
 

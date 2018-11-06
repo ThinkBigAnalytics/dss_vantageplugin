@@ -115,7 +115,13 @@ def getFunctionName(config, dss_function):
     else:
         coprocessorString = ""
     return (aafschema and (aafschema + '.')) + functionname + coprocessorString
-            
+
+def getAdditionClauses(dss_function):
+    if isinstance(dss_function.get('additionalSQLClause'), list):
+        return '\n'.join(dss_function.get('additionalSQLClause'))
+    else:
+        return ''
+
 def getSelectQuery(dss_function, inputTables, config):
     jsonfile= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))
     outTableClauses = getOutClause(dss_function, jsonfile, inputTables)     
@@ -146,13 +152,13 @@ def getSelectQuery(dss_function, inputTables, config):
     #TODO ADD USING CLAUSE SOMEWHERE    
     # Update to:
 
-    # return SELECT_QUERY.format(dss_function.get('customSelectClause')
-    #                    getFunctionName(config, dss_function),                       
-    #                    getOnClause(dss_function, jsonfile, inputTables),
-    #                    fullUsingClause,
-    #                    getAdditionClauses(dss_function)
-    #                    )
-    return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
+    return SELECT_QUERY.format(dss_function.get('select_clause', '*'),
+                       getFunctionName(config, dss_function),                       
                        getOnClause(dss_function, jsonfile, inputTables),
-                       fullUsingClause
+                       fullUsingClause,
+                       getAdditionClauses(dss_function)
                        )
+    # return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
+    #                    getOnClause(dss_function, jsonfile, inputTables),
+    #                    fullUsingClause
+    #                    )
