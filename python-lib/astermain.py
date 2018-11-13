@@ -29,10 +29,45 @@ from inputtableinfo import *
 from outputtableinfo import *
 from outputtableinfo import *
 
+# def getConnectionDetails(inputDataset):
+#     return getConnectionParamsFromDataset(input_A_datasets[0]);
+
 def asterDo():
     # Recipe inputs
     main_input_name = get_input_names_for_role('main')[0]
     input_dataset = dataiku.Dataset(main_input_name)
+
+    print('Printing properties and autocommit mode')
+    print(input_dataset.get_location_info(sensitive_info=True)['info'])
+    properties = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('properties')
+    autocommit = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('autocommitMode')
+    print(autocommit)
+    requiresTransactions = True
+     
+    
+    for prop in properties:
+        if prop['name'] == 'TMODE' and prop['value'] == 'TERA':
+            if autocommit:
+                print('I am in autocommmit TERA mode')
+                requiresTransactions = False
+                tmode = 'TERA'
+                stTxn = ';'
+                edTxn = ';'
+            else:
+                #Detected TERA
+                print('I am in TERA MODE')
+                tmode = 'TERA'
+                stTxn = 'BEGIN TRANSACTION;'
+                edTxn = 'END TRANSACTION;'
+        elif prop['name'] == 'TMODE' and prop['value'] == 'ANSI':
+            #Detected ANSI
+            print('I am in ANSI MODE')
+            tmode = 'ANSI'
+            stTxn = ';'
+            edTxn = 'COMMIT WORK;'
+    print(properties)
+    
+
 
     # Recipe outputs
     main_output_name = get_output_names_for_role('main')[0]
@@ -75,11 +110,24 @@ def asterDo():
     
     # Uncomment below
     executor = SQLExecutor2(dataset=input_dataset)   
+    
+    #Start transaction
+    if requiresTransactions:
+        print('Start transaction for drop')
+        print(stTxn)
+        executor.query_to_df(stTxn)
+
     if dss_function.get('dropIfExists', False):
         # dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('arguments', []))
         dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('output_tables', []))
-        print(dropAllQuery)
-        executor.query_to_df('SELECT \'DROPPING output_tables\';', dropAllQuery)
+        print(dropAllQuery)                    
+        if requiresTransactions:
+            print('End transaction for drop')
+            print(edTxn)
+            executor.query_to_df(edTxn,dropAllQuery)
+            # executor.query_to_df(edTxn)
+        else:
+            executor.query_to_df(dropAllQuery)
     # executor.query_to_df("END TRANSACTION;", pre_queries=query)
     
     # write table schema ACTUAL COMMENT
@@ -97,6 +145,10 @@ def asterDo():
     # recipe_output_table = dss_function.get('recipeOutputTable', "")
     # print('recipe_output_table before IF')
     # print(recipe_output_table)
+    if requiresTransactions:
+        print('Start transaction for selectResult')
+        print(stTxn)
+        executor.query_to_df(stTxn)
     selectResult = executor.query_to_df(query)
     
     print('Moving results to output...')
@@ -130,6 +182,10 @@ def asterDo():
                 tableCounter += 1
                 pythonrecipe_out2 = output_dataset2
                 pythonrecipe_out2.write_schema_from_dataframe(selRes)
+    if requiresTransactions:
+        print('End transaction')
+        print(edTxn)
+        executor.query_to_df(edTxn)
     print('Complete!')  
 
 
