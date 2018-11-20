@@ -44,7 +44,20 @@ def asterDo():
     print(autocommit)
     requiresTransactions = True
      
-    
+    print('I am assuming in TERA MODE by default')
+    if autocommit:
+        print('I am assuming autocommmit TERA mode')
+        requiresTransactions = False
+        tmode = 'TERA'
+        stTxn = ';'
+        edTxn = ';'
+    else:
+        #Detected TERA
+        print('I am assuming non-autocommit TERA MODE')
+        tmode = 'TERA'
+        stTxn = 'BEGIN TRANSACTION;'
+        edTxn = 'END TRANSACTION;'
+
     for prop in properties:
         if prop['name'] == 'TMODE' and prop['value'] == 'TERA':
             if autocommit:
@@ -163,17 +176,19 @@ def asterDo():
         print(outtables)
         for table in outtables:
             if table.get('value') != '' and table.get('value') != None:
-                try:
-                    print('Table')
-                    print(table)
-                    #Need to change this to max of split in order for multiple database or no-database table inputs
-                    main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[1] == table.get('value').split('.')[1].strip('\"'),get_output_names_for_role('main')))[0]
-                    print('Output name 2')
-                    print(main_output_name2)
-                    output_dataset2 =  dataiku.Dataset(main_output_name2)   
-                except:
-                    #Need to change this error
-                    print('Error: Dataset for' + table.get('name') + ' not found')                
+                # try:
+                print('Table')
+                print(table)
+                #Need to change this to max of split in order for multiple database or no-database table inputs
+                main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[1] == table.get('value').split('.')[1].strip('\"'),get_output_names_for_role('main')))[0]
+                print('Output name 2')
+                print(main_output_name2)
+                output_dataset2 =  dataiku.Dataset(main_output_name2)   
+                    
+                # except:
+                #     #Need to change this error
+                #     print('Error: Dataset for' + table.get('name') + ' not found')  
+                #     raise Value              
                 customOutputTableSQL = 'SELECT * from '+ table.get('value') + ' SAMPLE 0'
                 print('Working on table number:')
                 print(tableCounter)

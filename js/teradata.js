@@ -28,9 +28,9 @@
     throw new Error('jQuery library not present!')
   }
 
-  const app = angular.module('teradata-ap.module', []);
+  const app = angular.module('teradata-vantage.module', []);
 
-  app.controller('TeradataAPController', function ($scope, $timeout) {
+  app.controller('TeradataVantageController', function ($scope, $timeout) {
 
     /**
      * A wrapper function that delays execution so that
@@ -75,7 +75,7 @@
     /**
      * Function metadata path - this path contains the JSON metadata of each function.
      */
-    const FUNCTION_METADATA_PATH = '/plugins/TeradataAnalyticsPlatform/resource/data/';
+    const FUNCTION_METADATA_PATH = '/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/data/';
 
     /**
      * Parameters to use for the dialog box.

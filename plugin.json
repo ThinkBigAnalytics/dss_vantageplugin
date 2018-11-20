@@ -2,7 +2,7 @@
 {
     // The identifier of the plugin.
     // This must be globally unique, and only contain A-Za-z0-9_-
-    "id" : "TeradataAnalyticsPlatform",
+    "id" : "TeradataVantageAnalyticFunctionsPlugin",
 
     // Version. It is highly recommended to use Semantic Versioning
     "version" : "0.0.1",
@@ -11,7 +11,7 @@
     // Meta data for display purposes
     "meta" : {
         // Name of this plugin that appears in the interface.
-        "label" : "Teradata Vantage Analytic Functions",
+        "label" : "Teradata Vantage Analytic Functions Plugin",
 
         "description" : "Plugin to execute Teradata Vantage Analytic functions from DSS.",
         "author" : "dt186022, kc186029",
