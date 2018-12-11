@@ -15,16 +15,21 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 '''
 
-class tableinfo(object):
+class tableinfo(object):    
     def __init__(self, connectioninfo, datasetname):
-        self._schemaname = "public" if not connectioninfo.get('schema', "") else connectioninfo['schema']
+        self._schemaname = None if not connectioninfo.get('schema', "") else connectioninfo['schema'] # or add select defaultdatabase from dbc.UsersV where username = 'dssUser';
         self._tablename = connectioninfo['table']
         self._datasetname = datasetname
         
     @property
     def tablename(self):
-        return ".".join(['"{}"'.format(self._schemaname),
-                         '"{}"'.format(self._tablename)])
+        if self._schemaname == None:
+            print('Defaulting to user\'s default database')
+            return self._tablename
+        else:
+            print('Defaulting to user\'s default database')
+            return ".".join(['"{}"'.format(self._schemaname),
+                        '"{}"'.format(self._tablename)])
     
     @property
     def datasetname(self):
