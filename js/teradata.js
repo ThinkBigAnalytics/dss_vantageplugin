@@ -1069,8 +1069,11 @@
             console.log(argument.datatype == "COLUMN_NAMES");
             console.log(argument.allowsLists);
             console.log(!(argument.value.constructor === Array));
-            if((argument.datatype == "COLUMN_NAMES" || argument.datatype == "COLUMNS") && argument.allowsLists && !(argument.value.constructor === Array)){
+            if((argument.datatype == "COLUMN_NAMES" || argument.datatype == "COLUMNS") && argument.allowsLists && argument.isRequired && !(argument.value.constructor === Array)){
               argument.value = [""];
+              console.log(argument.value);
+            } else if ((argument.datatype == "COLUMN_NAMES" || argument.datatype == "COLUMNS") && argument.allowsLists && !argument.isRequired && !(argument.value.constructor === Array)){
+              argument.value = [];
               console.log(argument.value);
             }
            /* try {
