@@ -192,17 +192,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
                 <div class="inner-cell" ng-show="item.isOrdered">
                   <p class="inner-label">Order by 
-                      <button ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                      <button ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
                   </p>
                     <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
                         <span ng-show="item.isOrdered">ORDER BY column {{$index+1}}</span>                        
                         <div >
                             <select required ng-model="item.orderByColumn[$index]"
                             ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
-                            data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                            data-html="true" title="<b>Select an ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
                             data-placement="right">
                             <option value="" selected>--No Selection--</option>
                           </select>
+                          <span>
+                            <select class="orderbyselect" required ng-model="item.orderByColumnDirection[$index]"                            
+                            title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">                            
+                            <option value="ASC" selected>ASC</option>
+                            <option value="DESC">DESC</option>
+                          </select>
+                          </span>
                               <button style="border:none;background: none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
                                 title="Remove Script Argument">
                                 <span class="glyphicon glyphicon-minus-sign orange"></span>
@@ -224,10 +232,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <div>
                           <select required ng-model="config.function.orderByColumn[$index]"
                           ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.unaliased_inputs)"
-                          data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                          data-html="true" title="<b>Select an ORDER BY column</b>" data-toggle="tooltip" data-container="body"
                           data-placement="right">
                           <option value="" selected>--No Selection--</option>
                         </select>
+                        <span>
+                          <select class="orderbyselect" required ng-model="config.function.orderByColumnDirection[$index]"                            
+                          title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <!-- <option value="" selected>--No Selection--</option> -->
+                          <option value="ASC" selected>ASC</option>
+                          <option value="DESC">DESC</option>
+                        </select>
+                        </span>
                             <button style="border:none;background: none;" ng-if="config.function.orderByColumn.length > 1" ng-click="removeOrderByColumn($index)"
                               title="Remove Script Argument">
                               <span class="glyphicon glyphicon-minus-sign orange"></span>
@@ -417,7 +434,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
                 <div class="inner-cell" ng-show="item.isOrdered">
                   <p class="inner-label">Order by
-                      <button style="border:none;background: none;" ng-init="item.orderByColumn = initializeColumnArrayOptional(item.orderByColumn)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column">
+                      <button style="border:none;background: none;" ng-init="item.orderByColumn = initializeColumnArrayOptional(item.orderByColumn); item.orderByColumnDirection = initializeColumnArrayOptional(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column">
                         <span class="glyphicon glyphicon-plus-sign orange"></span></button>
                   </p>
                     <div ng-repeat="col in item.orderByColumn track by $index ">
@@ -425,10 +442,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                         <div>
                             <select ng-model="item.orderByColumn[$index]"
                             ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
-                            data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                            data-html="true" title="<b>Select ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
                             data-placement="right">
                             <option value="" selected>--No Selection--</option>
                           </select>
+                          <span>
+                          <select class="orderbyselect"  ng-model="item.orderByColumnDirection[$index]"                            
+                          title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">                          
+                          <option value="ASC" selected>ASC</option>
+                          <option value="DESC">DESC</option>
+                        </select>
+                        </span>
                               <button style="border:none;background: none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
                                 title="Remove Script Argument">
                                 <span class="glyphicon glyphicon-minus-sign orange"></span>

@@ -378,3 +378,7 @@ div.inner-cell {
   content: '\e085';
 }
 
+.orderbyselect{
+    max-width:80px;            
+}
+

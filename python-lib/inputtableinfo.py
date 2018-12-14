@@ -76,10 +76,25 @@ class inputtableinfo(tableinfo.tableinfo):
     def __getOrderByKeyFromInputDef(self, inputdef):
         #no empty string checking for orderByColumn since this is mandatory if isOrdered is true
         orderKeyFromInputDef = inputdef.get("orderByColumn", "")
+        orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", "")
         print('order type thing')
         print(orderKeyFromInputDef)
+        # print(orderKeyDirectionFromInputDef)
         # if orderKeyFromInputDef != [] or orderKeyFromInputDef == [''] or (len(orderKeyFromInputDef) == 0 and orderKeyFromInputDef[0].encode('ascii','ignore') != '' ):
-        return ', '.join(orderKeyFromInputDef) if \
-            isinstance(orderKeyFromInputDef, (list, tuple)) else orderKeyFromInputDef 
+        
+        # return ', '.join([a + b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)]) if \
+        #     isinstance(orderKeyFromInputDef, (list, tuple)) else orderKeyFromInputDef #Add DIRECTION
+        print('isinstance?')
+        print(isinstance(orderKeyFromInputDef, (list, tuple)))
+        print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
+        if isinstance(orderKeyFromInputDef, (list, tuple)) and orderKeyFromInputDef != ['']:
+            return ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
+        else:
+            return orderKeyFromInputDef
+
+
+
+        # return ', '.join(orderKeyFromInputDef) if \
+        #     isinstance(orderKeyFromInputDef, (list, tuple)) else orderKeyFromInputDef #Add DIRECTION
         # else:
         #     return ['']

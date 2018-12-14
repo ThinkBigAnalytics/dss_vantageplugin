@@ -99,9 +99,11 @@ def asterDo():
         outputTable = outputtableinfo(output_dataset.get_location_info()['info'], main_output_name,
                                   get_recipe_config() or {})
     except Exception as error:
-        raise RuntimeError("""Error obtaining connection settings for output table."""
-                           """ Make sure connection setting is set to 'Read a database table'."""
-                           """ This plugin only supports Aster tables.""")
+        raise RuntimeError("""Error obtaining connection settings for output table."""                           
+                           """ This plugin only supports Teradata tables.""")
+        # raise RuntimeError("""Error obtaining connection settings for output table."""
+        #                    """ Make sure connection setting is set to 'Read a database table'."""
+        #                    """ This plugin only supports Aster tables.""")
 
     # input datasets
     try:
@@ -112,9 +114,8 @@ def asterDo():
             inTable = inputtableinfo(inconnectioninfo, inputname, dss_function)
             inputTables.append(inTable)
     except Exception as error:
-        raise RuntimeError("""Error obtaining connection settings from one of the input tables."""
-                           """ Make sure connection setting is set to 'Read a database table'."""
-                           """ This plugin only supports Aster tables.""")
+        raise RuntimeError("""Error obtaining connection settings from one of the input tables."""                           
+                           """ This plugin only supports Teradata tables.""")
         
     # actual query
     query = getFunctionsQuery(dss_function, inputTables, outputTable, get_recipe_config() or {})
