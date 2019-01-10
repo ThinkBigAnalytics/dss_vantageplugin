@@ -125,23 +125,34 @@ def asterDo():
     # Uncomment below
     executor = SQLExecutor2(dataset=input_dataset)   
     
-    #Start transaction
-    if requiresTransactions:
-        print('Start transaction for drop')
-        print(stTxn)
-        executor.query_to_df(stTxn)
+   
 
     if dss_function.get('dropIfExists', False):
-        # dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('arguments', []))
+        #Start transaction
+        #Move to drop query and make each DROP run separately
         dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('output_tables', []))
-        print(dropAllQuery)                    
+        print(dropAllQuery)        
+        
+        # if requiresTransactions:
+            # print('Start transaction for drop')
+            # print(stTxn)
+            # executor.query_to_df(stTxn)
+        # dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('arguments', []))
+        
+        #Change dropAllQuery to string/s? or execute one drop per item in list.            
         if requiresTransactions:
-            print('End transaction for drop')
-            print(edTxn)
-            executor.query_to_df(edTxn,dropAllQuery)
+            for dropTblStmt in dropAllQuery:
+                print('Start transaction for drop')
+                print(stTxn)
+                executor.query_to_df(stTxn)
+
+                print('End transaction for drop')
+                print(edTxn)
+                executor.query_to_df(edTxn,[dropTblStmt])
             # executor.query_to_df(edTxn)
         else:
-            executor.query_to_df(dropAllQuery)
+            for dropTblStmt in dropAllQuery:
+                executor.query_to_df([dropTblStmt])
     # executor.query_to_df("END TRANSACTION;", pre_queries=query)
     
     # write table schema ACTUAL COMMENT
@@ -181,7 +192,8 @@ def asterDo():
                 print('Table')
                 print(table)
                 #Need to change this to max of split in order for multiple database or no-database table inputs
-                main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[1] == table.get('value').split('.')[1].strip('\"'),get_output_names_for_role('main')))[0]
+                #Change below might fix issue 4 of Jan 4 2018 for Nico. For non-drop tables
+                main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[len(out_dataset.split('.'))-1] == table.get('value').split('.')[len(table.get('value').split('.'))-1].strip('\"'),get_output_names_for_role('main')))[0]
                 print('Output name 2')
                 print(main_output_name2)
                 output_dataset2 =  dataiku.Dataset(main_output_name2)   
