@@ -35,22 +35,33 @@ class AsterArgumentFactory(object):
 
 
     def createArg(argument, argumentDef, inputTables):
+        # print(argument.get('name'))
+        # print('This is a list/tuple')
         if 'BOOLEAN' == argumentDef.get('datatype',''):
+            # print('is Boolean')
             return BooleanArgument(argument, argumentDef)
         elif 'SQLEXPR' == argumentDef.get('datatype', '').upper():
             return SqlExprArgument(argument, argumentDef)
+            # print('is SQLEXPR')
         elif ('INTEGER' == argumentDef.get('datatype', '').upper() or\
               'LONG' == argumentDef.get('datatype', '')) and\
         not argumentDef.get('allowsLists', False):
+            # print('INTEGER')
             return IntegerArgument(argument, argumentDef)
         # elif 'TABLE_NAME' == argumentDef['datatype'] and not \
         elif 'TABLE_NAME' == argumentDef.get('datatype', '') and not \
         argumentDef.get('allowsLists', False) \
         and not argumentDef.get('isOutputTable', False):
+            # print('TABLE_NAME')
             return TableArgument(argument, argumentDef, inputTables)        
-        elif isinstance(argument.get('value',''), (list, tuple)):
+        elif isinstance(argument.get('value',''), (list, tuple)):     
+            # print('is List/tuple')      
+            #This works to fix an issue with the empty inputs for the list. I have no idea why. As long as this code filters the input to ListArgument, no errors should occur for empty inputs.            
+            argument['value'] = filter(None, argument.get('value'))
+            # print(argument.get('value'))
             return ListArgument(argument, argumentDef)
         else:
+            # print('is Others')
             return AsterArgument(argument, argumentDef)
     createArg = staticmethod(createArg)
     # elif 'COLUMN_NAMES' == argumentDef.get('datatype', '').upper() and\

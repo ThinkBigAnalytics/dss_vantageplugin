@@ -28,5 +28,7 @@ class ListArgument(AsterArgument):
         super(ListArgument, self).__init__(argument, argumentDef)
 
     @property
-    def value(self):
+    def value(self):        
+        # return ", ".join("'{}'".format(x) for x in filteredArgument)
         return ", ".join("'{}'".format(x) for x in self._argument.get('value'))
+        

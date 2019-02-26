@@ -2,7 +2,7 @@
 {
     // Meta data for display purposes
     "meta" : {
-        "label" : "Aster Scoring",
+        "label" : "Teradata Scoring SDK",
         "author" : "Me",
         "tags" : ["myrecipe", "dev"]
     },
@@ -56,9 +56,9 @@
             "name": "category",
             "label": "SQL-MR function category",
             "type": "STRING",
-            "description": "Category from Aster Analytics Foundation Guide",
+            "description": "Category from Teradata Vantage Machine Learning Engine Analytic Function Reference",
             "mandatory" : true,
-            "defaultValue": "Aster Scoring"
+            "defaultValue": "Teradata Scoring SDK"
         }
     ],
 

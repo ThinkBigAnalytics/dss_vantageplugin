@@ -56,7 +56,7 @@
             "name": "category",
             "label": "SQL-MR function category",
             "type": "STRING",
-            "description": "Category from Aster Analytics Foundation Guide",
+            "description": "Category from Teradata Vantage Machine Learning Engine Analytic Function Reference",
             "mandatory" : true,
             "defaultValue": "Cluster Analysis"
         }

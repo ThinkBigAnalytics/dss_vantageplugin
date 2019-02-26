@@ -33,7 +33,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
      <div class="control-group">
       <label class="control-label">Function Name</label>
       <div class="controls">
-        <select ng-model="config.function" ng-options="cleanName(choice.name) for choice in choices track by choice.name" ng-change="refresh(config.function.name)">
+        <!-- <select ng-model="config.function" ng-options="cleanName(choice.name) for choice in choices track by choice.name" ng-change="refresh(config.function.name)"> -->
+        <!-- Replaced above with function_alias_name -->
+        <select ng-model="config.function" ng-options="choice.function_alias_name for choice in choices track by choice.name" ng-change="refresh(config.function.name)"></select>
           <option value="" disabled selected>Select a Vantage function...</option>
         </select>
         <a href="#" class="link1" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-question-sign"></span></a>
@@ -573,7 +575,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
             <tbody>
               <tr>
-                <td>Select Columns</td>
+                <td>Modify Select Columns of Output Query</td>
                 <td>
                   <div class="inner-cell">
                     <input type="checkbox" ng-model="config.function.customSelectClause" ng-change="resetSelectToStar()" data-toggle="tooltip"

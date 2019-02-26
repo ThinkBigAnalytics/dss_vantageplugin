@@ -39,6 +39,7 @@ def do(payload, config, plugin_config, inputs):
             print('=====================================' + fle.get("coprocessor") + '================================')
             f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("coprocessor"))).read())
             d = {"name":"",
+                 "function_alias_name":"",
                  "output_tables":"",
                  "arguments":"",
                  "asterarguments":"",
@@ -58,6 +59,11 @@ def do(payload, config, plugin_config, inputs):
             if 'function_name' in keys:
                 # d["name"]=f['function_name'].upper()
                 d["name"]=f['function_name']
+            if 'function_alias_name' in keys:
+                d["function_alias_name"] = f['function_alias_name']
+            else: 
+                d["function_alias_name"] = f['function_name']
+
             if 'input_tables' in keys:
                 d["hasInputTable"] = True
                 input_tab_lst = f['input_tables']
@@ -220,7 +226,15 @@ def isMultipleTagsInput(item):
 
 def defaultValuesFromArg(item):
     print('A - returning defaultvalues from ' + item.get('name', ''))
-    defaultvalues = item.get('defaultValue', '')
+    defaultvalues = item.get('defaultValue', '')    
+    if item['isRequired'] == False:
+        if item['datatype'] == 'BOOLEAN':
+            defaultvalues = item.get('defaultValue', '')
+            return defaultvalues   
+        else: 
+            defaultvalues = ""
+            return defaultvalues
+    
     if isMultipleTagsInput(item) and isinstance(defaultvalues, (list, tuple)):
         DELIMITER = chr(0)
         return DELIMITER.join(str(x) for x in defaultvalues)
