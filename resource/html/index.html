@@ -67,7 +67,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     <!-- <label class="control-label">Drop Output Table If Exists</label> -->
     <label class="control-label">Use @Coprocessor Alias</label>
     <div class="controls">
-      <input type="checkbox" ng-model="config.function.useCoprocessor" title="Override Native Function with @Coprocessor Function Alias"></input>
+      <input type="checkbox" ng-model="config.function.useCoprocessor" ng-click="refreshTeraTabs()" title="Override Native Function with @Coprocessor Function Alias"></input>
     </div>
   </div>
 

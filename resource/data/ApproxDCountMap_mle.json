@@ -36,11 +36,13 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "InputColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "InputColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the columns for which to estimate the number of distinct values.",
-      "description": "Specify the columns for which to estimate the number of distinct values.",
+      "description": "Specifies the columns for which to estimate the number of distinct values.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "input.columns",
@@ -70,8 +72,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

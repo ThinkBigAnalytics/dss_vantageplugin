@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "FPGrowth",
-  "function_version": "1.11",
+  "function_version": "1.12",
   "function_type": "driver",
   "function_alias_name": "FPGrowth",
   "function_r_name": "aa.fpgrowth",
@@ -20,7 +20,7 @@
           {
             "source": "predefined",
             "name": "output_information",
-            "dataType": "varchar",
+            "dataType": "varchar(300)",
             "manipulations": []
           }
         ]
@@ -47,11 +47,13 @@
   "output_tables": [
     {
       "isOutputTable": true,
-      "name": "OutputPatternTable",
-      "alternateNames": [],
+      "name": "OutputPatternsTable",
+      "alternateNames": [
+        "OutputPatternTable"
+      ],
       "isRequired": false,
       "rDescription": "Required if patterns.or.rules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns.",
-      "description": "[Required if PatternsOrRules is 'patterns' or 'both', disallowed otherwise] Specify the name of the table where the function outputs the patterns.",
+      "description": "Required if PatternsOrRules is 'patterns' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the patterns",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "output.pattern.table",
@@ -73,9 +75,14 @@
               },
               {
                 "source": "predefined",
-                "name": "pattern_target_column",
-                "dataType": "varchar",
-                "manipulations": []
+                "name": "TargetColumns.*",
+                "dataType": "varchar(32000)",
+                "manipulations": [
+                  {
+                    "operation": "prefix",
+                    "argument": "pattern_"
+                  }
+                ]
               },
               {
                 "source": "predefined",
@@ -102,11 +109,13 @@
     },
     {
       "isOutputTable": true,
-      "name": "OutputRuleTable",
-      "alternateNames": [],
+      "name": "OutputRulesTable",
+      "alternateNames": [
+        "OutputRuleTable"
+      ],
       "isRequired": false,
       "rDescription": "Required if patterns.or.rules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
-      "description": "[Required if PatternsOrRules is 'patterns' or 'both', disallowed otherwise] Specify the name of the table where the function outputs the rules.",
+      "description": "Required if PatternsOrRules is 'rules' or 'both'; otherwise, not allowed. Specifies the name of the table where the function outputs the rules.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "output.rule.table",
@@ -128,15 +137,25 @@
               },
               {
                 "source": "predefined",
-                "name": "antecedent_target_column",
-                "dataType": "varchar",
-                "manipulations": []
+                "name": "TargetColumns.*",
+                "dataType": "varchar(256)",
+                "manipulations": [
+                  {
+                    "operation": "prefix",
+                    "argument": "antecedent_"
+                  }
+                ]
               },
               {
                 "source": "predefined",
-                "name": "consequence_target_column",
-                "dataType": "varchar",
-                "manipulations": []
+                "name": "TargetColumns.*",
+                "dataType": "varchar(256)",
+                "manipulations": [
+                  {
+                    "operation": "prefix",
+                    "argument": "consequence_"
+                  }
+                ]
               },
               {
                 "source": "predefined",
@@ -288,13 +307,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "PartitionColumns",
+      "name": "GroupByColumns",
       "alternateNames": [
-        "GroupByColumns"
+        "PartitionColumns"
       ],
       "isRequired": false,
       "rDescription": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the tran.id.column argument, because this causes incorrect counting in the partitions.",
-      "description": " Specify the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. Note: Do not specify the same column in both this argument and the TransactionIDColumns argument, because this causes incorrect counting in the partitions. Default behavior: The function considers all input data to be in a single partition.",
+      "description": "Specifies the names of columns that define the partitions into which the function groups the input data and calculates output for it. At least one column must be usable as a distribution key. If you omit this argument, then the function considers all input data to be in a single partition. Note: Do not specify the same column in both this argument and the TRANIDCOLUMN argument, because this causes incorrect counting in the partitions.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "group.by.columns",
@@ -489,8 +508,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

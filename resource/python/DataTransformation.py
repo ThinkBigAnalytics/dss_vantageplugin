@@ -37,7 +37,7 @@ def do(payload, config, plugin_config, inputs):
     for fle in files:
         try:
             print('=====================================' + fle.get("coprocessor") + '================================')
-            f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("coprocessor"))).read())
+            f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("coprocessor"))).read())            
             d = {"name":"",
                  "function_alias_name":"",
                  "output_tables":"",
@@ -50,7 +50,24 @@ def do(payload, config, plugin_config, inputs):
                  "hasInputTable":False,
                  "isQueryMode": False,
                  "queries": [],
-                 "hasNativeJSON": False
+                 "hasNativeJSON": False,
+                 "hasPartnerFunction": False,
+                 "partnerFunction": {
+                    "name":"",
+                    "function_alias_name":"",
+                    "output_tables":"",
+                    "arguments":"",
+                    "asterarguments":"",
+                    "partitionInputKind":[],
+                    "partitionAttributes":"",
+                    "isOrdered":False,
+                    "orderByColumn":"",
+                    "hasInputTable":False,
+                    "isQueryMode": False,
+                    "queries": [],
+                    "hasNativeJSON": False,
+                    "hasPartnerFunction": True
+                 }
                 }
             keys = f.keys()
             required_input = []
@@ -70,15 +87,20 @@ def do(payload, config, plugin_config, inputs):
                 for input_tab in input_tab_lst:
                     required_input_dict = {"isRequired": True, "partitionAttributes":"", "orderByColumn": ""}
                     if 'isRequired' in input_tab.keys():
-                        required_input_dict['isRequired'] = input_tab['isRequired']
+                        required_input_dict['isRequired'] = input_tab['isRequired']                    
                     if 'requiredInputKind' in input_tab.keys():
                         partitionByKey = next(iter(x for x in input_tab.get('requiredInputKind',[])), '')
                         if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne']:
-                            partitionByKey = "PartitionByOne"
+                            if 'partitionByOneInclusive' in input_tab.keys() and input_tab['partitionByOneInclusive']: 
+                                partitionByKey.append("PartitionByOne")
+                            else:
+                                partitionByKey = "PartitionByOne"
                         required_input_dict['kind'] = partitionByKey
                         required_input_dict['inputKindChoices'] = input_tab.get('requiredInputKind',[])
                     if 'isOrdered' in input_tab.keys():
                         required_input_dict['isOrdered'] = input_tab['isOrdered']
+                    if 'alternateNames' in input_tab.keys():                        
+                        required_input_dict["alternateNames"] = input_tab['alternateNames']
                     if 'name' in input_tab.keys() or ('Dimension' in input_tab.get('requiredInputKind',[]) and 0 < unaliased_inputs.get('count',0)):
                         required_input_dict['name'] = input_tab.get('name', 'Dimension')
                         required_input_dict['value'] = ""
@@ -87,6 +109,7 @@ def do(payload, config, plugin_config, inputs):
                         unaliased_inputs['count'] += 1
                         d["isOrdered"] = input_tab['isOrdered'] if 'isOrdered' in input_tab else False
                         d['partitionInputKind'] = ['PartitionByOne'] if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne'] else input_tab['requiredInputKind'] if 'requiredInputKind' in input_tab else []
+                    
             d["required_input"] = required_input
             d["unaliased_inputs"] = unaliased_inputs
 
@@ -183,6 +206,16 @@ def do(payload, config, plugin_config, inputs):
                 d['arguments'] = a    
             if 'cascaded_functions' in keys:
                 d["cascaded_functions"] = f['cascaded_functions']
+            if 'partner_function' in keys and f['function_name'].endswith("Map"): 
+                d['hasPartnerFunction'] = True
+                partnerDetails = getPartnerDetails(f['partner_function'], map)
+                if partnerDetails != None:
+                    d['partnerFunction'] = partnerDetails
+                    print('Partner Check')
+                    print(partnerDetails)
+                    # pradfa
+            print('Working partner check')
+            print(d)                
             choices.append(d);
         except ValueError, e:
             logging.info("file is not valid json");
@@ -262,3 +295,172 @@ def inNativeCheck(a, a_n):
             print(arg)
     print(a)
     return a 
+
+def getPartnerDetails(functionName, map):
+    # print('Mapthing')
+    # print(map)
+    functionDetails = next((item for item in map if item['function_name'] == functionName), None)
+    d = {"name":"",
+        "function_alias_name":"",
+        "output_tables":"",
+        "arguments":"",
+        "asterarguments":"",
+        "partitionInputKind":[],
+        "partitionAttributes":"",
+        "isOrdered":False,
+        "orderByColumn":"",
+        "hasInputTable":False,
+        "isQueryMode": False,
+        "queries": [],
+        "hasNativeJSON": False,
+        "hasPartnerFunction": False            
+    }
+    fle = functionDetails.get('file_name')
+    print('Fle print')
+    print(fle)
+    if fle == None:
+        return d
+    try:
+        print('=====================================' + fle.get("coprocessor") + '================================')
+        f = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("coprocessor"))).read())                        
+        keys = f.keys()
+        required_input = []
+        d['partitionInputKind']
+        unaliased_inputs = {'desc':{}, 'values':[], 'count':0}
+        if 'function_name' in keys:
+            # d["name"]=f['function_name'].upper()
+            d["name"]=f['function_name']
+        if 'function_alias_name' in keys:
+            d["function_alias_name"] = f['function_alias_name']
+        else: 
+            d["function_alias_name"] = f['function_name']
+
+        if 'input_tables' in keys:
+            d["hasInputTable"] = True
+            input_tab_lst = f['input_tables']
+            for input_tab in input_tab_lst:
+                required_input_dict = {"isRequired": True, "partitionAttributes":"", "orderByColumn": ""}
+                if 'isRequired' in input_tab.keys():
+                    required_input_dict['isRequired'] = input_tab['isRequired']                    
+                if 'requiredInputKind' in input_tab.keys():
+                    partitionByKey = next(iter(x for x in input_tab.get('requiredInputKind',[])), '')
+                    if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne']:
+                        if 'partitionByOneInclusive' in input_tab.keys() and input_tab['partitionByOneInclusive']: 
+                            partitionByKey.append("PartitionByOne")
+                        else:
+                            partitionByKey = "PartitionByOne"
+                    required_input_dict['kind'] = partitionByKey
+                    required_input_dict['inputKindChoices'] = input_tab.get('requiredInputKind',[])
+                if 'isOrdered' in input_tab.keys():
+                    required_input_dict['isOrdered'] = input_tab['isOrdered']
+                if 'alternateNames' in input_tab.keys():                        
+                    required_input_dict["alternateNames"] = input_tab['alternateNames']
+                if 'name' in input_tab.keys() or ('Dimension' in input_tab.get('requiredInputKind',[]) and 0 < unaliased_inputs.get('count',0)):
+                    required_input_dict['name'] = input_tab.get('name', 'Dimension')
+                    required_input_dict['value'] = ""
+                    required_input.append(required_input_dict)
+                else:
+                    unaliased_inputs['count'] += 1
+                    d["isOrdered"] = input_tab['isOrdered'] if 'isOrdered' in input_tab else False
+                    d['partitionInputKind'] = ['PartitionByOne'] if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne'] else input_tab['requiredInputKind'] if 'requiredInputKind' in input_tab else []
+                
+        d["required_input"] = required_input
+        d["unaliased_inputs"] = unaliased_inputs
+
+        # Copied Argument clauses code
+        if 'output_tables' in keys:
+            ot = []
+            out_tbl_lst = f['output_tables']
+            for table in out_tbl_lst:
+                outtbl = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                if table.get('alternateNames', []):
+                    outtbl["name"] = table.get('alternateNames', [''])[0]
+                    # arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                elif 'name' in table.keys():
+                    outtbl["name"]=table['name']
+                    # arg["name"]=argument['name'].upper()  
+                if 'isRequired' in table.keys():
+                    outtbl["isRequired"]=table['isRequired']
+                if 'datatype' in table.keys():
+                    outtbl["datatype"]=table['datatype']
+                if 'allowsLists' in table.keys():
+                    outtbl["allowsLists"]=table['allowsLists']
+                if 'targetTable' in table.keys():
+                    outtbl["targetTable"] = table['targetTable']
+                if 'isOutputTable' in table and table['isOutputTable']:
+                    outtbl["isOutputTable"] = table['isOutputTable']
+                if 'defaultValue' in table:
+                    outtbl["value"] = defaultValuesFromArg(table)
+                if 'permittedValues' in table:
+                    outtbl["permittedValues"] = table['permittedValues']
+                ot.append(outtbl)
+            d["output_tables"]=ot
+
+        if 'argument_clauses' in keys:
+            a = []
+            arg_lst = f['argument_clauses']
+            for argument in arg_lst:
+                arg = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                if argument.get('alternateNames', []):
+                    arg["name"] = argument.get('alternateNames', [''])[0]
+                    # arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                elif 'name' in argument.keys():
+                    arg["name"]=argument['name']
+                    # arg["name"]=argument['name'].upper()  
+                if 'isRequired' in argument.keys():
+                    arg["isRequired"]=argument['isRequired']
+                if 'datatype' in argument.keys():
+                    arg["datatype"]=argument['datatype']
+                if 'allowsLists' in argument.keys():
+                    arg["allowsLists"]=argument['allowsLists']
+                if 'targetTable' in argument.keys():
+                    arg["targetTable"] = argument['targetTable']
+                if 'isOutputTable' in argument and argument['isOutputTable']:
+                    arg["isOutputTable"] = argument['isOutputTable']
+                if 'defaultValue' in argument:
+                    arg["value"] = defaultValuesFromArg(argument)
+                if 'permittedValues' in argument:
+                    arg["permittedValues"] = argument['permittedValues']
+                arg["inNative"] = False
+                a.append(arg)                     
+                print('args')
+                print(a)                               
+            if "native" in fle.keys():
+                d["hasNativeJSON"] = True
+                f_native = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("native"))).read())
+                keys_native = f_native.keys()
+                if 'argument_clauses' in keys_native:
+                    a_n = []
+                    arg_lst_native = f_native['argument_clauses']
+                    for argument_native in arg_lst_native:
+                        # arg_n = {"name":"","isRequired":"","value":"", "datatype": "", "allowsLists":True}
+                        arg_n = {"name":"","alternateNames":""}
+                        if argument_native.get('alternateNames', []):
+                            arg_n["alternateNames"] = argument_native.get('alternateNames', [''])[0]
+                            # arg["name"] = argument.get('alternateNames', [''])[0].upper()
+                        if 'name' in argument_native.keys():
+                            arg_n["name"]=argument_native['name']
+                            # arg["name"]=argument['name'].upper()  
+                        # if 'isRequired' in argument_native.keys():
+                        #     arg_n["isRequired"]=argument_native['isRequired']
+                        # if 'datatype' in argument_native.keys():
+                        #     arg_n["datatype"]=argument_native['datatype']
+                        # if 'allowsLists' in argument_native.keys():
+                        #     arg_n["allowsLists"]=argument_native['allowsLists']
+                        # if 'targetTable' in argument_native.keys():
+                        #     arg_n["targetTable"] = argument_native['targetTable']
+                        # if 'isOutputTable' in argument_native and argument_native['isOutputTable']:
+                        #     arg_n["isOutputTable"] = argument_native['isOutputTable']
+                        # if 'defaultValue' in argument_native:
+                        #     arg_n["value"] = defaultValuesFromArg(argument_native)
+                        # if 'permittedValues' in argument_native:
+                        #     arg_n["permittedValues"] = argument_native['permittedValues']
+                        a_n.append(arg_n)                                                           
+                    a = inNativeCheck(a, a_n)   
+            d['arguments'] = a    
+        if 'cascaded_functions' in keys:
+            d["cascaded_functions"] = f['cascaded_functions']
+        print('Partner details complete')
+        return d
+    except ValueError, e:
+            logging.info("file is not valid json");

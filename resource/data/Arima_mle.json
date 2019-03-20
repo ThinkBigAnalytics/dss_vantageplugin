@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Arima",
-  "function_version": "1.7",
+  "function_version": "1.8",
   "function_type": "driver",
   "function_alias_name": "ARIMA",
   "function_r_name": "aa.arima",
@@ -82,7 +82,9 @@
       "matchLengthOfArgument": "",
       "allowPadding": true,
       "name": "TimeColumns",
-      "alternateNames": [],
+      "alternateNames": [
+        "TimestampColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the names of the input_table columns that specify the sequence (time points) of the input parameters. The sequence must have uniform intervals.",
       "description": "Specify the names of the input_table columns that specify the sequence (time points) of the input parameters. The sequence must have uniform intervals.",
@@ -105,7 +107,10 @@
       "matchLengthOfArgument": "",
       "allowPadding": true,
       "name": "TargetColumn",
-      "alternateNames": [],
+      "alternateNames": [
+        "ValueColumn",
+        "ResponseColumn"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the name of the column that contains the time series data in input_table.",
       "description": "Specify the name of the column that contains the time series data in input_table .",
@@ -221,7 +226,9 @@
       "defaultValue": "SSE",
       "isOutputColumn": false,
       "name": "FitMethod",
-      "alternateNames": [],
+      "alternateNames": [
+        "Method"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the method for fitting the model parameters: SSE (Default): Sum of squared error. ML: Maximum likelihood",
       "description": " Specify the method for fitting the model parameters: Option Description 'SSE' (Default) Sum of squared error. 'ML' Maximum likelihood. This method is more accurate, but slower to calculate.",
@@ -351,8 +358,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

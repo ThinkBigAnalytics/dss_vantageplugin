@@ -158,13 +158,14 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "ModelFile",
+      "name": "InputModelFile",
       "alternateNames": [
-        "Model"
+        "Model",
+        "ModelFile"
       ],
       "isRequired": false,
       "rDescription": "Specifies the name of model file that the function uses for tokenizing. The model must be a conditional random-fields model and model_file must already be installed on the database. If you omit this argument, or if model_file is not installed on the database, then the function uses white spaces to separate English words and an embedded dictionary to tokenize Chinese text. Note: If you specify Language('jp'), the function ignores this argument.",
-      "description": " Specify the name of model file that the function uses for tokenizing. The model must be a conditional random-fields model and model_file must already be installed on the ML Engine. If you omit this argument, or if model_file is not installed, then the function uses white spaces to separate English words and an embedded dictionary to tokenize Chinese text. Note: If you specify InputLanguage('jp') , the function ignores this argument.",
+      "description": "Specifies the name of model file that the function uses for tokenizing. The model must be a conditional random-fields model and model_file must already be installed on the database. If you omit this argument, or if model_file is not installed on the database, then the function uses white spaces to separate English words and an embedded dictionary to tokenize Chinese text. Note: If you specify Language('jp'), the function ignores this argument.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "model",
@@ -176,8 +177,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

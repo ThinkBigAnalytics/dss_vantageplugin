@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "2",
   "function_name": "VARMAX",
-  "function_version": "1.7",
+  "function_version": "1.11",
   "function_type": "non-driver",
   "function_alias_name": "VARMAX",
   "function_r_name": "aa.varmax",
@@ -26,26 +26,31 @@
           {
             "source": "predefined",
             "name": "coef",
-            "dataType": "varchar",
+            "dataType": "varchar(100)",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "coef_value",
-            "dataType": "varchar",
+            "dataType": "varchar(8192)",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "stepahead",
-            "dataType": "integer",
+            "dataType": "varchar(10)",
             "manipulations": []
           },
           {
-            "source": "predefined",
-            "name": "predict_columnname",
+            "source": "parameter",
+            "name": "ResponseColumns.*",
             "dataType": "double precision",
-            "manipulations": []
+            "manipulations": [
+              {
+                "operation": "prefix",
+                "argument": "predict_"
+              }
+            ]
           }
         ]
       }
@@ -58,8 +63,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "data",
-      "alternateNames": [],
+      "name": "InputTable",
+      "alternateNames": [
+        "data"
+      ],
       "isRequired": true,
       "rDescription": "The table or view stores the input sequence.",
       "description": "The table or view stores the input sequence.",
@@ -99,11 +106,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ResponseColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "ResponseColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the columns containing the response data. Null values are acceptable at the end of the series. If step.ahead is specified, the function will report predicted values for the missing values, taking into account values from the predictor columns for those time periods.",
-      "description": "Specify the columns containing the response data. Null values are allowed at the end of the series. If you specify StepAhead, the function reports predicted values for the missing values, using values from the predictor columns for those time periods.",
+      "description": "Specifies the columns containing the response data. Null values are acceptable at the end of the series. If StepAhead is specified, the function will report predicted values for the missing values, taking into account values from the predictor columns for those time periods.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "response.columns",
@@ -160,7 +169,7 @@
       "name": "PDQ",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Specify the parameters p,d,q for VARMA model. This argument consists of 3 non-negative int values separated by commas. It should be three non-negative int values separated by commas. Those values should be between 0 and 20 inclusive.",
+      "rDescription": "Specify the parameters p, d, q for VARMA model. This argument consists of 3 non-negative int values separated by commas. It should be three non-negative int values separated by commas. The p and q must be an integer between 0 and 10, inclusive. The d must be between 0 and 1, inclusive.",
       "description": "[Required if orders_table is omitted, disallowed otherwise.] Specify the parameters p , d , and q for the VARMA part of the model. These values must be nonnegative integers in the range [0, 20].",
       "datatype": "STRING",
       "allowsLists": false,
@@ -175,11 +184,13 @@
       ],
       "defaultValue": "SSE",
       "isOutputColumn": false,
-      "name": "Method",
-      "alternateNames": [],
+      "name": "FitMethod",
+      "alternateNames": [
+        "Method"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the method for fitting the model parameters: SSE (Default): Sum of squared error. ML: Maximum likelihood",
-      "description": " Specify the method for fitting the model parameters: Option Description 'SSE' (Default) Sum of squared error. 'ML' Maximum likelihood. This method is more accurate, but slower to calculate.",
+      "description": "Specifies the method for fitting the model parameters: SSE (Default): Sum of squared error. ML: Maximum likelihood",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "method",
@@ -192,7 +203,7 @@
       "name": "SeasonalPDQ",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Specify seasonal parameters sp,sd,sq for VARMA model. This argument consists of 3 non-negative integer values separated by commas. Those values should be between 0 and 20 inclusive.If not specified, the model will be treated as a non-seasonal model.If the seasonal.orders argument is used, the period argument should also be present.",
+      "rDescription": "Specify seasonal parameters sp, sd, sq for VARMA model. This argument consists of 3 non-negative integer values separated by commas. The sp and sq must be an integer between 0 and 10, inclusive. The sd must be between 0 and 3, inclusive If not specified, the model will be treated as a non-seasonal model.If the seasonal.orders argument is used, the period argument should also be present.",
       "description": "[Optional if orders_table is omitted, disallowed otherwise.] Specify seasonal parameters sp , sd , and sq for the VARMA part of the model. These values must be nonnegative integers in the range [0, 20]. Note: If you specify this argument, you must also specify the Period argument. Default behavior: The function treats the model as nonseasonal.",
       "datatype": "STRING",
       "allowsLists": false,
@@ -314,12 +325,116 @@
       "rOrderNum": 12
     },
     {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderP",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The p value of the non-seasonal order parameter. The p value must be an integer between 0 and 10, inclusive. ",
+      "description": "The p value of the non-seasonal order parameter. The p value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.p",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderD",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The d value of the non-seasonal order parameter. The d value must be an integer between 0 and 1, inclusive. ",
+      "description": "The d value of the non-seasonal order parameter. The d value must be an integer between 0 and 1, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.d",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The q value of the non-seasonal order parameter. The q value must be an integer between 0 and 10, inclusive. ",
+      "description": "The q value of the non-seasonal order parameter. The q value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.q",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderP",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sp value of the seasonal order parameter. The sp value must be an integer between 0 and 10, inclusive. ",
+      "description": "The sp value of the seasonal order parameter. The sp value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.p",
+      "useInR": true,
+      "rOrderNum": 17
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 3,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderD",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sd value of the seasonal order parameter. The sd value must be an integer between 0 and 3, inclusive. ",
+      "description": "The sd value of the seasonal order parameter. The sd value must be an integer between 0 and 3, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.d",
+      "useInR": true,
+      "rOrderNum": 18
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sq value of the seasonal order parameter. The sq value must be an integer between 0 and 10, inclusive. ",
+      "description": "The sq value of the seasonal order parameter. The sq value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.q",
+      "useInR": true,
+      "rOrderNum": 19
+    },
+    {
       "permittedValues": [],
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

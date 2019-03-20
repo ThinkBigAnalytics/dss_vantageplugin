@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "DistnmatchMultipleInput",
-  "function_version": "1.3",
+  "function_version": "1.4",
   "function_type": "non-driver",
   "function_alias_name": "DistributionMatchMultiInput",
   "function_r_name": "aa.distnmatch",
@@ -18,8 +18,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "input",
-      "alternateNames": [],
+      "name": "InputTable",
+      "alternateNames": [
+        "input"
+      ],
       "isRequired": true,
       "rDescription": "The input table consists of an arbitrary number of grouping columns and a single value column that contains the dataset to be matched to the specified distribution",
       "description": "The input table consists of an arbitrary number of grouping columns and a single value column that contains the dataset to be matched to the specified distribution",
@@ -36,8 +38,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "groupstats",
-      "alternateNames": [],
+      "name": "GroupStatistics",
+      "alternateNames": [
+        "groupstats"
+      ],
       "isRequired": true,
       "rDescription": "Group stats table",
       "description": "Group stats table",
@@ -61,11 +65,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ValueColumn",
-      "alternateNames": [],
+      "name": "TargetColumn",
+      "alternateNames": [
+        "ValueColumn"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the name of the input table column that contains the values of the sample data set.",
-      "description": "Specify the name of the input table column that contains the values of the sample data set.",
+      "description": "Specifies the name of the input table column that contains the values of the sample data set.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "value.column",
@@ -167,8 +173,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

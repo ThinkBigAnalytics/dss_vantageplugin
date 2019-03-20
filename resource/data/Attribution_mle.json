@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Attribution",
-  "function_version": "2.8",
+  "function_version": "2.9",
   "function_type": "non-driver",
   "function_alias_name": "Attribution",
   "function_r_name": "aa.attribution",
@@ -20,19 +20,19 @@
           {
             "source": "inputTable",
             "name": "input.*",
-            "dataType": "varchar",
+            "dataType": "unchanged",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "attribution",
-            "dataType": "double precision",
+            "dataType": "real",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "time_to_conversion",
-            "dataType": "integer",
+            "dataType": "real",
             "manipulations": []
           }
         ]
@@ -63,7 +63,58 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input2",
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data.optional",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data.optional",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data.optional",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
@@ -80,8 +131,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "conversion",
-      "alternateNames": [],
+      "name": "ConversionEventTable",
+      "alternateNames": [
+        "conversion"
+      ],
       "isRequired": false,
       "rDescription": "Contains one varchar column (conversion_events) containing conversion event values.",
       "description": "Contains one varchar column (conversion_events) containing conversion event values.",
@@ -97,8 +150,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "excluding",
-      "alternateNames": [],
+      "name": "ExcludedEventTable",
+      "alternateNames": [
+        "excluding"
+      ],
       "isRequired": false,
       "rDescription": "Contains one varchar column (excluding_events) containing excluding cause event values.",
       "description": "Contains one varchar column (excluding_events) containing excluding cause event values.",
@@ -114,8 +169,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "optional",
-      "alternateNames": [],
+      "name": "OptionalEventTable",
+      "alternateNames": [
+        "optional"
+      ],
       "isRequired": false,
       "rDescription": "Contains one varchar column (optional_events) containing optional cause event values.",
       "description": "Contains one varchar column (optional_events) containing optional cause event values.",
@@ -131,8 +188,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "model1",
-      "alternateNames": [],
+      "name": "FirstModelTable",
+      "alternateNames": [
+        "model1"
+      ],
       "isRequired": false,
       "rDescription": "Defines the type and specification of the first model. For example: model1.data ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
       "description": "Defines the type and specification of the first model. For example: Model1 ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
@@ -148,8 +207,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "model2",
-      "alternateNames": [],
+      "name": "SecondModelTable",
+      "alternateNames": [
+        "model2"
+      ],
       "isRequired": false,
       "rDescription": "Defines the type and distributions of the second model. For example: model2.data ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
       "description": "Defines the type and distributions of the second model. For example: Model2 ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
@@ -198,11 +259,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "TimestampColumn",
-      "alternateNames": [],
+      "name": "TimeColumn",
+      "alternateNames": [
+        "TimestampColumn"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
-      "description": "Specify the name of the input column that contains the timestamps of the clickstream events.",
+      "description": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "timestamp.column",
@@ -308,8 +371,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

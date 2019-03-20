@@ -349,6 +349,7 @@
         "E",
         "T"
       ],
+      "defaultValue": "C",
       "isOutputColumn": false,
       "name": "MavgType",
       "alternateNames": [],

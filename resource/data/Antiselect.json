@@ -4,6 +4,7 @@
   "json_content_version": "1",
   "function_name": "Antiselect",
   "function_version": "1.0",
+  "function_alias_name": "Antiselect",
   "function_type": "fastpath",
   "function_r_name": "aa.antiselect",
   "short_description": "Outputs columns except for excluded ones.",

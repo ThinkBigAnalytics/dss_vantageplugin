@@ -30,11 +30,13 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "ModelTable",
-      "alternateNames": [],
+      "name": "Model",
+      "alternateNames": [
+        "ModelTable"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the input model table representing input data for which aml file is to be generated. The table could be either database tables or files installed on the database.",
-      "description": " Specify the name of the database table to use to create the .aml file for the input table.",
+      "description": "Specifies the input model table representing input data for which aml file is to be generated. The table could be either database tables or files installed on the database.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "data",
@@ -45,11 +47,13 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "ModelTable2",
-      "alternateNames": [],
+      "name": "Model2",
+      "alternateNames": [
+        "ModelTable2"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the second input model table representing input data for which aml file is to be generated. The table could be either database tables or files installed on the database.",
-      "description": " Use only if the function can use two input tables. The functions that can use two input tables are TextTokenizer, TextTagging, TextParser, and SentimentExtractor. Specify the name of the database table to use to create the .aml file for the second input table.",
+      "description": "Specifies the second input model table representing input data for which aml file is to be generated. The table could be either database tables or files installed on the database.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "data2",
@@ -107,11 +111,13 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "ModelTableTag",
-      "alternateNames": [],
+      "name": "ModelTag",
+      "alternateNames": [
+        "ModelTableTag"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the input model table tag for input model table specified in model.table clause.",
-      "description": " Specify the tag for model_table , which identifies the role of the table in the Teradata Scoring SDK context.",
+      "description": "Specifies the input model table tag for input model table specified in ModelTable clause.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "model.tag",
@@ -121,11 +127,13 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "ModelTable2Tag",
-      "alternateNames": [],
+      "name": "Model2Tag",
+      "alternateNames": [
+        "ModelTable2Tag"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the second input model table tag for input model table 2 specified in model.table2 clause.",
-      "description": " Use only with ModelTable2. Specify the tag for model_table_2 , which identifies the role of the table in the Teradata Scoring SDK context.",
+      "description": "Specifies the input model table tag for input model table specified in ModelTable2 clause.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "model2.tag",
@@ -501,8 +509,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

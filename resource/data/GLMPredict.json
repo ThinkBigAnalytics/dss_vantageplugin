@@ -107,9 +107,7 @@
       "defaultValue": "CANONICAL",
       "isOutputColumn": false,
       "name": "LinkFunction",
-      "alternateNames": [
-        "Link"
-      ],
+      "alternateNames": ["Link"],
       "isRequired": false,
       "rDescription": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",
       "description": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",

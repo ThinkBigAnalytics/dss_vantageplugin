@@ -5,7 +5,7 @@
   "function_name": "Forest_Predict",
   "function_version": "1.13",
   "function_type": "non-driver",
-  "function_alias_name": "Forest_Predict",
+  "function_alias_name": "DecisionForestPredict",
   "function_r_name": "aa.forest.predict",
   "ref_function_r_name": "aa.forest",
   "short_description": "This function generates predictions on a response variable for a data set",
@@ -19,15 +19,21 @@
         "placement": "end",
         "arguments": [
           {
-            "source": "inputTable",
-            "name": "Input.*",
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
+            "source": "parameter",
+            "name": "IDColumn.*",
             "dataType": "unchanged",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "prediction",
-            "dataType": "double precision",
+            "dataType": "varchar(1000)",
             "manipulations": []
           },
           {
@@ -40,12 +46,6 @@
             "source": "predefined",
             "name": "confidence_upper",
             "dataType": "double precision",
-            "manipulations": []
-          },
-          {
-            "source": "parameter",
-            "name": "Accumulate.*",
-            "dataType": "unchanged",
             "manipulations": []
           }
         ]
@@ -106,8 +106,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "ModelTable",
-      "alternateNames": [],
+      "name": "Model",
+      "alternateNames": [
+        "ModelTable"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the table containing the model data.",
       "description": "Specifies the table containing the model data.",
@@ -241,8 +243,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

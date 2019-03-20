@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "TextClassifierTrainer",
-  "function_version": "1.9",
+  "function_version": "1.10",
   "function_type": "driver",
   "function_alias_name": "TextClassifierTrainer",
   "function_r_name": "aa.text.classifier.train",
@@ -34,7 +34,7 @@
       "checkDuplicate": true,
       "allowedTypes": [],
       "allowedTypeGroups": [
-        "ALL"
+        "STRING"
       ],
       "requiredLength": 1,
       "matchLengthOfArgument": "",
@@ -57,7 +57,7 @@
       "checkDuplicate": true,
       "allowedTypes": [],
       "allowedTypeGroups": [
-        "ALL"
+        "STRING"
       ],
       "requiredLength": 1,
       "matchLengthOfArgument": "",
@@ -80,11 +80,13 @@
       ],
       "defaultValue": "maxEnt",
       "isOutputColumn": false,
-      "name": "ClassifierType",
-      "alternateNames": [],
+      "name": "ModelType",
+      "alternateNames": [
+        "ClassifierType"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the classifier type of the model, KNN algorithm or maximum entropy model.",
-      "description": "Specify the classifier type of the model, KNN algorithm or maximum entropy model.",
+      "description": "Specifies the classifier type of the model, KNN algorithm or maximum entropy model.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "classifier.type",
@@ -94,11 +96,13 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "ModelFile",
-      "alternateNames": [],
+      "name": "OutputModelFile",
+      "alternateNames": [
+        "ModelFile"
+      ],
       "isRequired": true,
       "rDescription": "The name of the model file to be generated.",
-      "description": "Specify the name for the model file to create.",
+      "description": "The name of the model file to be generated.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "model.file",
@@ -110,11 +114,13 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ClassifierParameters",
-      "alternateNames": [],
+      "name": "KNNModelParameters",
+      "alternateNames": [
+        "ClassifierParameters"
+      ],
       "isRequired": false,
       "rDescription": "Applies only if the classifier type of the model is KNN. Specifies parameters for the classifier. The name must be 'compress' and value must be in the range (0, 1). The n training documents are clustered into value*n groups (for example, if there are 100 training documents, then ClassifierParameters('compress:0.6') clusters them into 60 groups), and the model uses the center of each group as the feature vector.",
-      "description": " Applies only if the classifier type of the model is KNN. Specify parameters for the classifier. The name must be 'compress' and value must be in the range (0, 1). The n training documents are clustered into value * n groups (for example, if there are 100 training documents, then ClassifierParameters('compress:0.6') clusters them into 60 groups), and the model uses the center of each group as the feature vector.",
+      "description": "Applies only if the classifier type of the model is KNN. Specifies parameters for the classifier. The name must be 'compress' and value must be in the range (0, 1). The n training documents are clustered into value*n groups (for example, if there are 100 training documents, then ClassifierParameters('compress:0.6') clusters them into 60 groups), and the model uses the center of each group as the feature vector.",
       "datatype": "STRING",
       "allowsLists": true,
       "rName": "classifier.parameters",
@@ -140,11 +146,13 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "FeatureSelectionMethod",
-      "alternateNames": [],
+      "name": "FeatureSelectionLimits",
+      "alternateNames": [
+        "FeatureSelectionMethod"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the feature selection method, DF (document frequency). The values min and max must be in the range (0, 1). The function selects only the tokens that appear in at least min*n documents and at most max*n documents, where n is the number of training documents. For example, FeatureSelection ('DF:[0.1:0.9]') causes the function to select only the tokens that appear in at least 10% but no more than 90% of the training documents. If min exceeds max, the function uses min as max and max as min.",
-      "description": " Specify the feature selection method, DF (document frequency). The values min and max must be in the range (0, 1). The function selects only the tokens that appear in at least min * n documents and at most max * n documents, where n is the number of training documents. For example, FeatureSelection\u00a0('DF:[0.1:0.9]') causes the function to select only the tokens that appear in at least 10% but no more than 90% of the training documents. If min exceeds max , the function uses min as max and max as min .",
+      "description": "Specifies the feature selection method, DF (document frequency). The values min and max must be in the range (0, 1). The function selects only the tokens that appear in at least min*n documents and at most max*n documents, where n is the number of training documents. For example, FeatureSelection ('DF:[0.1:0.9]') causes the function to select only the tokens that appear in at least 10% but no more than 90% of the training documents. If min exceeds max, the function uses min as max and max as min.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "feature.selection",
@@ -156,8 +164,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

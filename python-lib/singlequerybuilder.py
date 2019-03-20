@@ -42,10 +42,10 @@ def getOrderByClause(inputdef):
     orderByColumn = inputdef.get('orderByColumn', '') if\
     inputdef.get('isOrdered', False) else ''
     return orderByColumn and ("ORDER BY " + orderByColumn)
-
-def getAliasedInputONClause(input_, jsonfile, inputTables):
+#Added useCoprocessor
+def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
     table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
-    table.setPropertiesFromDef(input_)
+    table.setPropertiesFromDef(input_, useCoprocessor)
     print('Input tables check')
     print(inputTables)
     if table.orderKey == [] or table.orderKey == [""] or table.orderKey == '':           
@@ -60,10 +60,11 @@ def getAliasedInputONClause(input_, jsonfile, inputTables):
             orderKeys = table.orderKey and
                 " ".join(["ORDER BY", table.orderKey])).rstrip() + "\n" if table else ''
            
+# added useCoprocessor
 def getMultipleAliasedInputsClause(dss_function, jsonfile, inputTables):
     aliasedinputs = [x for x in dss_function.get('required_input', []) if
                      x.get('name', '') and x.get('value', '')]
-    return ''.join(map(lambda x: getAliasedInputONClause(x, jsonfile, inputTables), aliasedinputs))
+    return ''.join(map(lambda x: getAliasedInputONClause(x, jsonfile, inputTables), aliasedinputs, dss_function['useCoprocessor']))
 
 def getMultipleUnaliasedInputsClause(dss_function, inputTables):
     isQueryMode = dss_function.get('isQueryMode', False)

@@ -16,8 +16,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "observation",
-      "alternateNames": [],
+      "name": "ObservationTable",
+      "alternateNames": [
+        "observation"
+      ],
       "isRequired": true,
       "rDescription": "observation table",
       "description": "observation table",
@@ -33,8 +35,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "InitStateProb",
-      "alternateNames": [],
+      "name": "initialStateProbs",
+      "alternateNames": [
+        "InitStateProb"
+      ],
       "isRequired": true,
       "rDescription": "init state table",
       "description": "init state table",
@@ -50,9 +54,9 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "TransProb",
+      "name": "TransitionProbs",
       "alternateNames": [
-        "StateTransitionProb"
+        "TransProb"
       ],
       "isRequired": true,
       "rDescription": "state transition table",
@@ -69,8 +73,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "EmissionProb",
-      "alternateNames": [],
+      "name": "EmissionProbs",
+      "alternateNames": [
+        "EmissionProb"
+      ],
       "isRequired": true,
       "rDescription": "emission probability table",
       "description": "emission probability table",
@@ -382,11 +388,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ObsColumn",
-      "alternateNames": [],
+      "name": "ObservationColumn",
+      "alternateNames": [
+        "ObsColumn"
+      ],
       "isRequired": true,
       "rDescription": "The name of the column that contains the observed symbols. Note: Observed symbols are case-sensitive.",
-      "description": "Specify the name of the column that contains the observed symbols. Note: Observed symbols are case-sensitive.",
+      "description": "The name of the column that contains the observed symbols. Note: Observed symbols are case-sensitive.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "observed.key",
@@ -461,8 +469,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

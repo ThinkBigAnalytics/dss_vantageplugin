@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Single_Tree_Drive",
-  "function_version": "1.19",
+  "function_version": "1.22",
   "function_type": "driver",
   "function_alias_name": "DecisionTree",
   "function_r_name": "aa.single.tree.drive",
@@ -14,8 +14,10 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "AttributeTableName",
-      "alternateNames": [],
+      "name": "AttributeTable",
+      "alternateNames": [
+        "AttributeTableName"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the table that contains the attribute names and the values. *Required if you omit data.",
       "description": "Specifies the name of the table that contains the attribute names and the values. *Required if you omit InputTable.",
@@ -44,8 +46,10 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "CategoricalAttributeTableName",
-      "alternateNames": [],
+      "name": "CategoricalAttributeTable",
+      "alternateNames": [
+        "CategoricalAttributeTableName"
+      ],
       "isRequired": false,
       "rDescription": "The name of the input table containing the categorical attributes.",
       "description": "The name of the input table containing the categorical attributes.",
@@ -59,8 +63,10 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "ResponseTableName",
-      "alternateNames": [],
+      "name": "ResponseTable",
+      "alternateNames": [
+        "ResponseTableName"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the table that contains the response values. *Required if you omit data.",
       "description": " Specifies the name of the table that contains the response values. *Required if you omit InputTable.",
@@ -115,11 +121,13 @@
     },
     {
       "isOutputTable": true,
-      "name": "SaveFinalResponseTableTo",
-      "alternateNames": [],
+      "name": "FinalResponseTable",
+      "alternateNames": [
+        "SaveFinalResponseTableTo"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name for the output table that is to contain the final PID and response pair from the response table and the node_id from the final single drive tree.",
-      "description": " Specify the name for the output table that is to contain the final PID and response pair from the response table and the node_id from the final single drive tree. Default behavior: The function does not output this table.",
+      "description": "Specifies the name for the output table that is to contain the final PID and response pair from the response table and the node_id from the final single drive tree.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "final.response.tableto",
@@ -372,11 +380,13 @@
     },
     {
       "defaultValue": false,
-      "name": "OutputResponseProbDist",
-      "alternateNames": [],
+      "name": "OutputProb",
+      "alternateNames": [
+        "OutputResponseProbDist"
+      ],
       "isRequired": false,
       "rDescription": "Switch to enable/disable output of probability distribution for output labels.",
-      "description": " Specify whether to output the probability distributions for each node. Note: Specify 'true' to use the OutputResponseProbDist argument of the DecisionTreePredict function. Default: 'false'",
+      "description": "Switch to enable/disable output of probability distribution for output labels.",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "output.response.probdist",
@@ -403,12 +413,33 @@
       "rOrderNum": 19
     },
     {
+      "permittedValues": [
+        "graycode",
+        "ordinal",
+        "hashing"
+      ],
+      "defaultValue": "graycode",
+      "isOutputColumn": false,
+      "name": "CategoricalEncoding",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies which encoding method is used for categorical variables.",
+      "description": "Specifies which encoding method is used for categorical variables.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "categorical.encoding",
+      "useInR": true,
+      "rOrderNum": 20
+    },
+    {
       "permittedValues": [],
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

@@ -46,9 +46,21 @@ class inputtableinfo(tableinfo.tableinfo):
     def alias(self):
         return self.__alias
 
-    def setPropertiesFromDef(self, inputdef):
+    # Added useCoprocessor at end to get if coprocessor
+    def setPropertiesFromDef(self, inputdef, useCoprocessor):
         tablealias = inputdef.get('name', '')
-        self.__alias = '' if 'Dimension' == tablealias else tablealias
+        tmpAlias = tablealias
+        tmpAlias = '' if 'Dimension' == tablealias else tablealias
+        # Test Add new alias if has alternateNames
+        print('Testing alternateNames')
+        alternateNames = inputdef.get('alternateNames', [])
+        print(alternateNames)
+        # print(alternateNames[0])
+        # print(alternateNames[0].encode("utf-8"))
+        # if altern
+        if 
+        tmpAlias = alternateNames[0].encode("utf-8") if alternateNames != [] else tmpAlias
+        self.__alias = tmpAlias
         self.__partitionKey = self.__getPartitionClauseFromAliasedInputDef(
             inputdef.get('kind', 'DSSOTHERS'), inputdef)
         self.__orderKey = self.__getOrderByKeyFromInputDef(inputdef)

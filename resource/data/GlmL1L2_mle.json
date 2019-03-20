@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "GlmL1L2",
-  "function_version": "1.8",
+  "function_version": "1.10",
   "function_type": "driver",
   "function_alias_name": "GLML1L2",
   "function_r_name": "aa.glml1l2",
@@ -20,13 +20,13 @@
           {
             "source": "predefined",
             "name": "attribute",
-            "dataType": "varchar",
+            "dataType": "varchar(32)",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "category",
-            "dataType": "varchar",
+            "dataType": "varchar(128)",
             "manipulations": []
           },
           {
@@ -38,7 +38,7 @@
           {
             "source": "predefined",
             "name": "information",
-            "dataType": "varchar",
+            "dataType": "varchar(64)",
             "manipulations": []
           }
         ]
@@ -74,77 +74,7 @@
       "allowsLists": false,
       "rName": "factor.table",
       "useInR": true,
-      "rOrderNum": 1,
-      "outputSchema": {
-        "property": "outputSchema",
-        "outputId": "FactorTable",
-        "instructions": [
-          {
-            "instruction": "ADD",
-            "placement": "end",
-            "arguments": [
-              {
-                "source": "parameter",
-                "name": "FeatureColumns.*",
-                "dataType": "unchanged",
-                "manipulations": []
-              },
-              {
-                "source": "parameter",
-                "name": "ResponseColumn.*",
-                "dataType": "double precision",
-                "manipulations": []
-              }
-            ]
-          },
-          {
-            "instruction": "CASE",
-            "arguments": [
-              {
-                "condition": [
-                  {
-                    "leftOperand": "valueFromParameter(Randomization)",
-                    "operator": "=",
-                    "valueType": "string",
-                    "rightOperand": "false"
-                  }
-                ],
-                "action": [
-                  {
-                    "instruction": "ADD",
-                    "placement": "end",
-                    "arguments": [
-                      {
-                        "source": "inputTable",
-                        "name": "InputTable.PartitionBy.*",
-                        "dataType": "unchanged",
-                        "manipulations": []
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "condition": [],
-                "action": [
-                  {
-                    "instruction": "ADD",
-                    "placement": "end",
-                    "arguments": [
-                      {
-                        "source": "predefined",
-                        "name": "td_randomized_id",
-                        "dataType": "integer",
-                        "manipulations": []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
+      "rOrderNum": 1
     }
   ],
   "argument_clauses": [
@@ -159,11 +89,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "FeatureColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "FeatureColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the names of the input table columns that contain the variables to use as predictors (independent variables).",
-      "description": "Specify the names of the InputTable columns that contain the variables to use as predictors (independent variables) in the model.",
+      "description": "Specifies the names of the input_table columns that contain the variables to use as predictors (independent variables).",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "feature.columns",
@@ -327,8 +259,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

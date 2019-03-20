@@ -175,9 +175,14 @@
                 data = data.replace(")]}',\n", '');
                 data = data.replace(/: Infinity/g, ': "Infinity"');
                 data = data.replace(/: -Infinity/g, ': "-Infinity"');
+                // data = data.replace(/^\t|\s*\-NaN/g, '"-NaN"');
+                // data = data.replace(/^\t|\s*NaN/g, '"NaN"');
                 data = JSON.parse(data, function censor(key, value) {
                   return value == Infinity ? "Infinity" : value;
                 });
+                // data = JSON.parse(data, function censor(key, value) {
+                //   return value == NaN ? "NaN" : value;
+                // });
               }
               return data;
             }]
@@ -401,6 +406,7 @@
           return true;
         } else {
           // console.log('NOT IN Native')
+          
           return false;
         }
       } else {
@@ -408,6 +414,15 @@
         return true;
       }
 
+    },
+
+    refreshTeraTabs: function(){
+      
+      // $delay(() => {$scope.activateMultiTagsInput();
+      $scope.activateMultiTagsInput();
+     //this line is to watch the result in console , you can remove it later	
+      console.log("Refreshed");
+    // }) 
     },
 
 
@@ -564,7 +579,7 @@
        * and the static JSON file associated with the function.
        */
       getSchema: function (functionArgument, aliasedInputsList, unaliasedInputsList, argumentsList) {
-        //console.log('Get Schema runs');
+        console.log('Get Schema runs');
         aliasedInputsList = aliasedInputsList || []
         argumentsList = argumentsList || []
         // console.log('getSchema');
@@ -577,20 +592,24 @@
         let targetTableName = ''
         var isAliasedInputsPopulated;
         var isInAliasedInputsList = false;
+        // Alternate name variables
+        var isInAlternateNames = false;
+        var alternateNameIndex = 0;
+        var alternateNameOriginalName = '';
         var y = false;
         if (hasTargetTable) {
           var targetTableAlias;
           if (typeof functionArgument.targetTable === 'string') {
             targetTableAlias = [(functionArgument.targetTable || '').toUpperCase()];
-            // console.log('Table name');
-            // console.log(targetTableAlias);
+            console.log('Table name');
+            console.log(targetTableAlias);
           } else {
             targetTableAlias = functionArgument.targetTable.map(function (table_name) {
 
               return (table_name || '').toUpperCase();
             })
-            // console.log('Table name');
-            // console.log(targetTableAlias);
+            console.log('Table name');
+            console.log(targetTableAlias);
           }
 
           // if (KEYS.ALTERNATE_NAMES in func)
@@ -599,16 +618,37 @@
           // const isAliased = KEYS.INPUT_TABLE !== targetTableAlias;
           if (aliasedInputsList !== []) {
             isAliasedInputsPopulated = true;
+            console.log('Into Alias Inputs')
             aliasedInputsList.map((input) => {
               // if (input.name.toUpperCase() === targetTableAlias.toUpperCase()) {
               if (targetTableAlias.includes(input.name.toUpperCase())) {
-                // console.log('true');
+                console.log('Alias inputs true');
                 isInAliasedInputsList = true;
+              }
+              // Test code
+              console.log('Alternate names')
+              console.log(input.alternateNames);    
+              console.log(input.name)
+              console.log(input)
+              if(input.alternateNames != [] && input.alternateNames != undefined){        
+                console.log("Got in");        
+                console.log(input.alternateNames)
+                for (var altNameIndex=0;altNameIndex<input.alternateNames.length;altNameIndex++ ){
+                  console.log('Table Alternate name\n');
+                  console.log(input.alternateNames[altNameIndex]);
+                  if(targetTableAlias.includes(input.alternateNames[altNameIndex].toUpperCase())){
+                    isInAliasedInputsList = true;
+                    isInAlternateNames = true;
+                    alternateNameIndex = altNameIndex;
+                    alternateNameOriginalName = input.name.toUpperCase();
+                  }
+                }
               }
             }
             )
           } else {
             isInAliasedInputsList = false;
+            console.log('Not in alias input anymore')
           }
           // const isAliased = aliasedInputsList.includes(targetTableAlias);
           const isAliased = isInAliasedInputsList;
@@ -616,7 +656,7 @@
           //console.log(targetTableAlias);
 
           if (isAliased) {
-            // console.log('isAliased');
+            console.log('isAliased');
             // let matchingInputs = aliasedInputsList.filter(input => targetTableAlias === input.name.toUpperCase());
             let matchingInputs = aliasedInputsList.filter(input => targetTableAlias.includes(input.name.toUpperCase()));
             if (matchingInputs.length > 0) {
@@ -626,6 +666,13 @@
               targetTableName = matchingInputs.map(function(input) {
                 return input.value
               });
+            } else if (matchingInputs == 0 && isInAlternateNames){ //Alternate names additional code
+              let matchingInputs = aliasedInputsList.filter(input => input.alternateNames.some(r=> targetTableAlias.includes(r.toUpperCase())));
+              if (matchingInputs.length > 0) {               
+                targetTableName = matchingInputs.map(function(input) {
+                  return input.value
+                });
+              }
             } else {
               //console.log('Matching inputs < 0');
               // console.log('Does Matching <= 0 happen?')

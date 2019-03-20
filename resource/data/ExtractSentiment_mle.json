@@ -19,21 +19,21 @@
         "placement": "end",
         "arguments": [
           {
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
             "source": "predefined",
             "name": "out_polarity",
-            "dataType": "varchar",
+            "dataType": "varchar(8)",
             "manipulations": []
           },
           {
             "source": "predefined",
             "name": "out_strength",
-            "dataType": "varchar",
-            "manipulations": []
-          },
-          {
-            "source": "parameter",
-            "name": "Accumulate.*",
-            "dataType": "unchanged",
+            "dataType": "integer",
             "manipulations": []
           }
         ]
@@ -44,7 +44,7 @@
           {
             "condition": [
               {
-                "leftOperand": "AnalysisType",
+                "leftOperand": "valueFromParameter(AnalysisType)",
                 "operator": "=",
                 "valueType": "string",
                 "rightOperand": "sentence"
@@ -53,12 +53,12 @@
             "action": [
               {
                 "instruction": "ADD",
-                "placement": "end",
+                "placement": "before out_polarity",
                 "arguments": [
                   {
                     "source": "predefined",
                     "name": "out_content",
-                    "dataType": "unchanged",
+                    "dataType": "varchar(5000)",
                     "manipulations": []
                   }
                 ]
@@ -73,7 +73,36 @@
           {
             "condition": [
               {
-                "leftOperand": "ModelFile",
+                "leftOperand": "valueFromParameter(Level)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "sentence"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "before out_polarity",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "out_content",
+                    "dataType": "varchar(5000)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(modelFile)",
                 "operator": "Contains",
                 "valueType": "string",
                 "rightOperand": "dictionary"
@@ -87,7 +116,36 @@
                   {
                     "source": "predefined",
                     "name": "out_sentiment_words",
-                    "dataType": "unchanged",
+                    "dataType": "varchar(10000)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(Model)",
+                "operator": "Contains",
+                "valueType": "string",
+                "rightOperand": "dictionary"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "out_sentiment_words",
+                    "dataType": "varchar(10000)",
                     "manipulations": []
                   }
                 ]
@@ -204,13 +262,14 @@
     {
       "permittedValues": [],
       "isOutputColumn": false,
-      "name": "ModelFile",
+      "name": "InputModelFile",
       "alternateNames": [
-        "Model"
+        "Model",
+        "ModelFile"
       ],
       "isRequired": false,
       "rDescription": "Specifies the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file, then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file, then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification:model_file, model_file must be the name of a model file generated and installed on the database by the function aa.sentiment.train. Note: Before running the function, add the location of dict_file or model_file to the user/session default search path.",
-      "description": " Specify the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file , then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file , then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification model_file , then model_file must be the name of a model file created and installed on the ML Engine by the function SentimentTrainer.",
+      "description": "Specifies the model type and file. The default model type is dictionary. If you omit this argument or specify dictionary without dict_file, then you must specify a dictionary table with alias 'dict'. If you specify both dict and dict_file, then whenever their words conflict, dict has higher priority. The dict_file must be a text file in which each line contains only a sentiment word, a space, and the opinion score of the sentiment word. If you specify classification:model_file, model_file must be the name of a model file generated and installed on the database by the function \u201cTrainSentimentExtractor\u201d on page 780. Note: Before running the function, add the location of dict_file or model_file to the user/session default search path.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "object",
@@ -286,8 +345,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

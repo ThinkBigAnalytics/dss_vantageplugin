@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "XGBoost_Drive",
-  "function_version": "2.7",
+  "function_version": "2.13",
   "function_type": "driver",
   "function_alias_name": "XGBoost",
   "function_r_name": "aa.xgboost.drive",
@@ -20,7 +20,7 @@
           {
             "source": "predefined",
             "name": "message",
-            "dataType": "varchar",
+            "dataType": "varchar(2048)",
             "manipulations": []
           }
         ]
@@ -82,20 +82,20 @@
             "placement": "end",
             "arguments": [
               {
-                "source": "parameter",
-                "name": "NumBoostedTrees.*",
+                "source": "predefined",
+                "name": "tree_id",
                 "dataType": "integer",
                 "manipulations": []
               },
               {
-                "source": "parameter",
-                "name": "IterNum.*",
+                "source": "predefined",
+                "name": "iter",
                 "dataType": "integer",
                 "manipulations": []
               },
               {
-                "source": "parameter",
-                "name": "LossFunction.*",
+                "source": "predefined",
+                "name": "class_num",
                 "dataType": "integer",
                 "manipulations": []
               },
@@ -218,7 +218,7 @@
       "checkDuplicate": true,
       "allowedTypes": [],
       "allowedTypeGroups": [
-        "ALL"
+        "STRING"
       ],
       "requiredLength": 1,
       "matchLengthOfArgument": "",
@@ -259,7 +259,7 @@
     },
     {
       "lowerBound": 1,
-      "upperBound": 100,
+      "upperBound": 10000,
       "lowerBoundType": "INCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
@@ -400,7 +400,7 @@
       "rOrderNum": 8
     },
     {
-      "defaultValue": 12,
+      "defaultValue": 5,
       "lowerBound": 1,
       "upperBound": 100000,
       "lowerBoundType": "INCLUSIVE",
@@ -409,7 +409,7 @@
       "name": "MaxDepth",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Specifies the maximum depth of the tree. The max_depth must an INTEGER in the range [1, 100000]. The default value is 12.",
+      "rDescription": "Specifies the maximum depth of the tree. The max_depth must an INTEGER in the range [1, 100000]. The default value is 5.",
       "description": " Specify the decision-tree stopping criterion that has the greatest effect on function performance, the maximum tree depth. If the tree depth exceeds max_depth , the algorithm stops looking for splits. A decision tree can grow to 2( max_depth +1)-1 nodes. The max_depth must be an INTEGER in the range [1, 100000]. Default: 12",
       "datatype": "INTEGER",
       "allowsLists": false,
@@ -458,8 +458,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

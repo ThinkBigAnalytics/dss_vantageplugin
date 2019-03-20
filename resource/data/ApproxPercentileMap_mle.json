@@ -64,11 +64,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "GroupColumns",
-      "alternateNames": [],
+      "name": "GroupByColumns",
+      "alternateNames": [
+        "GroupColumns"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the names of the input columns by which to group the data. If you specify this argument, the function computes the approximate percentile for each group in each column. If you omit this argument, the function computes the approximate percentile for the entire column. For example, suppose that the target columns are State, Town, and Population. If you specify GroupColumns('State'), the function computes the approximate percentile for the population of each state. If you omit this argument, the function computes the approximate percentile for the population across all towns. To specify this argument, you must do so in both the ApproxPercentileMap and the ApproxPercentileReduce functions, and specify each group_column in the PARTITION BY clause. If you omit this argument, specify PARTITION BY 1. ",
-      "description": " Specify the names of the input columns by which to group the data. If you specify this argument, the function computes the approximate percentile for each group in each column. For example, if the target columns are State, Town, and Population, the function computes the approximate percentile for the population of each state. If you omit this argument, the function computes the approximate percentile for the entire column. For example, if the target columns are State, Town, and Population, the function computes the approximate percentile for the population across all towns. To specify this argument, you must do so in both the ApproxPercentileMap and the ApproxPercentileReduce functions, and specify each group_column in the PARTITION BY clause.",
+      "description": "Specifies the names of the input columns by which to group the data. If you specify this argument, the function computes the approximate percentile for each group in each column. If you omit this argument, the function computes the approximate percentile for the entire column. For example, suppose that the target columns are State, Town, and Population. If you specify GroupColumns('State'), the function computes the approximate percentile for the population of each state. If you omit this argument, the function computes the approximate percentile for the population across all towns. To specify this argument, you must do so in both the ApproxPercentileMap and the ApproxPercentileReduce functions, and specify each group_column in the PARTITION BY clause. If you omit this argument, specify PARTITION BY 1. ",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "group.columns",
@@ -98,8 +100,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

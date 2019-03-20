@@ -8,7 +8,7 @@
   "function_alias_name": "nPath",
   "function_r_name": "aa.npath",
   "short_description": "The nPath function matches specified patterns in a sequence of rows from one or more input tables and extracts information from the matched rows.",
-  "long_description": "",
+  "long_description": "The nPath function scans a set of rows, looking for patterns that you specify. For each set of input rows that matches the pattern, nPath produces a single output row. The function provides a flexible pattern-matching capability that lets you specify complex patterns in the input data and define the values that are output for each matched input set. nPath is useful when your goal is to identify the paths that lead to an outcome. For example, you can use nPath to analyze: Web site click data, to identify paths that lead to sales over a specified amount Sensor data from industrial processes, to identify paths to poor product quality Healthcare records of individual patients, to identify paths that indicate that patients are at risk of developing conditions such as heart disease or diabetes Financial data for individuals, to identify paths that provide information about credit or fraud risks The output from the nPath function can be input to other ML Engine functions or to a visualization tool such as Teradata AppCenter. An nPath call specifies: Mode (overlapping or nonoverlapping) Pattern to match Symbols to use [Optional] Filters to apply Results to output",
   "outputSchema": {
     "property": "outputSchema",
     "outputId": "standard",
@@ -17,18 +17,6 @@
         "instruction": "ADD",
         "placement": "end",
         "arguments": [
-          {
-            "source": "inputTable",
-            "name": "input_table.PartitionBy.*",
-            "dataType": "unchanged",
-            "manipulations": []
-          },
-          {
-            "source": "inputTable",
-            "name": "input_table.OrderBy.*",
-            "dataType": "unchanged",
-            "manipulations": []
-          },
           {
             "source": "parameter",
             "name": "Result.*",
@@ -46,8 +34,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input1",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input1"
+      ],
       "isRequired": true,
       "rDescription": "Input table",
       "description": "Input table",
@@ -64,8 +54,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input2",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input2"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -82,8 +74,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input3",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input3"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -100,8 +94,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input4",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input4"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -118,8 +114,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input5",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input5"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -136,8 +134,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input6",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input6"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -154,8 +154,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input7",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input7"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -172,8 +174,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input8",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input8"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -190,8 +194,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input9",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input9"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -208,8 +214,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input10",
-      "alternateNames": [],
+      "name": "input",
+      "alternateNames": [
+        "input10"
+      ],
       "isRequired": false,
       "rDescription": "Additional optional input table",
       "description": "Additional optional input table",
@@ -299,8 +307,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

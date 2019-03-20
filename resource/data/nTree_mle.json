@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "nTree",
-  "function_version": "1.2",
+  "function_version": "1.3",
   "function_type": "non-driver",
   "function_alias_name": "NTree",
   "function_r_name": "aa.ntree",
@@ -16,7 +16,7 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "input1",
+      "name": "input",
       "alternateNames": [],
       "isRequired": true,
       "rDescription": "input table",
@@ -34,10 +34,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ROOT_NODE",
-      "alternateNames": [],
+      "name": "RootNode",
+      "alternateNames": [
+        "ROOT_NODE"
+      ],
       "rDescription": "Specifies the BOOLEAN SQL expression that defines the root nodes of the trees (for example, parent.id IS NULL).",
-      "description": "Specify the BOOLEAN SQL expression that defines the root nodes of the trees (for example, parent_id IS NULL).",
+      "description": "Specifies the BOOLEAN SQL expression that defines the root nodes of the trees (for example, parent_id IS NULL).",
       "datatype": "SQLEXPR",
       "allowsLists": false,
       "rName": "root.node",
@@ -50,10 +52,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "NODE_ID",
-      "alternateNames": [],
+      "name": "NodeID",
+      "alternateNames": [
+        "NODE_ID"
+      ],
       "rDescription": "Specifies the SQL expression whose value uniquely identifies a node in the input table (for example, order_id). \nNote: A node can appear multiple times in the data set, with different parents.",
-      "description": "Specify the SQL expression whose value uniquely identifies a node in the input table (for example, order_id). Note: A node can appear multiple times in the data set, with different parents.",
+      "description": "Specifies the SQL expression whose value uniquely identifies a node in the input table (for example, order_id). \nNote: A node can appear multiple times in the data set, with different parents.",
       "datatype": "SQLEXPR",
       "allowsLists": false,
       "rName": "node.id",
@@ -66,10 +70,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "PARENT_ID",
-      "alternateNames": [],
+      "name": "ParentID",
+      "alternateNames": [
+        "PARENT_ID"
+      ],
       "rDescription": "Specifies the SQL expression whose value identifies the parent node.",
-      "description": "Specify the SQL expression whose value identifies the parent node.",
+      "description": "Specifies the SQL expression whose value identifies the parent node.",
       "datatype": "SQLEXPR",
       "allowsLists": false,
       "rName": "parent.id",
@@ -85,10 +91,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "MODE",
-      "alternateNames": [],
+      "name": "Direction",
+      "alternateNames": [
+        "MODE"
+      ],
       "rDescription": "Specifies the direction of tree traversal from the start node\u2014up to the root node or down to the leaf nodes.",
-      "description": "Specify the direction of tree traversal from the start node\u2014up to the root node or down to the leaf nodes.",
+      "description": "Specifies the direction of tree traversal from the start node\u2014up to the root node or down to the leaf nodes.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "mode",
@@ -98,26 +106,30 @@
     },
     {
       "defaultValue": false,
-      "name": "ALLOW_CYCLES",
-      "alternateNames": [],
+      "name": "AllowCycles",
+      "alternateNames": [
+        "ALLOW_CYCLES"
+      ],
       "rDescription": "Specifies whether trees can contain cycles. If not, a cycle in the data set causes the function to throw an exception. The default value is 'false'. For information about cycles, refer to \u201cCycles in ta.ntree\u201d",
-      "description": "Specifies whether trees can contain cycles. If not, a cycle in the data set causes the function to throw an exception. The default value is 'false'. For information about cycles, refer to \u201cCycles in nTree\u201d",
+      "description": "Specify whether trees can contain cycles. If not, a cycle in the data set causes the function to throw an exception. For information about cycles, see Cycles in NTree. Default: 'false'",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "allow.cycles",
       "useInR": true,
       "rOrderNum": 5,
-      "isRequired": true
+      "isRequired": false
     },
     {
       "permittedValues": [],
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "STARTS_WITH",
-      "alternateNames": [],
+      "name": "StartsWith",
+      "alternateNames": [
+        "STARTS_WITH"
+      ],
       "rDescription": "Specifies the node from which to start tree traversal\u2014must be 'root', 'leaf ', or a SQL expression that identifies a node.",
-      "description": "Specify the node from which to start tree traversal\u2014'root', 'leaf', or a SQL expression that identifies a node.",
+      "description": "Specifies the node from which to start tree traversal\u2014must be 'root', 'leaf ', or a SQL expression that identifies a node.",
       "datatype": "SQLEXPR",
       "allowsLists": false,
       "rName": "starts.with",
@@ -133,10 +145,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "OUTPUT",
-      "alternateNames": [],
+      "name": "OutputType",
+      "alternateNames": [
+        "OUTPUT"
+      ],
       "rDescription": "Specifies when to output a tuple\u2014at every node along the traversal path ('all') or only at the end of the traversal path ('end'). The default value is 'end'.",
-      "description": "Specify when to output a tuple\u2014at every node along the traversal path ('all') or only at the end of the traversal path ('end'). Default: 'end'",
+      "description": "Specifies when to output a tuple\u2014at every node along the traversal path ('all') or only at the end of the traversal path ('end'). The default value is 'end'.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "output",
@@ -150,7 +164,9 @@
       "lowerBoundType": "INCLUSIVE",
       "allowNaN": false,
       "name": "MaxDistance",
-      "alternateNames": [],
+      "alternateNames": [
+        "Max_Distance"
+      ],
       "rDescription": "Specifies the maximum tree depth. The default value is 5.",
       "description": " Specify the maximum tree depth. Default: 5",
       "datatype": "INTEGER",
@@ -165,10 +181,12 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "RESULT",
-      "alternateNames": [],
+      "name": "Results",
+      "alternateNames": [
+        "RESULT"
+      ],
       "rDescription": "Specifies aggregate operations to perform during tree traversal. The function reports the result of each aggregate operation in the output table. The syntax of aggregate is: \noperation (expression) [ ALIAS alias ] \noperation is either PATH, SUM, LEVEL, MAX, MIN, IS_CYCLE, AVG, or PROPAGATE. expression is a SQL expression. If operation is LEVEL or IS_CYCLE, then expression must be *. \nalias is the name of the output table column that contains the result of the operation. The default value is the string 'operation(expression)' without the quotation marks. For example, PATH(node_name). \nNote: The function ignores alias if it is the same as an input table column name. \nFor the path from the Starts_With node to the last traversed node, the operations do the following: \n PATH: Outputs the value of expression for each node, separating values with '->'. \n SUM: Computes the value of expression for each node and outputs the sum of these values. \n LEVEL: Outputs the number of hops. \n MAX: Computes the value of expression for each node and outputs the highest of these values. \n MIN: Computes the value of expression for each node and outputs the lowest of these values. \n IS_CYCLE: Outputs the cycle (if any). \n AVG: Computes the value of expression for each node and outputs the average of these values. \n PROPAGATE: Evaluates expression with the value of the starts.with node and propagates the result to every node.",
-      "description": "Specify aggregate operations to perform during tree traversal, using this syntax: operation ( expression ) [ ALIAS alias ] operation One of the following: operation operation Action for Path from Starts_With Node to Last Traversed Node PATH Outputs value of expression for each node, separating values with\u00a0'->'. SUM Computes value of expression for each node and outputs sum of these values. LEVEL Outputs number of hops. MAX Computes value of expression for each node and outputs highest of these values. MIN Computes value of expression for each node and outputs lowest of these values. IS_CYCLE Outputs cycle (if any). AVG Computes value of expression for each node and outputs average of these values. PROPAGATE Evaluates expression with value of Starts_With node and propagates result to every node. expression SQL expression. Must be * if operation is LEVEL or IS_CYCLE. alias Name of the output table column that contains the result of the operation. Note: The function ignores alias if it is the same as an input table column name.",
+      "description": "Specifies aggregate operations to perform during tree traversal. The function reports the result of each aggregate operation in the output table. The syntax of aggregate is: \noperation (expression) [ ALIAS alias ] \noperation is either PATH, SUM, LEVEL, MAX, MIN, IS_CYCLE, AVG, or PROPAGATE. expression is a SQL expression. If operation is LEVEL or IS_CYCLE, then expression must be *. \nalias is the name of the output table column that contains the result of the operation. The default value is the string 'operation(expression)' without the quotation marks. For example, PATH(node_name). \nNote: The function ignores alias if it is the same as an input table column name. \nFor the path from the Starts_With node to the last traversed node, the operations do the following: \n PATH: Outputs the value of expression for each node, separating values with '->'. \n SUM: Computes the value of expression for each node and outputs the sum of these values. \n LEVEL: Outputs the number of hops. \n MAX: Computes the value of expression for each node and outputs the highest of these values. \n MIN: Computes the value of expression for each node and outputs the lowest of these values. \n IS_CYCLE: Outputs the cycle (if any). \n AVG: Computes the value of expression for each node and outputs the average of these values. \n PROPAGATE: Evaluates expression with the value of the Starts_With node and propagates the result to every node.",
       "datatype": "SQLEXPR",
       "allowsLists": false,
       "rName": "result",
@@ -178,10 +196,12 @@
     },
     {
       "defaultValue": false,
-      "name": "LOGGING",
-      "alternateNames": [],
+      "name": "OutputLogMessages",
+      "alternateNames": [
+        "LOGGING"
+      ],
       "rDescription": "Specifies whether the function prints log messages. The default value is 'false'.",
-      "description": " Specify whether the function prints log messages. Default: 'false'",
+      "description": "Specifies whether the function prints log messages. The default value is 'false'.",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "logging",
@@ -194,8 +214,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

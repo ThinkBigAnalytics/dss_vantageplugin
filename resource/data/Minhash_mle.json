@@ -57,11 +57,13 @@
     },
     {
       "isOutputTable": true,
-      "name": "SaveSeedTo",
-      "alternateNames": [],
+      "name": "OutputSeedsTable",
+      "alternateNames": [
+        "SaveSeedTo"
+      ],
       "isRequired": false,
       "rDescription": " Specifies the name of the table where seeds are to be saved.",
-      "description": "[Optional. Disallowed with SeedTable table.] Specify the name of the table in which to save the random seeds that the function creates if you omit the SeedTable table. If you omit both SeedTable and SaveSeedTo, the function discards the random seeds at the end of execution. Typically, you specify this argument in the first MinHash call, which creates seed_table_to_save , and then specify seed_table_to_save as the SeedTable in subsequent MinHash calls.",
+      "description": " Specifies the name of the table where seeds are to be saved.",
       "datatype": "TABLE_NAME",
       "allowsLists": false,
       "rName": "save.seed.to",
@@ -230,8 +232,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Interpolator",
-  "function_version": "1.1",
+  "function_version": "1.2",
   "function_type": "non-driver",
   "function_alias_name": "Interpolator",
   "function_r_name": "aa.interpolator",
@@ -16,8 +16,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input_table",
-      "alternateNames": [],
+      "name": "InputTable",
+      "alternateNames": [
+        "input_table"
+      ],
       "isRequired": true,
       "rDescription": "Input table",
       "description": "Input table",
@@ -33,8 +35,10 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "time_table",
-      "alternateNames": [],
+      "name": "TimeIntervalTable",
+      "alternateNames": [
+        "time_table"
+      ],
       "isRequired": false,
       "rDescription": "time_table (optional) If omitted, then the time.interval argument must be specified.",
       "description": "time_table (optional) If omitted, then the TimeInterval argument must be specified.",
@@ -50,8 +54,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "count_row_number",
-      "alternateNames": [],
+      "name": "RowCounts",
+      "alternateNames": [
+        "count_row_number"
+      ],
       "isRequired": false,
       "rDescription": "count_row_number (optional), only used with interpolation.type('loess'(weights ({constant | tricube}), degree ({0 |1 |2}), span(m))), where m is between (\u03bb+1)/n and 1.",
       "description": "count_row_number (optional), only used with InterpolationType('loess'(weights ({constant | tricube}), degree ({0 |1 |2}), span(m))), where m is between (\u03bb+1)/n and 1.",
@@ -97,11 +103,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ValueColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "ValueColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the names of input_table columns to interpolate to the output table.",
-      "description": "Specify the names of input_table columns to interpolate to the output table.",
+      "description": "Specifies the names of input_table columns to interpolate to the output table.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "value.columns",
@@ -291,8 +299,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

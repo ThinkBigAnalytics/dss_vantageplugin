@@ -4,6 +4,7 @@
   "json_content_version": "1",
   "function_name": "Unpack",
   "function_version": "1.0",
+  "function_alias_name": "Unpack",
   "function_type": "fastpath",
   "function_r_name": "aa.unpack",
   "short_description": "Utility for unpacking data that has been put into a single column.",
@@ -41,9 +42,7 @@
       "matchLengthOfArgument": "",
       "allowPadding": false,
       "name": "TargetColumn",
-      "alternateNames": [
-        "InputColumn"
-      ],
+      "alternateNames": ["InputColumn"],
       "isRequired": true,
       "rDescription": " Specifies the name of the input column that contains the packed data.",
       "description": " Specifies the name of the input column that contains the packed data.",
@@ -152,9 +151,7 @@
     {
       "defaultValue": false,
       "name": "IgnoreInvalid",
-      "alternateNames": [
-        "Exception"
-      ],
+      "alternateNames": ["Exception"],
       "isRequired": false,
       "rDescription": "Specifies whether the function ignores rows that contain invalid data; that is, continues without outputting them. The default value is 'false', which causes the function to fail if it encounters a row with invalid data.",
       "description": "Specifies whether the function ignores rows that contain invalid data; that is, continues without outputting them. The default value is 'false', which causes the function to fail if it encounters a row with invalid data.",

@@ -33,7 +33,7 @@
       ],
       "isOrdered": true,
       "partitionByOne": false,
-      "name": "input2",
+      "name": "input",
       "alternateNames": [],
       "isRequired": false,
       "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
@@ -46,52 +46,52 @@
     },
     {
       "requiredInputKind": [
-        "Dimension"
+        "PartitionByKey"
       ],
-      "isOrdered": false,
+      "isOrdered": true,
       "partitionByOne": false,
-      "name": "conversion",
+      "name": "input",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Contains one varchar column (conversion_events) containing conversion event values.",
-      "description": "Contains one varchar column (conversion_events) containing conversion event values.",
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
       "datatype": "TABLE_ALIAS",
       "allowsLists": false,
-      "rName": "conversion.data",
+      "rName": "data.optional",
       "useInR": true,
-      "rOrderNum": 13
+      "rOrderNum": 3
     },
     {
       "requiredInputKind": [
-        "Dimension"
+        "PartitionByKey"
       ],
-      "isOrdered": false,
+      "isOrdered": true,
       "partitionByOne": false,
-      "name": "excluding",
+      "name": "input",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Contains one varchar column (excluding_events) containing excluding cause event values.",
-      "description": "Contains one varchar column (excluding_events) containing excluding cause event values.",
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
       "datatype": "TABLE_ALIAS",
       "allowsLists": false,
-      "rName": "excluding.data",
+      "rName": "data.optional",
       "useInR": true,
       "rOrderNum": 4
     },
     {
       "requiredInputKind": [
-        "Dimension"
+        "PartitionByKey"
       ],
-      "isOrdered": false,
+      "isOrdered": true,
       "partitionByOne": false,
-      "name": "optional",
+      "name": "input",
       "alternateNames": [],
       "isRequired": false,
-      "rDescription": "Contains one varchar column (optional_events) containing optional cause event values.",
-      "description": "Contains one varchar column (optional_events) containing optional cause event values.",
+      "rDescription": "Contains the click stream data, which the function uses to compute attributions.",
+      "description": "Contains the click stream data, which the function uses to compute attributions.",
       "datatype": "TABLE_ALIAS",
       "allowsLists": false,
-      "rName": "optional.data",
+      "rName": "data.optional",
       "useInR": true,
       "rOrderNum": 5
     },
@@ -101,14 +101,14 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "model1",
-      "alternateNames": [],
-      "isRequired": false,
-      "rDescription": "Defines the type and specification of the first model. For example: model1.data ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
-      "description": "Defines the type and specification of the first model. For example: Model1 ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
+      "name": "ConversionEventTable",
+      "alternateNames": ["conversion"],
+      "isRequired": true,
+      "rDescription": "Contains one varchar column (conversion_events) containing conversion event values.",
+      "description": "Contains one varchar column (conversion_events) containing conversion event values.",
       "datatype": "TABLE_ALIAS",
       "allowsLists": false,
-      "rName": "model1.type",
+      "rName": "conversion.data",
       "useInR": true,
       "rOrderNum": 6
     },
@@ -118,8 +118,59 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "model2",
-      "alternateNames": [],
+      "name": "ExcludedEventTable",
+      "alternateNames": ["excluding"],
+      "isRequired": false,
+      "rDescription": "Contains one varchar column (excluding_events) containing excluding cause event values.",
+      "description": "Contains one varchar column (excluding_events) containing excluding cause event values.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "excluding.data",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "OptionalEventTable",
+      "alternateNames": ["optional"],
+      "isRequired": false,
+      "rDescription": "Contains one varchar column (optional_events) containing optional cause event values.",
+      "description": "Contains one varchar column (optional_events) containing optional cause event values.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "optional.data",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "FirstModel",
+      "alternateNames": ["model1"],
+      "isRequired": true,
+      "rDescription": "Defines the type and specification of the first model. For example: model1.data ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
+      "description": "Defines the type and specification of the first model. For example: Model1 ('EVENT_REGULAR', 'email:0.19:LAST_CLICK:NA', 'impression:0.81:WEIGHTED:0.4,0.3,0.2,0.1')",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "model1.type",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "SecondModel",
+      "alternateNames": ["model2"],
       "isRequired": false,
       "rDescription": "Defines the type and distributions of the second model. For example: model2.data ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
       "description": "Defines the type and distributions of the second model. For example: Model2 ('EVENT_OPTIONAL', 'OrganicSearch:0.5:UNIFORM:NA', 'Direct:0.3:UNIFORM:NA', 'Referral:0.2:UNIFORM:NA')",
@@ -127,7 +178,7 @@
       "allowsLists": false,
       "rName": "model2.type",
       "useInR": true,
-      "rOrderNum": 7
+      "rOrderNum": 10
     }
   ],
   "argument_clauses": [
@@ -153,7 +204,7 @@
       "allowsLists": false,
       "rName": "event.column",
       "useInR": true,
-      "rOrderNum": 10
+      "rOrderNum": 11
     },
     {
       "targetTable": [
@@ -168,8 +219,8 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": false,
-      "name": "TimestampColumn",
-      "alternateNames": [],
+      "name": "TimeColumn",
+      "alternateNames": ["TimestampColumn"],
       "isRequired": true,
       "rDescription": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
       "description": "Specifies the name of the input column that contains the timestamps of the clickstream events.",
@@ -177,7 +228,7 @@
       "allowsLists": false,
       "rName": "timestamp.column",
       "useInR": true,
-      "rOrderNum": 11
+      "rOrderNum": 12
     },
     {
       "permittedValues": [],
@@ -191,7 +242,7 @@
       "allowsLists": false,
       "rName": "window.size",
       "useInR": true,
-      "rOrderNum": 12
+      "rOrderNum": 10
     }
   ]
 }

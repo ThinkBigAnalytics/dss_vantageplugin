@@ -29,8 +29,10 @@
       "requiredInputKind": [],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "WeightTable",
-      "alternateNames": [],
+      "name": "InitialWeights",
+      "alternateNames": [
+        "WeightTable"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the table that lists the starting values for the neural network weights. The Weights Table is discussed in further detail.",
       "description": "Specifies the table that lists the starting values for the neural network weights. The Weights Table is discussed in further detail.",
@@ -154,11 +156,13 @@
       "lowerBoundType": "INCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
-      "name": "Threshold",
-      "alternateNames": [],
+      "name": "StopThreshold",
+      "alternateNames": [
+        "Threshold"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the threshold for the partial derivatives of the error function as stopping criteria. Default value is 0.01.",
-      "description": " Specify the threshold for the partial derivatives of the error function as stopping criteria. The threshold must be a DOUBLE value. Default: 0.01",
+      "description": "Specifies the threshold for the partial derivatives of the error function as stopping criteria. Default value is 0.01.",
       "datatype": "DOUBLE",
       "allowsLists": false,
       "rName": "threshold",
@@ -289,8 +293,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

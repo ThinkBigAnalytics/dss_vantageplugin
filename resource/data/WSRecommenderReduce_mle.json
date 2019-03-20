@@ -18,8 +18,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "item_table",
-      "alternateNames": [],
+      "name": "ItemTable",
+      "alternateNames": [
+        "item_table"
+      ],
       "isRequired": true,
       "rDescription": "item table",
       "description": "item table",
@@ -35,8 +37,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "user_table",
-      "alternateNames": [],
+      "name": "UserTable",
+      "alternateNames": [
+        "user_table"
+      ],
       "isRequired": true,
       "rDescription": "user table",
       "description": "user table",
@@ -63,11 +67,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "UserId",
-      "alternateNames": [],
+      "name": "UserIDColumn",
+      "alternateNames": [
+        "UserId"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the user_table column that contains the unique user identifiers. The default value is 'usr'.",
-      "description": "Specify the name of the user_table column that contains the unique user identifiers. Default: 'usr'",
+      "description": "Specifies the name of the user_table column that contains the unique user identifiers. The default value is 'usr'.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "user.id",
@@ -89,11 +95,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "UserItem",
-      "alternateNames": [],
+      "name": "UserItemColumn",
+      "alternateNames": [
+        "UserItem"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the user_table column that contains the names of the items that the user viewed or purchased. The default value is 'item'.",
-      "description": " Specify the name of the user_table column that contains the names of the items that the user viewed or purchased. Default: 'item'",
+      "description": "Specifies the name of the user_table column that contains the names of the items that the user viewed or purchased. The default value is 'item'.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "user.item",
@@ -115,11 +123,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "UserPref",
-      "alternateNames": [],
+      "name": "UserPrefColumn",
+      "alternateNames": [
+        "UserPref"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the user_table column that contains user preferences for an item, expressed as numeric values. The value 0 indicates no preference. The default value is 'preference'.",
-      "description": " Specify the name of the user_table column that contains user preferences for an item, expressed as numeric values. The value 0 indicates no preference. Default: 'preference'",
+      "description": "Specifies the name of the user_table column that contains user preferences for an item, expressed as numeric values. The value 0 indicates no preference. The default value is 'preference'.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "user.pref",
@@ -193,11 +203,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ItemSimilarity",
-      "alternateNames": [],
+      "name": "ItemSimilarityScore",
+      "alternateNames": [
+        "ItemSimilarity"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the item_table column that contains the similarity score for item1 and item2. The default value is 'cntb'.",
-      "description": " Specify the name of the item_table column that contains the similarity score for item1 and item2. Default: 'cntb'",
+      "description": "Specifies the name of the item_table column that contains the similarity score for item1 and item2. The default value is 'cntb'.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "item.similarity",
@@ -253,8 +265,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

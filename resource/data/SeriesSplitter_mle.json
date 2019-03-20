@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "SeriesSplitter",
-  "function_version": "1.6",
+  "function_version": "1.8",
   "function_type": "driver",
   "function_alias_name": "SeriesSplitter",
   "function_r_name": "aa.series.splitter",
@@ -68,11 +68,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "PartitionByColumns",
-      "alternateNames": [],
+      "name": "PartitionColumns",
+      "alternateNames": [
+        "PartitionByColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the partitioning columns of input_table. These columns determine the identity of a partition. For data type restrictions of these columns, see the Aster Database Documentation.",
-      "description": "Specify the partition columns of input_table . These columns determine the identity of a partition. For data type restrictions of these columns, see the Teradata Database documentation.",
+      "description": "Specifies the partitioning columns of input_table. These columns determine the identity of a partition. For data type restrictions of these columns, see the Aster Database Documentation.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "partition.columns",
@@ -280,8 +282,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

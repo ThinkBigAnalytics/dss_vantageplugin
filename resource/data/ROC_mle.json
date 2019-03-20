@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "ROC",
-  "function_version": "1.5",
+  "function_version": "1.6",
   "function_type": "driver",
   "function_alias_name": "ROC",
   "function_r_name": "aa.roc",
@@ -163,9 +163,7 @@
     {
       "defaultValue": true,
       "name": "ROCValues",
-      "alternateNames": [
-        "ROC"
-      ],
+      "alternateNames": [],
       "isRequired": false,
       "rDescription": "Specifies whether the function displays roc values (thresholds, false positive rates, and true positive rates). The default value is 'true'. See the note after the table.",
       "description": " Specify whether the function displays ROC values (thresholds, false positive rates, and true positive rates). Default: 'true'. See the following note.",
@@ -206,8 +204,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

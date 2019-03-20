@@ -40,11 +40,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ValueColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "ValueColumns"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the names of one to 16 inputtable columns that contain the signal values on which to perform FFT.",
-      "description": "Specify the names of one to 16 inputtable columns that contain the signal values on which to perform FFT.",
+      "description": "Specifies the names of one to 16 inputtable columns that contain the signal values on which to perform FFT.",
       "datatype": "COLUMNS",
       "allowsLists": true,
       "rName": "value.columns",
@@ -58,11 +60,13 @@
       "lowerBoundType": "EXCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
-      "name": "NumDimensions",
-      "alternateNames": [],
+      "name": "Dimensions",
+      "alternateNames": [
+        "NumDimensions"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the number of dimensions in the signal. The parameter dimensions must be the INTEGER value 1, 2, or 3. (A time series has one dimension; an image has two or three.)",
-      "description": " Specify the number of dimensions in the signal. The parameter dimensions must be the INTEGER value 1, 2, or 3. (A time series has one dimension; an image has two or three.) Default: 1",
+      "description": "Specifies the number of dimensions in the signal. The parameter dimensions must be the INTEGER value 1, 2, or 3. (A time series has one dimension; an image has two or three.)",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "num.dimensions",
@@ -76,11 +80,13 @@
       "lowerBoundType": "EXCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
-      "name": "FFTLength",
-      "alternateNames": [],
+      "name": "MaxSignalLength",
+      "alternateNames": [
+        "FFTLength"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the maximum signal length. The parameter FFT_length must be an INTEGER. The default value is 2^24. If the signal length exceeds FFT_length, the function truncates it to FFT_length. Note: In a signal with more than one dimension, each dimension must have the same length.",
-      "description": " Specify the maximum signal length. The parameter FFT_length must be an INTEGER. Default: 2 24 . If the signal length exceeds FFT_length , the function truncates it to FFT_length . Note: In a signal with more than one dimension, each dimension must have the same length.",
+      "description": "Specifies the maximum signal length. The parameter FFT_length must be an INTEGER. The default value is 2^24. If the signal length exceeds FFT_length, the function truncates it to FFT_length. Note: In a signal with more than one dimension, each dimension must have the same length.",
       "datatype": "INTEGER",
       "allowsLists": false,
       "rName": "fft.length",
@@ -115,11 +121,13 @@
     },
     {
       "defaultValue": false,
-      "name": "PadNonPowerOfTwoLengths",
-      "alternateNames": [],
+      "name": "PadSignal",
+      "alternateNames": [
+        "PadNonPowerOfTwoLengths"
+      ],
       "isRequired": false,
       "rDescription": "Specifies whether to pad the input signal with zeros to round up to the closest power of two. The default value is 'true'. If you specify 'false', the function truncates the input signal and rounds down to the closest power of 2^dimensions that is less than the input signal.",
-      "description": " Specify whether to pad the input signal with zeros to round up to the closest power of two. Default: 'true'. If you specify 'false', the function truncates the input signal and rounds down to the closest power of 2 dimensions that is less than the input signal.",
+      "description": "Specifies whether to pad the input signal with zeros to round up to the closest power of two. The default value is 'true'. If you specify 'false', the function truncates the input signal and rounds down to the closest power of 2^dimensions that is less than the input signal.",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "pad.nonpower",
@@ -128,11 +136,13 @@
     },
     {
       "defaultValue": true,
-      "name": "IsSignalRealValued",
-      "alternateNames": [],
+      "name": "RealValuedSignal",
+      "alternateNames": [
+        "IsSignalRealValued"
+      ],
       "isRequired": false,
       "rDescription": "Specifies whether the value columns contain REAL (DOUBLE PRECISION) values. The default value is 'true'. If you specify 'false', the function interprets the values as complex numbers; therefore, they must be multiples of two.",
-      "description": " Specify whether the value columns contain DOUBLE PRECISION values. Default: 'true'. If you specify 'false', the function interprets the values as complex numbers; therefore, they must be multiples of two.",
+      "description": "Specifies whether the value columns contain REAL (DOUBLE PRECISION) values. The default value is 'true'. If you specify 'false', the function interprets the values as complex numbers; therefore, they must be multiples of two.",
       "datatype": "BOOLEAN",
       "allowsLists": false,
       "rName": "issignal.real.valued",
@@ -144,8 +154,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

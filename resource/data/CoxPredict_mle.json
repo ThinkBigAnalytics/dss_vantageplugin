@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "CoxPredict",
-  "function_version": "1.3",
+  "function_version": "1.4",
   "function_type": "non-driver",
   "function_alias_name": "CoxHazardRatio",
   "function_r_name": "aa.cox.predict",
@@ -19,8 +19,8 @@
         "placement": "end",
         "arguments": [
           {
-            "source": "inputTable",
-            "name": "predicts.Accumulate.*",
+            "source": "parameter",
+            "name": "Accumulate.*",
             "dataType": "unchanged",
             "manipulations": []
           }
@@ -42,16 +42,21 @@
                 "placement": "end",
                 "arguments": [
                   {
-                    "source": "inputTable",
-                    "name": "predicts.PredictFeatureNames.*",
+                    "source": "parameter",
+                    "name": "PredictFeatureNames.*",
                     "dataType": "unchanged",
                     "manipulations": []
                   },
                   {
-                    "source": "inputTable",
-                    "name": "refs.RefFeatureColumns.*",
+                    "source": "parameter",
+                    "name": "RefFeatureColumns.*",
                     "dataType": "unchanged",
-                    "manipulations": []
+                    "manipulations": [
+                      {
+                        "operation": "postfix",
+                        "argument": "_ref"
+                      }
+                    ]
                   }
                 ]
               }
@@ -75,10 +80,15 @@
                 "placement": "end",
                 "arguments": [
                   {
-                    "source": "inputTable",
-                    "name": "predicts.PredictFeatureUnitsColumns.*",
+                    "source": "parameter",
+                    "name": "PredictFeatureUnitsColumns.*",
                     "dataType": "unchanged",
-                    "manipulations": []
+                    "manipulations": [
+                      {
+                        "operation": "postfix",
+                        "argument": "_units"
+                      }
+                    ]
                   }
                 ]
               }
@@ -107,8 +117,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "cox_coef_model",
-      "alternateNames": [],
+      "name": "CoxCoeffModel",
+      "alternateNames": [
+        "cox_coef_model"
+      ],
       "isRequired": true,
       "rDescription": "This table defining the feature coefficients.",
       "description": "This table defining the feature coefficients.",
@@ -124,8 +136,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "predicts",
-      "alternateNames": [],
+      "name": "PredictorValues",
+      "alternateNames": [
+        "predicts"
+      ],
       "isRequired": true,
       "rDescription": "This table defining new feature values or unit changes for prediction.",
       "description": "This table defining new feature values or unit changes for prediction.",
@@ -141,8 +155,10 @@
       ],
       "isOrdered": false,
       "partitionByOne": false,
-      "name": "refs",
-      "alternateNames": [],
+      "name": "ReferenceValues",
+      "alternateNames": [
+        "refs"
+      ],
       "isRequired": false,
       "rDescription": "This table defining reference feature values.",
       "description": "This table defining reference feature values.",
@@ -265,8 +281,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

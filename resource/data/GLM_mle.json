@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "GLM",
-  "function_version": "1.17",
+  "function_version": "1.19",
   "function_type": "driver",
   "function_alias_name": "GLM",
   "function_r_name": "aa.glm",
@@ -37,12 +37,6 @@
           },
           {
             "source": "predefined",
-            "name": "z_score",
-            "dataType": "double precision not null",
-            "manipulations": []
-          },
-          {
-            "source": "predefined",
             "name": "p_value",
             "dataType": "double precision",
             "manipulations": []
@@ -52,6 +46,64 @@
             "name": "signficance",
             "dataType": "varchar(50)",
             "manipulations": []
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(Family)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "GAUSSIAN"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "before p_value",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "t_score",
+                    "dataType": "double precision not null",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(Family)",
+                "operator": "!=",
+                "valueType": "string",
+                "rightOperand": "GAUSSIAN"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "before p_value",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "z_score",
+                    "dataType": "double precision not null",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -127,6 +179,12 @@
               },
               {
                 "source": "predefined",
+                "name": "z_score",
+                "dataType": "double precision not null",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
                 "name": "p_value",
                 "dataType": "double precision",
                 "manipulations": []
@@ -142,64 +200,6 @@
                 "name": "family",
                 "dataType": "varchar(20)",
                 "manipulations": []
-              }
-            ]
-          },
-          {
-            "instruction": "CASE",
-            "arguments": [
-              {
-                "condition": [
-                  {
-                    "leftOperand": "valueFromParameter(Family)",
-                    "operator": "=",
-                    "valueType": "string",
-                    "rightOperand": "GAUSSIAN"
-                  }
-                ],
-                "action": [
-                  {
-                    "instruction": "ADD",
-                    "placement": "before p_value",
-                    "arguments": [
-                      {
-                        "source": "predefined",
-                        "name": "t_score",
-                        "dataType": "double precision not null",
-                        "manipulations": []
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "instruction": "CASE",
-            "arguments": [
-              {
-                "condition": [
-                  {
-                    "leftOperand": "valueFromParameter(Family)",
-                    "operator": "!=",
-                    "valueType": "string",
-                    "rightOperand": "GAUSSIAN"
-                  }
-                ],
-                "action": [
-                  {
-                    "instruction": "ADD",
-                    "placement": "before p_value",
-                    "arguments": [
-                      {
-                        "source": "predefined",
-                        "name": "z_score",
-                        "dataType": "double precision not null",
-                        "manipulations": []
-                      }
-                    ]
-                  }
-                ]
               }
             ]
           }
@@ -219,11 +219,13 @@
       ],
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "InputColumns",
-      "alternateNames": [],
+      "name": "TargetColumns",
+      "alternateNames": [
+        "InputColumns"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the column that contains the dependent variables (Y) followed by the  names of the columns that contain the predictor variables (Xi), in this format:  'Y,X1,X2,...,Xp'.  By default, the first column of the input table is Y and the remaining input table columns  are Xi, except for the column specified by the Weight argument.",
-      "description": " Specify the name of the column that contains the dependent variables (Y) followed by the names of the columns that contain the predictor variables (X i ), in this format: 'Y,X 1 ,X 2 ,...,X p '. Default behavior: The first column of the input table is Y and the remaining input table columns are X i , except for the column specified by the WeightColumn argument.",
+      "description": "Specifies the name of the column that contains the dependent variables (Y) followed by the  names of the columns that contain the predictor variables (Xi), in this format:  'Y,X1,X2,...,Xp'.  By default, the first column of the input table is Y and the remaining input table columns  are Xi, except for the column specified by the Weight argument.",
       "datatype": "COLUMN_NAMES",
       "allowsLists": true,
       "rName": "input.columns",
@@ -336,7 +338,7 @@
     },
     {
       "defaultValue": 0.01,
-      "lowerBound": -Infinity,
+      "lowerBound": 0,
       "upperBound": Infinity,
       "lowerBoundType": "INCLUSIVE",
       "upperBoundType": "INCLUSIVE",
@@ -403,8 +405,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

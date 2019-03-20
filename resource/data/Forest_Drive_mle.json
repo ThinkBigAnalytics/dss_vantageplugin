@@ -3,7 +3,7 @@
   "json_schema_minor_version": "2",
   "json_content_version": "1",
   "function_name": "Forest_Drive",
-  "function_version": "2.13",
+  "function_version": "2.17",
   "function_type": "driver",
   "function_alias_name": "DecisionForest",
   "function_r_name": "aa.forest",
@@ -80,7 +80,7 @@
               {
                 "source": "predefined",
                 "name": "tree_num",
-                "dataType": "varchar(20)",
+                "dataType": "integer",
                 "manipulations": []
               },
               {
@@ -90,6 +90,41 @@
                 "manipulations": []
               }
             ]
+          },
+          {
+            "instruction": "CASE",
+            "arguments": [
+              {
+                "condition": [
+                  {
+                    "leftOperand": "valueFromParameter(DisplayNumProcessedRows)",
+                    "operator": "In",
+                    "valueType": "string",
+                    "rightOperand": "true,t,1,y,yes"
+                  }
+                ],
+                "action": [
+                  {
+                    "instruction": "ADD",
+                    "placement": "end",
+                    "arguments": [
+                      {
+                        "source": "predefined",
+                        "name": "num_processed_rows",
+                        "dataType": "integer",
+                        "manipulations": []
+                      },
+                      {
+                        "source": "predefined",
+                        "name": "num_total_rows",
+                        "dataType": "integer",
+                        "manipulations": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
       }
@@ -97,8 +132,10 @@
     {
       "isOutputTable": true,
       "defaultValue": "default_dt_monitor_table",
-      "name": "MonitorTable",
-      "alternateNames": [],
+      "name": "OutputMessageTable",
+      "alternateNames": [
+        "MonitorTable"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the name of the table in which the function stores monitoring information. The default value is 'default_dt_monitor_table' in the current schema.",
       "description": "Specifies the name of the table in which the function stores monitoring information. The default value is 'default_dt_monitor_table' in the current schema.",
@@ -118,7 +155,7 @@
               {
                 "source": "predefined",
                 "name": "message",
-                "dataType": "varchar(500)",
+                "dataType": "varchar",
                 "manipulations": []
               }
             ]
@@ -303,7 +340,7 @@
     {
       "defaultValue": 20,
       "lowerBound": 0,
-      "upperBound": 30,
+      "upperBound": 2147483647,
       "lowerBoundType": "EXCLUSIVE",
       "upperBoundType": "INCLUSIVE",
       "allowNaN": false,
@@ -396,12 +433,33 @@
       "rOrderNum": 13
     },
     {
+      "permittedValues": [
+        "graycode",
+        "ordinal",
+        "hashing"
+      ],
+      "defaultValue": "graycode",
+      "isOutputColumn": false,
+      "name": "CategoricalEncoding",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies which encoding method is used for categorical variables.",
+      "description": "Specifies which encoding method is used for categorical variables.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "categorical.encoding",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
       "permittedValues": [],
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",

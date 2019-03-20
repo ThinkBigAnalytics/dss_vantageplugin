@@ -41,11 +41,13 @@
       "requiredLength": 1,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "ValueColumn",
-      "alternateNames": [],
+      "name": "TargetColumn",
+      "alternateNames": [
+        "ValueColumn"
+      ],
       "isRequired": true,
       "rDescription": "Specifies the name of the input table column that contains the time series data.",
-      "description": "Specify the name of the input table column that contains the time series data.",
+      "description": "Specifies the name of the input table column that contains the time series data.",
       "datatype": "COLUMNS",
       "allowsLists": false,
       "rName": "value.column",
@@ -131,11 +133,13 @@
       "permittedValues": [],
       "defaultValue": "BIC",
       "isOutputColumn": false,
-      "name": "Penalty",
-      "alternateNames": [],
+      "name": "Cost",
+      "alternateNames": [
+        "Penalty"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the penalty function, which is used to avoid over-fitting. Possible values are: 'BIC' (default), 'AIC', threshold, a DOUBLE PRECISION valueFor BIC, the condition for the existence of a change point is: ln(L1)\u2212ln(L0) > (p1-p0)*ln(n)/2 For normal distribution and linear regression, the condition is: (p1-p0)*ln(n)/2 = ln(n) For AIC, the condition for the existence of a change point is: ln(L1)\u2212ln(L0) > p1-p0 For normal distribution and linear regression, the condition is: p1-p0 = 2 For threshold, the specified value is compared to: ln(L1)\u2212ln(L0) L1 and L2 are the maximum likelihood estimation of hypotheses H1 and H0. For normal distribution, the definition of Log(L1 ) and Log(L0) are in \u201cBackground\u201d. p is the number of additional parameters introduced by adding a change point. p is used in the information criterion BIC or AIC. p1 and p0 represent this parameter in hypotheses H1 and H0 separately",
-      "description": " Specify the penalty function, which is used to avoid over-fitting: Option Condition for Change Point Existence Condition for Normal Distribution and Linear Regression 'BIC' (Default) ln ( L 1 )\u2212 ln ( L 0 ) > ( p 1 -p 0 )* ln ( n )/2 ( p 1 -p 0 )* ln ( n )/2 = ln ( n ) 'AIC' ln ( L 1 )\u2212 ln ( L 0 ) > p 1 -p 0 p 1 -p 0 = 2 threshold , a DOUBLE PRECISION value Function compares specified value to ln ( L 1 )\u2212 ln ( L 0 ). L 1 and L 0 are the maximum likelihood estimation of hypotheses H 1 and H 0 . For normal distribution, the definition of Log( L 1 ) and Log( L 0 ) are in ChangePointDetection. p is the number of additional parameters introduced by adding a change point. p 1 and p 0 represent this parameter in hypotheses H 1 and H 0 , respectively.",
+      "description": "Specifies the penalty function, which is used to avoid over-fitting. Possible values are: 'BIC' (default), 'AIC', threshold, a DOUBLE PRECISION valueFor BIC, the condition for the existence of a change point is: ln(L1)\u2212ln(L0) > (p1-p0)*ln(n)/2 For normal distribution and linear regression, the condition is: (p1-p0)*ln(n)/2 = ln(n) For AIC, the condition for the existence of a change point is: ln(L1)\u2212ln(L0) > p1-p0 For normal distribution and linear regression, the condition is: p1-p0 = 2 For threshold, the specified value is compared to: ln(L1)\u2212ln(L0) L1 and L2 are the maximum likelihood estimation of hypotheses H1 and H0. For normal distribution, the definition of Log(L1 ) and Log(L0) are in \u201cBackground\u201d. p is the number of additional parameters introduced by adding a change point. p is used in the information criterion BIC or AIC. p1 and p0 represent this parameter in hypotheses H1 and H0 separately",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "penalty",
@@ -150,11 +154,13 @@
       ],
       "defaultValue": "changepoint",
       "isOutputColumn": false,
-      "name": "OutputOption",
-      "alternateNames": [],
+      "name": "OutputType",
+      "alternateNames": [
+        "OutputOption"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the output table columns. Refer to \u201cOutput. The default value is 'CHANGEPOINT'.",
-      "description": " Specify the output table columns. See ChangePointDetection Output. Default: 'CHANGEPOINT'",
+      "description": "Specifies the output table columns. Refer to \u201cOutput. The default value is 'CHANGEPOINT'.",
       "datatype": "STRING",
       "allowsLists": false,
       "rName": "output.option",
@@ -166,8 +172,10 @@
       "isOutputColumn": false,
       "matchLengthOfArgument": "",
       "allowPadding": true,
-      "name": "SequenceInputBy",
-      "alternateNames": [],
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
       "isRequired": false,
       "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
       "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
