@@ -189,6 +189,9 @@
           })
           .success(data => {
             functionMetadata = data;
+            // console.log('Function Metadata MR Test');
+            // console.log(functionMetadata);
+            // console.log($scope.config.function)
             functionVersion = functionMetadata.function_version;
             $scope.config.function.partitionAttributes = $scope.config.function.partitionAttributes || [];
             $scope.config.function.orderByColumn = $scope.config.function.orderByColumn || [];
@@ -790,6 +793,32 @@
           const hasOptionalOutputTable = $scope.config.function.output_tables
           && $scope.config.function.output_tables.length
           && ($scope.config.function.output_tables.filter(x => !x.isRequired).length > 0);
+        // console.log(hasOptionalInputTable);
+        // console.log(hasOptionalArgument);
+        // console.log(hasOptionalOutputTable);
+        return hasOptionalInputTable || hasOptionalArgument || hasOptionalOutputTable;
+
+      },
+
+      /**
+       * Checks whether or not optional arguments are present in the partnerfunction metadata.
+       */
+      hasOptionalArguments_Partner: function () {
+
+        const hasOptionalInputTable = $scope.config.function.partnerFunction.required_input
+          && $scope.config.function.partnerFunction.required_input.length
+          && ($scope.config.function.partnerFunction.required_input.filter(x => !x.isRequired).length > 0);
+
+        const hasOptionalArgument = $scope.config.function.partnerFunction.arguments
+          && $scope.config.function.partnerFunction.arguments.length
+          && ($scope.config.function.partnerFunction.arguments.filter(x => !x.isRequired).length > 0)
+          && ($scope.config.function.partnerFunction.useCoprocessor || ($scope.config.function.partnerFunction.arguments.filter(x => x.inNative && !x.isRequired).length > 0));
+          // console.log('hasOptionalArguments');
+          // console.log($scope.config.function.useCoprocessor);
+          // console.log(($scope.config.function.arguments.filter(x => x.inNative).length > 0));
+          const hasOptionalOutputTable = $scope.config.function.partnerFunction.output_tables
+          && $scope.config.function.partnerFunction.output_tables.length
+          && ($scope.config.function.partnerFunction.output_tables.filter(x => !x.isRequired).length > 0);
         // console.log(hasOptionalInputTable);
         // console.log(hasOptionalArgument);
         // console.log(hasOptionalOutputTable);

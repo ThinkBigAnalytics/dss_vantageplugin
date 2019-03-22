@@ -39,6 +39,13 @@ FROM   {}
 {}
 ) as tmp_alias
 {};'''
+
+MAP_FUNCTION_QUERY = '''ON {}
+(
+{}
+{}
+) as tmp_alias_partner
+{}'''
 # SELECT_QUERY = '''SELECT *
 # FROM   {}
 # (

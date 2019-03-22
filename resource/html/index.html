@@ -135,7 +135,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
         
       </div>
       <div id="tabs-required" class="plugintabcontent">
-
+        <!-- MAIN FUNCTION REQUIRED -->
+        <h5 ng-show=config.function.hasPartnerFunction>{{config.function.function_alias_name}}'s arguments</h5>
         <table class="table table-condensed table-hover" ng-model-options="{ debounce: 200 }">
 
           <thead>
@@ -381,11 +382,271 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
           </tbody>
         </table>
+        <!-- MAIN FUNCTION REQUIRED END -->
+        <!-- PARTNER FUNCTION REQUIRED START -->
+        <h5 ng-show=config.function.hasPartnerFunction>{{config.function.partnerFunction.function_alias_name}}'s arguments</h5>
+        <table ng-if="config.function.hasPartnerFunction" class="table table-condensed table-hover" ng-model-options="{ debounce: 200 }">
+
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+              <!--<th>Message</th>-->
+            </tr>
+          </thead>
+
+          <tbody ng-show="shouldRender()">
+            <tr ng-if="shouldShowPartitionOrderFields(config.function.partnerFunction.unaliased_inputs)">
+              <td>Unaliased Input Tables</td>
+              <td>
+                <select required multiple size="8" ng-model="config.function.partnerFunction.unaliased_inputs.values" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs"
+                  data-toggle="tooltip" data-container="body" data-placement="right" data-html="true" title="<b>(Ctrl+Click to multi-select)</b>">
+                  </select>
+              </td>
+            </tr>
+
+            <tr ng-repeat="item in config.function.partnerFunction.required_input" ng-model="config.function.partnerFunction.required_input" ng-if="item.hasOwnProperty('name') && item.isRequired">
+              <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+              <td>
+                <!-- <select required ng-model="item.value" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
+                      <option value="" selected>--No Selection--</option>
+                  </select> -->
+                  <span>{{config.function.function_alias_name}}'s output</span>
+                <div class="inner-cell" ng-if="item.inputKindChoices.length > 1">
+                  <p class="inner-label">Partition Type </p>
+                  <select required ng-model="item.kind" ng-options="kind for kind in item.inputKindChoices">
+                      <option value="" selected>--No Selection--</option>
+                  </select>
+                </div>
+
+                <div class="inner-cell" ng-show="'PartitionByKey' == item.kind">
+                  <p class="inner-label">Partition by 
+                      <button style="border:none;background: none;" ng-init="item.partitionAttributes = initializeColumnArray(item.partitionAttributes)" ng-click="addPartitionByColumn_TEST(item.partitionAttributes)" title="Add Partition Column">
+                        <span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                  </p>
+                  <div ng-if="'PartitionByKey' == item.kind" ng-repeat="col in item.partitionAttributes track by $index ">
+                      <span ng-show="'PartitionByKey' == item.kind">PARTITION BY column {{$index+1}}</span>
+                      <div>
+                          <!-- <select  required ng-model="item.partitionAttributes[$index]"
+                          ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
+                          data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <option value="" selected>--No Selection--</option>
+                        </select> -->
+                            <input required ng-model="item.partitionAttributes[$index]" 
+                            data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">
+                            <button style="border:none;background: none;" ng-if="item.partitionAttributes.length > 1" ng-click="removePartitionByColumn_TEST(item.partitionAttributes,$index)"
+                              title="Remove Script Argument">
+                              <span class="glyphicon glyphicon-minus-sign orange"></span>
+                            </button>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="inner-cell" ng-show="item.isOrdered">
+                  <p class="inner-label">Order by 
+                      <button ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                  </p>
+                    <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
+                        <span ng-show="item.isOrdered">ORDER BY column {{$index+1}}</span>                        
+                        <div >
+                            <!-- <select required ng-model="item.orderByColumn[$index]"
+                            ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
+                            data-html="true" title="<b>Select an ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">
+                            <option value="" selected>--No Selection--</option>
+                          </select> -->
+                          <input required ng-model="item.orderByColumn[$index]"                          
+                          data-html="true" title="<b>Select an ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <span>
+                            <select class="orderbyselect" required ng-model="item.orderByColumnDirection[$index]"                            
+                            title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">                            
+                            <option value="ASC" selected>ASC</option>
+                            <option value="DESC">DESC</option>
+                          </select>
+                          </span>
+                              <button style="border:none;background: none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
+                                title="Remove Script Argument">
+                                <span class="glyphicon glyphicon-minus-sign orange"></span>
+                              </button>
+                        </div>                   
+                    </div>
+                </div>
+
+              </td>
+            </tr>
+
+            <tr ng-if="config.function.partnerFunction.isOrdered && shouldShowPartitionOrderFields(config.function.partnerFunction.unaliased_inputs)">
+              <td>ORDER BY Column
+                  <button style="border:none;background: none;" ng-click="addOrderByColumn()" title="Add ORDER BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+              </td>
+              <td>
+                  <div ng-repeat="col in config.function.partnerFunction.orderByColumn track by $index ">
+                      <span>ORDER BY column {{$index+1}}</span>                    
+                      <div>
+                          <!-- <select required ng-model="config.function.partnerFunction.orderByColumn[$index]"
+                          ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.partnerFunction.unaliased_inputs)"
+                          data-html="true" title="<b>Select an ORDER BY column</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <option value="" selected>--No Selection--</option>
+                        </select> -->
+                        <input required ng-model="config.function.partnerFunction.orderByColumn[$index]"                        
+                        data-html="true" title="<b>Select an ORDER BY column</b>" data-toggle="tooltip" data-container="body"
+                        data-placement="right">
+                        <span>
+                          <select class="orderbyselect" required ng-model="config.function.partnerFunction.orderByColumnDirection[$index]"                            
+                          title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <!-- <option value="" selected>--No Selection--</option> -->
+                          <option value="ASC" selected>ASC</option>
+                          <option value="DESC">DESC</option>
+                        </select>
+                        </span>
+                            <button style="border:none;background: none;" ng-if="config.function.partnerFunction.orderByColumn.length > 1" ng-click="removeOrderByColumn($index)"
+                              title="Remove Script Argument">
+                              <span class="glyphicon glyphicon-minus-sign orange"></span>
+                            </button>
+                      </div>
+               
+                  </div>
+              </td>
+              <!--<td>{{ validation_message('orderByColumn') }}</td>-->
+            </tr>
+
+            <tr ng-if="shouldShowPartitionOrderFields(config.function.partnerFunction.unaliased_inputs) && config.function.partnerFunction.partitionInputKind.indexOf('PartitionByAny') !== -1 && config.function.partnerFunction.partitionInputKind.length > 1">
+              <td>PARTITION BY ANY</td>
+              <td>
+                <input type="checkbox" ng-model="config.function.partnerFunction.partitionByAny"></input>
+              </td>
+            </tr>
+
+            <tr ng-if="shouldShowPartitionOrderFields(config.function.partnerFunction.unaliased_inputs) && config.function.partnerFunction.partitionInputKind.indexOf('PartitionByKey') !== -1">
+              <td>PARTITION BY Column
+                  <button style="border:none;background: none;" ng-disabled="config.function.partnerFunction.partitionByAny" ng-click="addPartitionByColumn()" title="Add Partition Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+              </td>
+              <td>
+                  <div ng-repeat="col in config.function.partnerFunction.partitionAttributes track by $index ">                     
+                      <span>PARTITION BY column {{$index+1}}</span>
+                      <div>
+                        <!-- Left unchanged, please change if it breaks something -->
+                          <select required ng-disabled="config.function.partnerFunction.partitionByAny" ng-model="config.function.partnerFunction.partitionAttributes[$index]"
+                          ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.partnerFunction.unaliased_inputs)"
+                          data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                          data-placement="right">
+                          <option value="" selected>--No Selection--</option>
+                        </select>
+                            <button style="border:none;background: none;" ng-if="config.function.partnerFunction.partitionAttributes.length > 1" ng-click="removePartitionByColumn($index)"
+                              title="Remove Script Argument">
+                              <span class="glyphicon glyphicon-minus-sign orange"></span>
+                            </button>
+                      </div>                  
+                        </div>     
+              </td>
+            </tr>
+            <!-- Added output_table stuff -->
+            <tr ng-repeat="item in config.function.partnerFunction.output_tables" ng-model="config.function.partnerFunction.output_tables" ng-if="item.isRequired">
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+              <td>
+                <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" />
+                  
+              </td>
+            </tr>
+
+
+            <tr ng-repeat="item in config.function.partnerFunction.arguments" ng-model="config.function.partnerFunction.arguments" ng-if="item.isRequired && useNativeOrNot(item.inNative)">
+              <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
+                <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
+                style="border:none;background: none;" ng-click="addColumnArgument(item)" title="Add Column">
+                 <span class="glyphicon glyphicon-plus-sign orange"></span>
+               </button>
+              </td>
+              <td>
+                <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" />
+
+                <input required class="teradata-tags" ng-model="item.value" type="text" ng-if="['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 && item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right"></input>
+
+                <input type="checkbox" ng-model="item.value" ng-if="item.datatype == 'BOOLEAN'" data-toggle="tooltip" data-container="body"
+                  data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" />
+
+                <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                    <option value="" selected>--No Selection--</option>
+                  </select>
+
+                    <!-- REMOVED POTENTIAL ERRONEOUS CODE -->
+                  <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
+                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                  data-placement="right" data-container="body" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                  </select> -->
+
+                <!-- <select required multiple  size="8" ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
+                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                  data-placement="right" data-container="body" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                  </select> -->
+                  <!-- <input required type='text'
+                        placeholder='Add Parameter'                     
+                        list='{{item.name}}'    
+                        ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"   
+                        data-toggle="tooltip" 
+                        data-html="true" 
+                        title="{{ getArgumentDescriptionWithName(item.name) }}"
+                        ng-model="item.value"
+                        ng-change="testPrint(test_model)"
+                        data-placement="right" data-container="body" >      
+                  <datalist id="{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>      -->
+
+                  <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item) && item.isRequired && item.allowsLists && !getPermittedValuesWithName(item)">
+                    <select required
+                    ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                        <option value="" selected>--No Selection--</option>
+                    </select>                      
+                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
+                      title="Remove RETURNS Column">
+                      <span class="glyphicon glyphicon-minus-sign orange"></span>
+                    </button>
+                  </div>
+
+                <select required ng-if="item.datatype == 'TABLE_NAME' && !isArgumentOutputTable(item) && !getPermittedValuesWithName(item)" ng-model="item.value"
+                  data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  data-placement="right" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
+                    <option value="" selected>--No Selection--</option>
+                  </select>
+
+                <select required ng-if="getPermittedValuesWithName(item) && !item.allowsLists" ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true"
+                  title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" ng-options="t as t for t in getPermittedValuesWithName(item) || []">
+                    <option value="" selected>--No Selection--</option>
+                  </select>
+                  
+                 <select required multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                  data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item) || []">
+                  </select>
+                  
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <!-- PARTNER FUNCTION REQUIRED END -->
 
       </div>
-
+      
       <div id="tabs-optional" class="plugintabcontent" ng-if="hasOptionalArguments()">
-
+        <!-- MAIN FUNCTION OPTIONAL START -->
+        <h5 ng-show=config.function.hasPartnerFunction>{{config.function.function_alias_name}}'s arguments</h5>
         <table class="table table-condensed table-hover" ng-model-options="{ debounce: 200 }">
 
           <thead>
@@ -558,7 +819,183 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
           </tbody>
 
         </table>
+        <!-- MAIN FUNCTION OPTIONAL END -->
+        <!-- PARTNER FUNCTION OPTIONAL START -->
+        <h5 ng-show=config.function.hasPartnerFunction>{{config.function.partnerFunction.function_alias_name}}'s arguments</h5>
+        <table ng-if="config.function.hasPartnerFunction && hasOptionalArguments_Partner()" class="table table-condensed table-hover" ng-model-options="{ debounce: 200 }">
 
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+        
+            <tbody ng-show="shouldRender()">
+              <tr ng-repeat="item in config.function.partnerFunction.required_input" ng-model="config.function.partnerFunction.required_input" ng-if="item.hasOwnProperty('name') && !item.isRequired">
+                <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
+                <td>
+                  <select ng-model="item.value" ng-options="inputtable.fullName.split('.')[1] as inputtable.fullName.split('.')[1] for inputtable in inputs">
+                      <option value="" selected>--No Selection--</option>
+                    </select>
+                    
+                  <div class="inner-cell" ng-if="item.inputKindChoices.length > 1">
+                    <p class="inner-label">Partition Type </p>
+                    <select required ng-model="item.kind" ng-options="kind for kind in item.inputKindChoices">
+                        <option value="" selected>--No Selection--</option>
+                    </select>
+                  </div>
+        
+                  <div class="inner-cell" ng-show="'PartitionByKey' == item.kind">
+                    <p class="inner-label">Partition by
+                        <button style="border:none;background: none;" ng-init="item.partitionAttributes = initializeColumnArrayOptional(item.partitionAttributes)"ng-click="addPartitionByColumn_TEST(item.partitionAttributes)" title="Add Partition Column">
+                          <span class="glyphicon glyphicon-plus-sign orange"></span>
+                        </button>
+                    </p>
+                     <div ng-repeat="col in item.partitionAttributes track by $index ">
+                        <span>PARTITION BY column {{$index+1}}</span>                        
+                        <div>
+                            <select ng-model="item.partitionAttributes[$index]"
+                            ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
+                            data-html="true" title="<b>(Ctrl+Click to multi-select)</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">
+                            <option value="" selected>--No Selection--</option>
+                          </select>
+                              <button style="border:none;background: none;" ng-if="item.partitionAttributes.length > 1" ng-click="removePartitionByColumn_TEST(item.partitionAttributes,$index)"
+                                title="Remove Script Argument">
+                                <span class="glyphicon glyphicon-minus-sign orange"></span>
+                              </button>
+                        </div>
+                 
+                    </div>
+                  </div>
+        
+                  <div class="inner-cell" ng-show="item.isOrdered">
+                    <p class="inner-label">Order by
+                        <button style="border:none;background: none;" ng-init="item.orderByColumn = initializeColumnArrayOptional(item.orderByColumn); item.orderByColumnDirection = initializeColumnArrayOptional(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column">
+                          <span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                    </p>
+                      <div ng-repeat="col in item.orderByColumn track by $index ">
+                          <span>ORDER BY column {{$index+1}}</span>                        
+                          <div>
+                              <select ng-model="item.orderByColumn[$index]"
+                              ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
+                              data-html="true" title="<b>Select ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
+                              data-placement="right">
+                              <option value="" selected>--No Selection--</option>
+                            </select>
+                            <span>
+                            <select class="orderbyselect"  ng-model="item.orderByColumnDirection[$index]"                            
+                            title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">                          
+                            <option value="ASC" selected>ASC</option>
+                            <option value="DESC">DESC</option>
+                          </select>
+                          </span>
+                                <button style="border:none;background: none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
+                                  title="Remove Script Argument">
+                                  <span class="glyphicon glyphicon-minus-sign orange"></span>
+                                </button>
+                          </div>
+                   
+                      </div>
+                  </div>
+                </td>
+              </tr>
+              <!-- Output tables -->
+              <tr ng-repeat="item in config.function.partnerFunction.output_tables" ng-model="config.function.partnerFunction.output_tables" ng-if="!item.isRequired">
+                <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}</td>
+                <td>
+                  <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                    data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right" />
+                </td>
+              </tr>
+        
+              
+              
+              <tr ng-repeat="item in config.function.partnerFunction.arguments" ng-model="config.function.partnerFunction.arguments" ng-if="!item.isRequired && useNativeOrNot(item.inNative)">
+                <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
+                  
+                  <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
+                   style="border:none;background: none;" ng-click="addColumnArgument(item)" title="Add Column">
+                    <span class="glyphicon glyphicon-plus-sign orange"></span>
+                  </button>
+                
+                </td>
+                <td>
+                  <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
+                    data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right" />
+        
+                  <input class="teradata-tags" ng-model="item.value" type="text" ng-if="['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 && item.allowsLists && !getPermittedValuesWithName(item)"
+                    data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right"></input>
+        
+                  <input type="checkbox" ng-model="item.value" ng-if="item.datatype == 'BOOLEAN' && !getPermittedValuesWithName(item)" data-toggle="tooltip"
+                    data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right"
+                  />
+        
+                  <select ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                    ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                      <option value="" selected>--No Selection--</option>
+                    </select>
+        
+                  <!-- <select multiple size="8"  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
+                    ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                    data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                    </select> -->
+                    <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item)"> 
+                      <!--  -->
+                      <select 
+                      ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                      data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
+                          <option value="" selected>--No Selection--</option>
+                      </select>                      
+                      <span ng-if="item.value.length == 0">No columns added, click the + button to add a column</span>
+                      <button style="border:none;background: none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
+                        title="Remove Column">
+                        <!--  && multiColumnNamesCheck(item)" -->
+                        <span class="glyphicon glyphicon-minus-sign orange"></span>
+                      </button>
+                    </div>
+                    <!-- <input required type='text'
+                          placeholder='Add Parameter'                     
+                          list='{{item.name}}'    
+                          ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
+                          data-toggle="tooltip" 
+                          data-html="true" 
+                          title="{{ getArgumentDescriptionWithName(item.name) }}"
+                          ng-model="item.value"
+                          ng-change="testPrint(test_model)"
+                          data-placement="right" data-container="body" >      
+                    <datalist id="{{item.name}}">
+                        <option ng-repeat="column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                    </datalist>  -->
+        
+                  <select ng-if="item.datatype == 'TABLE_NAME' && !isArgumentOutputTable(item) && !getPermittedValuesWithName(item)" ng-model="item.value"
+                    data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
+                    data-placement="right" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
+                      <option value="" selected>--No Selection--</option>
+                    </select>
+        
+                  <select ng-if="getPermittedValuesWithName(item) && !item.allowsLists" ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true"
+                    title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" ng-options="t as t for t in getPermittedValuesWithName(item)">
+                      <option value="" selected>--No Selection--</option>
+                    </select>
+                    
+                  <select multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                    ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                    data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item)">
+                    </select>
+                </td>
+              </tr>
+            </tbody>
+        
+          </table>
+          <span ng-if="!hasOptionalArguments_Partner()">Function has no Optional Arguments</span>
+        <!-- PARTNER FUNCTION OPTIONAL END -->
       </div>
 
         <!-- Tab: Other SQL Arguments -->

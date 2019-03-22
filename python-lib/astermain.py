@@ -88,6 +88,8 @@ def asterDo():
     
     # Recipe function param
     dss_function = get_recipe_config().get('function', None)
+    print('Showing DSS Function')
+    print(dss_function)
     
     # Daitaiku DSS params
     client = dataiku.api_client()

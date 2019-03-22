@@ -57,8 +57,8 @@ class inputtableinfo(tableinfo.tableinfo):
         print(alternateNames)
         # print(alternateNames[0])
         # print(alternateNames[0].encode("utf-8"))
-        # if altern
-        if 
+        # if alternate tables
+        # if 
         tmpAlias = alternateNames[0].encode("utf-8") if alternateNames != [] else tmpAlias
         self.__alias = tmpAlias
         self.__partitionKey = self.__getPartitionClauseFromAliasedInputDef(
