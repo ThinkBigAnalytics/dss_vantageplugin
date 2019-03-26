@@ -4,10 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>VI. Aster Analytics Plugin Usage · GitBook</title>
+        <title>V. Teradata Vantage Analytic Plugin Usage · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="vii-limitations.html" />
+    <link rel="next" href="vi-limitations.html" />
     
     
-    <link rel="prev" href="v-aster-analytics-plugin-installation.html" />
+    <link rel="prev" href="iv-vantage-analytic-plugin-installation.html" />
     
 
     </head>
@@ -89,9 +89,9 @@
         
         
     
-        <li class="chapter " data-level="1.1" data-path="./index.html">
+        <li class="chapter " data-level="1.1" data-path="./">
             
-                <a href="./index.html">
+                <a href="./">
             
                     
                     I. Introduction
@@ -115,12 +115,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="iii-creating-an-aster-connection.html">
+        <li class="chapter " data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
             
-                <a href="iii-creating-an-aster-connection.html">
+                <a href="iii-creating-a-teradata-connection.html">
             
                     
-                    III. Creating an Aster Connection
+                    III. Creating a Teradata Connection
             
                 </a>
             
@@ -128,12 +128,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="iv-creating-a-user.html">
+        <li class="chapter " data-level="1.4" data-path="iv-vantage-analytic-plugin-installation.html">
             
-                <a href="iv-creating-a-user.html">
+                <a href="iv-vantage-analytic-plugin-installation.html">
             
                     
-                    IV. Creating a User
+                    IV. Teradata Vantage Analytic Plugin Installation
             
                 </a>
             
@@ -141,12 +141,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="v-aster-analytics-plugin-installation.html">
+        <li class="chapter active" data-level="1.5" data-path="v-vantage-analytic-plugin-usage.html">
             
-                <a href="v-aster-analytics-plugin-installation.html">
+                <a href="v-vantage-analytic-plugin-usage.html">
             
                     
-                    V. Aster Analytics Plugin Installation
+                    V. Teradata Vantage Analytic Plugin Usage
             
                 </a>
             
@@ -154,12 +154,12 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.6" data-path="vi-aster-analytics-plugin-usage.html">
+        <li class="chapter " data-level="1.6" data-path="vi-limitations.html">
             
-                <a href="vi-aster-analytics-plugin-usage.html">
+                <a href="vi-limitations.html">
             
                     
-                    VI. Aster Analytics Plugin Usage
+                    VI. Limitations
             
                 </a>
             
@@ -167,20 +167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="vii-limitations.html">
-            
-                <a href="vii-limitations.html">
-            
-                    
-                    VII. Limitations
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.8" data-path="authors.html">
+        <li class="chapter " data-level="1.7" data-path="authors.html">
             
                 <a href="authors.html">
             
@@ -223,7 +210,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >VI. Aster Analytics Plugin Usage</a>
+        <a href="." >V. Teradata Vantage Analytic Plugin Usage</a>
     </h1>
 </div>
 
@@ -238,28 +225,48 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="vi-aster-analytics-plugin-usage">VI. Aster Analytics Plugin Usage</h1>
+                                <h1 id="v-teradata-vantage-analytic-functions-plugin-usage">V. Teradata Vantage Analytic Functions plugin Usage</h1>
 <hr>
+<h2 id="usage">Usage</h2>
 <p>This section assumes that a Dataiku project already exists and input datasets have already been imported. Note that recipes need a non-empty dataset as input to run.</p>
 <ol>
-<li><p>Go to the flow view of the Dataiku project where the recipe is to be created by clicking on the GO TO FLOW button or by clicking on the flow icon in the project menu.</p>
+<li><p>Go to the flow view of the Dataiku project, where the recipe is to be created, by clicking on the GO TO FLOW button or by clicking on the flow icon in the project menu.</p>
 <p><img src="assets/usage_1.png" alt=""><br>&#xA0;</p>
 </li>
-<li><p>In the Flow view, under Recipe, select desired recipe under Aster Analytics plugin. The recipe names correspond to the different categories of Aster Analytics functions.</p>
-<p><img src="assets/usage_2.png" alt=""><br>&#xA0;</p>
+<li><p>In the Flow view, under Recipe, select desired recipe under the Teradata Vantage Analytic Functions plugin. The recipe names correspond to the different categories of Teradata Vantage Analytic Functions.</p>
+<p><img src="assets/recipe.png" alt=""><br>&#xA0;
+<img src="assets/usage_2.png" alt=""><br>&#xA0;</p>
 </li>
-<li><p>In New custom recipe popup, specify the input and output datasets. There can be more than one input dataset, as in the case of multiple-input SQL-MR functions. The output dataset will be stored in the database and schema corresponding to the connection selected in the Store into field. Click on CREATE button when done.</p>
+<li><p>In New custom recipe popup, specify the input and output datasets. There can be more than one input dataset, as in the case of multiple-input analytic functions. The same is also the case for ML Functions with multiple output datasets. The output dataset will be stored in the database and schema corresponding to the connection selected in the Store into field. Click on CREATE button when done.</p>
 <p><img src="assets/usage_3.png" alt=""><br>&#xA0;</p>
 </li>
-<li><p>In a category recipe, one can select the most suitable function for manipulating or analysing the input dataset. Configure the chosen SQL-MR recipe (input tables, partition and order attributes, and arguments). Required and optional fields are separated into tabs.</p>
+<li><p>In the recipe settings, one can select the most suitable function for manipulating or analysing the input dataset. Configure the chosen analytic recipe (input tables, partition and order attributes, and arguments). Required and optional fields are separated into tabs.</p>
 <p><img src="assets/usage_4.png" alt=""> 
 &#xA0;  </p>
 </li>
-<li><p>Click on the RUN button or save the recipe settings for later use.</p>
-<p><img src="assets/usage_5.png" alt=""> </p>
+<li><p>The SQL Clauses tab allows the user to modify the query to be performed.</p>
+<p><img src="assets/additional_clauses.png" alt=""> 
+&#xA0;  </p>
 </li>
 </ol>
-
+<p><em>Modify Select Columns of Output Query</em> allows the user to modify the SELECT clause of the query.
+<em>Additional Clauses</em> allows the user to append additional SQL clauses to the query such as WHERE, ORDER BY, GROUP BY, and other similar clauses..</p>
+<pre><code>SELECT {modified select} FROM function_name(
+    ...
+    )
+    {additional clauses}
+</code></pre><ol>
+<li><p>Click on the RUN button or save the recipe settings for later use.</p>
+<p><img src="assets/usage_5.png" alt=""> 
+&#xA0;  </p>
+</li>
+</ol>
+<h2 id="usage-notes">Usage Notes</h2>
+<ol>
+<li>Functions with multiple output datasets will normally require an output dataset for the functions&apos; output message/result alongside any other output tables/datasets specified in the recipe.
+Please note that the output dataset/s name/s should also match the name within the recipe&apos;s settings.</li>
+</ol>
+<!-- 2. Some functions allow -->
                                 
                                 </section>
                             
@@ -286,12 +293,12 @@
 
             
                 
-                <a href="v-aster-analytics-plugin-installation.html" class="navigation navigation-prev " aria-label="Previous page: V. Aster Analytics Plugin Installation">
+                <a href="iv-vantage-analytic-plugin-installation.html" class="navigation navigation-prev " aria-label="Previous page: IV. Teradata Vantage Analytic Plugin Installation">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="vii-limitations.html" class="navigation navigation-next " aria-label="Next page: VII. Limitations">
+                <a href="vi-limitations.html" class="navigation navigation-next " aria-label="Next page: VI. Limitations">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -302,7 +309,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"VI. Aster Analytics Plugin Usage","level":"1.6","depth":1,"next":{"title":"VII. Limitations","level":"1.7","depth":1,"path":"vii-limitations.md","ref":"vii-limitations.md","articles":[]},"previous":{"title":"V. Aster Analytics Plugin Installation","level":"1.5","depth":1,"path":"v-aster-analytics-plugin-installation.md","ref":"v-aster-analytics-plugin-installation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"vi-aster-analytics-plugin-usage.md","mtime":"2017-08-02T05:29:02.877Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-08-02T06:52:08.168Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"V. Teradata Vantage Analytic Plugin Usage","level":"1.5","depth":1,"next":{"title":"VI. Limitations","level":"1.6","depth":1,"path":"vi-limitations.md","ref":"vi-limitations.md","articles":[]},"previous":{"title":"IV. Teradata Vantage Analytic Plugin Installation","level":"1.4","depth":1,"path":"iv-vantage-analytic-plugin-installation.md","ref":"iv-vantage-analytic-plugin-installation.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"v-vantage-analytic-plugin-usage.md","mtime":"2019-02-15T09:34:44.034Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-26T13:04:41.366Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

@@ -4,10 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>III. Creating an Aster Connection · GitBook</title>
+        <title>III. Creating a Teradata Connection · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -57,7 +57,7 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="iv-creating-a-user.html" />
+    <link rel="next" href="iv-vantage-analytic-plugin-installation.html" />
     
     
     <link rel="prev" href="ii-requirements.html" />
@@ -89,9 +89,9 @@
         
         
     
-        <li class="chapter " data-level="1.1" data-path="./index.html">
+        <li class="chapter " data-level="1.1" data-path="./">
             
-                <a href="./index.html">
+                <a href="./">
             
                     
                     I. Introduction
@@ -115,12 +115,12 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.3" data-path="iii-creating-an-aster-connection.html">
+        <li class="chapter active" data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
             
-                <a href="iii-creating-an-aster-connection.html">
+                <a href="iii-creating-a-teradata-connection.html">
             
                     
-                    III. Creating an Aster Connection
+                    III. Creating a Teradata Connection
             
                 </a>
             
@@ -128,12 +128,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.4" data-path="iv-creating-a-user.html">
+        <li class="chapter " data-level="1.4" data-path="iv-vantage-analytic-plugin-installation.html">
             
-                <a href="iv-creating-a-user.html">
+                <a href="iv-vantage-analytic-plugin-installation.html">
             
                     
-                    IV. Creating a User
+                    IV. Teradata Vantage Analytic Plugin Installation
             
                 </a>
             
@@ -141,12 +141,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="v-aster-analytics-plugin-installation.html">
+        <li class="chapter " data-level="1.5" data-path="v-vantage-analytic-plugin-usage.html">
             
-                <a href="v-aster-analytics-plugin-installation.html">
+                <a href="v-vantage-analytic-plugin-usage.html">
             
                     
-                    V. Aster Analytics Plugin Installation
+                    V. Teradata Vantage Analytic Plugin Usage
             
                 </a>
             
@@ -154,12 +154,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="vi-aster-analytics-plugin-usage.html">
+        <li class="chapter " data-level="1.6" data-path="vi-limitations.html">
             
-                <a href="vi-aster-analytics-plugin-usage.html">
+                <a href="vi-limitations.html">
             
                     
-                    VI. Aster Analytics Plugin Usage
+                    VI. Limitations
             
                 </a>
             
@@ -167,20 +167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="vii-limitations.html">
-            
-                <a href="vii-limitations.html">
-            
-                    
-                    VII. Limitations
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.8" data-path="authors.html">
+        <li class="chapter " data-level="1.7" data-path="authors.html">
             
                 <a href="authors.html">
             
@@ -223,7 +210,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >III. Creating an Aster Connection</a>
+        <a href="." >III. Creating a Teradata Connection</a>
     </h1>
 </div>
 
@@ -238,36 +225,35 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="iii-creating-an-aster-connection">III. Creating an Aster Connection</h1>
+                                <h1 id="iii-creating-a-teradata-connection">III. Creating a Teradata Connection</h1>
 <hr>
 <ol>
 <li><p>Follow the instructions in the Dataiku Reference Doc for Installing Database Drivers.
 In summary, one needs to:</p>
 <p>  a.    Stop the Data Science Studio server, where DATA_DIR is the data directory where Data Science Studio is installed.</p>
 <p>  &#xA0;    <code>DATA_DIR/bin/dss stop</code></p>
-<p>  b.    Copy the Aster JDBC driver to DATA_DIR/lib/jdbc directory.
+<p>  b.    Copy the Teradata JDBC driver to DATA_DIR/lib/jdbc directory.
   &#xA0;    </p>
 <p>  c.    Restart Data Science Studio<br>  &#xA0;    <code>DATA_DIR/bin/dss start</code></p>
 </li>
-<li><p>In the Dataiku DSS home page, click on Admin Tools (gear icon). Alternatively, you can go to <a href="http://dataikuhost:port/admin/" target="_blank">http://dataikuhost:port/admin/</a>.        </p>
-<p><img src="assets/1.png" alt=""></p>
+<li><p>In the Dataiku DSS home page, click on Apps then on the submenu click Administration (gear icon). Alternatively, you can go to <a href="http://dataikuhost:port/admin/" target="_blank">http://dataikuhost:port/admin/</a>.        </p>
+<p><img src="assets/1a.png" alt="">
+&#xA0;
+<img src="assets/1b.png" alt=""></p>
 </li>
-<li><p>In the DSS settings page, Connections tab, Click on NEW CONNECTION. From the options that will be presented, choose Other SQL databases.</p>
+<li><p>In the DSS settings page, Connections tab, Click on NEW CONNECTION. From the options that will be presented, choose Teradata.</p>
 <p><img src="assets/2.png" alt=""></p>
 </li>
-<li><p>Fill up the following fields as appropriate:    </p>
-<p>  <strong>JDBC driver class</strong>: com.asterdata.ncluster.Driver<br>  <strong>JDBC URL</strong>: jdbc:ncluster://<queen host="">:<port>/<database><br>  <strong>JDBC properties</strong>:
-  user:       username
-  password:     password
-  <strong>SQL dialect (experimental)</strong>: Aster Data
-  <strong>Naming rules for new datasets</strong>:
-  Schema:    schema_name</database></port></queen></p>
+<li><p>Fill up the fields as needed:<br>  <strong>Basic Params</strong>
+  <strong>Host</strong>: database.host.name
+  <strong>User</strong>: Username<br>  <strong>Password</strong>: User&apos;s password<br>  <strong>Default Database</strong>: default_database<br>  <strong>Advanced JDBC properties</strong>:
+  CHARSET:       UTF8
+  TMODE:     TERA or ANSI                </p>
+<p>  All other fields can be left as-is.</p>
 </li>
-<li><p>If the installation schema of the Aster Analytics functions (AAF) to be used is not the default search path, 
-the property aafschema_620 (for AAF 6.20) and/or aafschema_700 (for AAF 7.00) should be added to the JDBC properties.</p>
-<p><img src="assets/3.png" alt=""></p></li>
-<li><p>Click on Test button to verify that connection details provided in step 3 are valid.</p>
-</li>
+</ol>
+<ol>
+<li>Click on Test button to verify that connection details provided are valid.</li>
 <li>Finally, click on Save button.</li>
 </ol>
 
@@ -302,7 +288,7 @@ the property aafschema_620 (for AAF 6.20) and/or aafschema_700 (for AAF 7.00) sh
                 </a>
                 
                 
-                <a href="iv-creating-a-user.html" class="navigation navigation-next " aria-label="Next page: IV. Creating a User">
+                <a href="iv-vantage-analytic-plugin-installation.html" class="navigation navigation-next " aria-label="Next page: IV. Teradata Vantage Analytic Plugin Installation">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -313,7 +299,7 @@ the property aafschema_620 (for AAF 6.20) and/or aafschema_700 (for AAF 7.00) sh
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"III. Creating an Aster Connection","level":"1.3","depth":1,"next":{"title":"IV. Creating a User","level":"1.4","depth":1,"path":"iv-creating-a-user.md","ref":"iv-creating-a-user.md","articles":[]},"previous":{"title":"II. Requirements","level":"1.2","depth":1,"path":"ii-requirements.md","ref":"ii-requirements.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"iii-creating-an-aster-connection.md","mtime":"2017-08-02T06:18:14.186Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-08-02T06:52:08.168Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"III. Creating a Teradata Connection","level":"1.3","depth":1,"next":{"title":"IV. Teradata Vantage Analytic Plugin Installation","level":"1.4","depth":1,"path":"iv-vantage-analytic-plugin-installation.md","ref":"iv-vantage-analytic-plugin-installation.md","articles":[]},"previous":{"title":"II. Requirements","level":"1.2","depth":1,"path":"ii-requirements.md","ref":"ii-requirements.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"iii-creating-a-teradata-connection.md","mtime":"2019-02-14T05:19:00.435Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-26T13:04:41.366Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

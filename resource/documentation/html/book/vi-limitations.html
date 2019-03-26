@@ -4,10 +4,10 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>IV. Creating a User · GitBook</title>
+        <title>VI. Limitations · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.2">
+        <meta name="generator" content="GitBook 3.2.3">
         
         
         
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="v-aster-analytics-plugin-installation.html" />
+    <link rel="next" href="authors.html" />
     
     
-    <link rel="prev" href="iii-creating-an-aster-connection.html" />
+    <link rel="prev" href="v-vantage-analytic-plugin-usage.html" />
     
 
     </head>
@@ -89,9 +89,9 @@
         
         
     
-        <li class="chapter " data-level="1.1" data-path="./index.html">
+        <li class="chapter " data-level="1.1" data-path="./">
             
-                <a href="./index.html">
+                <a href="./">
             
                     
                     I. Introduction
@@ -115,12 +115,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="iii-creating-an-aster-connection.html">
+        <li class="chapter " data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
             
-                <a href="iii-creating-an-aster-connection.html">
+                <a href="iii-creating-a-teradata-connection.html">
             
                     
-                    III. Creating an Aster Connection
+                    III. Creating a Teradata Connection
             
                 </a>
             
@@ -128,12 +128,12 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.4" data-path="iv-creating-a-user.html">
+        <li class="chapter " data-level="1.4" data-path="iv-vantage-analytic-plugin-installation.html">
             
-                <a href="iv-creating-a-user.html">
+                <a href="iv-vantage-analytic-plugin-installation.html">
             
                     
-                    IV. Creating a User
+                    IV. Teradata Vantage Analytic Plugin Installation
             
                 </a>
             
@@ -141,12 +141,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5" data-path="v-aster-analytics-plugin-installation.html">
+        <li class="chapter " data-level="1.5" data-path="v-vantage-analytic-plugin-usage.html">
             
-                <a href="v-aster-analytics-plugin-installation.html">
+                <a href="v-vantage-analytic-plugin-usage.html">
             
                     
-                    V. Aster Analytics Plugin Installation
+                    V. Teradata Vantage Analytic Plugin Usage
             
                 </a>
             
@@ -154,12 +154,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.6" data-path="vi-aster-analytics-plugin-usage.html">
+        <li class="chapter active" data-level="1.6" data-path="vi-limitations.html">
             
-                <a href="vi-aster-analytics-plugin-usage.html">
+                <a href="vi-limitations.html">
             
                     
-                    VI. Aster Analytics Plugin Usage
+                    VI. Limitations
             
                 </a>
             
@@ -167,20 +167,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.7" data-path="vii-limitations.html">
-            
-                <a href="vii-limitations.html">
-            
-                    
-                    VII. Limitations
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.8" data-path="authors.html">
+        <li class="chapter " data-level="1.7" data-path="authors.html">
             
                 <a href="authors.html">
             
@@ -223,7 +210,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >IV. Creating a User</a>
+        <a href="." >VI. Limitations</a>
     </h1>
 </div>
 
@@ -238,21 +225,22 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="iv-creating-a-user">IV. Creating a User</h1>
+                                <h1 id="vi-limitations">VI. Limitations</h1>
 <hr>
-<p><em>Note: This section assumes that you are logged in as a user with Administrator privileges.</em></p>
 <ol>
-<li><p>Click on Admin Tools (gear icon), and choose the Security tab. Users section automatically gets selected. Alternatively, you can go to http://<dataikuhost>:<port>/admin/security/users/</port></dataikuhost></p>
-<p> <img src="assets/user_1.png" alt="">
- &#xA0;</p>
+<li><p>For analytic functions that take in output table names as arguments and where the select query produces only a message table indicating the name of the output model/metrics table, it is the responsibility of the user to specify output table names that are not the same with that of an existing table. Some analytic functions provide an option to delete an already existing output table prior to executing an algorithm, others do not. If the former is the case, Teradata Database throws an &#x2018;<output table=""> already exists&#x2019; exception.</output></p>
 </li>
-<li><p>Click on New User button. In the New User panel that will appear, fill up the general and password fields. Select the appropriate group for the new user. By default, Dataiku DSS has three groups with different privileges: administration, data_team, and readers. New groups can also be added in the Groups pane of the Security tab. Set the new user profile to Data Scientist. This will allow him/her to run code-based recipes (Python, R&#x2026;) </p>
-<p> <img src="assets/user_2.png" alt="">
- &#xA0;</p>
+<li><p>The appended version of the Dataiku DSS Teradata Vantage Analytic Functions plugin was tested on Teradata 16.20. Earlier or later function versions may require a different set of function metadata.</p>
 </li>
-<li><p>Finally, click on Save button.</p>
+<li><p>The plugin currently only supports Teradata Database datasets as input and output.</p>
+</li>
+<li><p>Functions with any OUTPUT TABLE type arguments will require the user to add an output dataset for the SELECT statement results of the query and any additional output tables. Please refer to the Teradata Vantage Machine Learning Engine Analytic Functions Usage Guide to learn about the output tables of each function.</p>
+</li>
+<li><p>MapReduce Function pairs are currently limited to a select few: ApproxDCount, ApproxPercentile, Correlation, PCA, and Naive Bayes. In order to use these functions, please call their corresponding Map Functions on the fuction selection box and it will display the arguments for both functions.</p>
 </li>
 </ol>
+<!-- 3.    In case HTTP error 413 (Request entity too large) or HTTP error 414 (Request URI too long) is encountered after reloading a saved recipe in Dataiku versions earlier than 4.0.4, one can edit Dataiku’s code itself. This is an issue that will be resolved in Dataiku’s next release. To fix this without updating Dataiku, open INSTALL_DIR/frontend/static/dataiku/js/mainpack.js. Locate the  callPythonDo function, and change the HTTP method associated with it from GET to POST. -->
+<!-- 6.    As of this writing, Aster Analytics plugin could only refer to SQL-MR functions installed in the public schema. -->
 
                                 
                                 </section>
@@ -280,12 +268,12 @@
 
             
                 
-                <a href="iii-creating-an-aster-connection.html" class="navigation navigation-prev " aria-label="Previous page: III. Creating an Aster Connection">
+                <a href="v-vantage-analytic-plugin-usage.html" class="navigation navigation-prev " aria-label="Previous page: V. Teradata Vantage Analytic Plugin Usage">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="v-aster-analytics-plugin-installation.html" class="navigation navigation-next " aria-label="Next page: V. Aster Analytics Plugin Installation">
+                <a href="authors.html" class="navigation navigation-next " aria-label="Next page: Authors">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -296,7 +284,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"IV. Creating a User","level":"1.4","depth":1,"next":{"title":"V. Aster Analytics Plugin Installation","level":"1.5","depth":1,"path":"v-aster-analytics-plugin-installation.md","ref":"v-aster-analytics-plugin-installation.md","articles":[]},"previous":{"title":"III. Creating an Aster Connection","level":"1.3","depth":1,"path":"iii-creating-an-aster-connection.md","ref":"iii-creating-an-aster-connection.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"iv-creating-a-user.md","mtime":"2017-08-02T06:18:46.913Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-08-02T06:52:08.168Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"VI. Limitations","level":"1.6","depth":1,"next":{"title":"Authors","level":"1.7","depth":1,"path":"authors.md","ref":"authors.md","articles":[]},"previous":{"title":"V. Teradata Vantage Analytic Plugin Usage","level":"1.5","depth":1,"path":"v-vantage-analytic-plugin-usage.md","ref":"v-vantage-analytic-plugin-usage.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"vi-limitations.md","mtime":"2019-03-26T13:03:08.898Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-26T13:04:41.366Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
