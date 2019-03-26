@@ -337,7 +337,7 @@ div.inner-cell {
     border-top: none;
 }
 
-@font-face {
+/* @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot');
   src: url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
@@ -345,7 +345,16 @@ div.inner-cell {
        url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.woff') format('woff'),
        url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.ttf') format('truetype'),
        url('//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
-}
+} */
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.eot');
+    src: url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
+         url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.woff2') format('woff2'),
+         url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.woff') format('woff'),
+         url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.ttf') format('truetype'),
+         url('/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/css/glyphs/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  }
 
 .glyphicon {
   position: relative;

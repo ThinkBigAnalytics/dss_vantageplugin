@@ -40,12 +40,20 @@ FROM   {}
 ) as tmp_alias
 {};'''
 
+MR_SELECT_QUERY = '''SELECT {}
+FROM   {}
+(
+{} {}
+{} {}
+{}
+) as tmp_alias
+{};'''
+
 MAP_FUNCTION_QUERY = '''ON {}
 (
 {}
 {}
-) as tmp_alias_partner
-{}'''
+)'''
 # SELECT_QUERY = '''SELECT *
 # FROM   {}
 # (
@@ -58,6 +66,8 @@ ON_SELECT_ONE_PARTITION_BY_ONE = 'ON (SELECT 1) PARTITION BY 1'
 ALIASED_ON_CLAUSE = '''ON {input_table} {input_name} {partitionKeys} {orderKeys}'''
 
 UNALIASED_ON_CLAUSE = '''ON {input_table} {partitionKeys} {orderKeys}'''
+
+MAP_PARTITION_AND_ORDER_CLAUSE = ''' {partitionKeys} {orderKeys}'''
 
 UNALIASED_QUERY_ON_CLAUSE = '''ON {input_query}'''
 

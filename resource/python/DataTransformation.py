@@ -169,8 +169,8 @@ def do(payload, config, plugin_config, inputs):
                         arg["permittedValues"] = argument['permittedValues']
                     arg["inNative"] = False
                     a.append(arg)                     
-                    print('args')
-                    print(a)                               
+                    # print('args')
+                    # print(a)                               
                 if "native" in fle.keys():
                     d["hasNativeJSON"] = True
                     f_native = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("native"))).read())
@@ -206,28 +206,29 @@ def do(payload, config, plugin_config, inputs):
                 d['arguments'] = a    
             if 'cascaded_functions' in keys:
                 d["cascaded_functions"] = f['cascaded_functions']
-            if 'partner_function' in keys and f['function_name'].endswith("Map"): 
+            if 'partner_function' in keys and f['function_name'].endswith("Map") and f['partner_function'].endswith("Reduce"): 
                 d['hasPartnerFunction'] = True
                 partnerDetails = getPartnerDetails(f['partner_function'], map)
                 if partnerDetails != None:
                     d['partnerFunction'] = partnerDetails
-                    print('Partner Check')
-                    print(partnerDetails)
+                    # print('Partner Check')
+                    # print(partnerDetails)
                     # pradfa
-            print('Working partner check')
-            print(d)                
+            # print('Working partner check')
+            # print(d)                
             choices.append(d);
+            print('=====================================end of ' + fle.get("coprocessor") + '================================')
         except ValueError, e:
             logging.info("file is not valid json");
             
-    print('=====================================end of ' + fle.get("coprocessor") + '================================')
+    # print('=====================================end of ' + fle.get("coprocessor") + '================================')
 
     # Get input table metadata.
     input_table_name = inputs[0]['fullName'].split('.')[1]
     input_dataset =  dataiku.Dataset(input_table_name)
     schema = input_dataset.read_schema()
     
-    print('was able to obtain input schemas')
+    # print('was able to obtain input schemas')
     
     inputschemas = {}
     for inputdataset in inputs:
@@ -235,7 +236,7 @@ def do(payload, config, plugin_config, inputs):
         inputdataset = dataiku.Dataset(inputtablename)
         inputschemas[inputtablename] = inputdataset.read_schema()
         
-    print('was able to forloop input schemas')
+    # print('was able to forloop input schemas')
         
 
     # AAF schema from connection details
@@ -244,6 +245,7 @@ def do(payload, config, plugin_config, inputs):
                   get('connectionParams', {}).get('properties', {})
           if 'aafschema_700' == property.get('name', '')] or ['']).pop()
 
+    print('I am done')
     return {'choices' : choices,
             'schema': schema,
             'inputs': inputs,
@@ -258,7 +260,7 @@ def isMultipleTagsInput(item):
         and not item.get('permittedValues', [])
 
 def defaultValuesFromArg(item):
-    print('A - returning defaultvalues from ' + item.get('name', ''))
+    # print('A - returning defaultvalues from ' + item.get('name', ''))
     defaultvalues = item.get('defaultValue', '')    
     if item['isRequired'] == False:
         if item['datatype'] == 'BOOLEAN':
@@ -271,29 +273,29 @@ def defaultValuesFromArg(item):
     if isMultipleTagsInput(item) and isinstance(defaultvalues, (list, tuple)):
         DELIMITER = chr(0)
         return DELIMITER.join(str(x) for x in defaultvalues)
-        print('B - returning defaultvalues from ' + item.get('name', ''))
-    print('C - returning defaultvalues from ' + item.get('name', ''))
+        # print('B - returning defaultvalues from ' + item.get('name', ''))
+    # print('C - returning defaultvalues from ' + item.get('name', ''))
     #if isinstance(defaultvalues, basestring):
     #   defaultvalues = json.dumps(defaultvalues)
     return defaultvalues
 def inNativeCheck(a, a_n):
-    print("Native check")
+    # print("Native check")
     arg_native_names = map(lambda d: d.get('name'), a_n)
     arg_native_alt_names = map(lambda d: d.get('alternateNames'), a_n)
-    print(a_n)
-    print(arg_native_names)
-    print(arg_native_alt_names)
-    print(a)
+    # print(a_n)
+    # print(arg_native_names)
+    # print(arg_native_alt_names)
+    # print(a)
     for arg in a:                
         if arg.get('name') in arg_native_names:
             arg["inNative"] = True            
-            print(True)
-            print(arg)
+            # print(True)
+            # print(arg)
         elif arg.get('name') in arg_native_alt_names:
             arg["inNative"] = True            
-            print(True)
-            print(arg)
-    print(a)
+            # print(True)
+            # print(arg)
+    # print(a)
     return a 
 
 def getPartnerDetails(functionName, map):
@@ -316,8 +318,8 @@ def getPartnerDetails(functionName, map):
         "hasPartnerFunction": False            
     }
     fle = functionDetails.get('file_name')
-    print('Fle print')
-    print(fle)
+    # print('Fle print')
+    # print(fle)
     if fle == None:
         return d
     try:
@@ -423,8 +425,8 @@ def getPartnerDetails(functionName, map):
                     arg["permittedValues"] = argument['permittedValues']
                 arg["inNative"] = False
                 a.append(arg)                     
-                print('args')
-                print(a)                               
+                # print('args')
+                # print(a)                               
             if "native" in fle.keys():
                 d["hasNativeJSON"] = True
                 f_native = json.loads(open('%s/data/%s' % (os.getenv("DKU_CUSTOM_RESOURCE_FOLDER"), fle.get("native"))).read())
@@ -460,7 +462,7 @@ def getPartnerDetails(functionName, map):
             d['arguments'] = a    
         if 'cascaded_functions' in keys:
             d["cascaded_functions"] = f['cascaded_functions']
-        print('Partner details complete')
+        # print('Partner details complete')
         return d
     except ValueError, e:
             logging.info("file is not valid json");

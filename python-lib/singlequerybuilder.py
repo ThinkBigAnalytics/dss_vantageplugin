@@ -152,6 +152,7 @@ def getSelectQuery(dss_function, inputTables, config):
     print(fullUsingClause)
     #TODO ADD USING CLAUSE SOMEWHERE    
     # Update to:
+    # Following code might have issues with Reduce functions with multiple INPUT TABLES
     if dss_function.get('hasPartnerFunction', False):
         jsonfilePartner= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))
         useCoprocessor = dss_function.get('useCoprocessor','')
@@ -163,13 +164,16 @@ def getSelectQuery(dss_function, inputTables, config):
             argumentClausesPartner = ''
         completeClausePartner = 'USING ' + outTableClausesPartner + argumentClausesPartner
         fullUsingClausePartner = (outTableClausesPartner or argumentClausesPartner) and completeClausePartner
+        
+
         mapQuery = MAP_FUNCTION_QUERY.format(getFunctionName(config, dss_function, useCoprocessor),                       
                        getOnClause(dss_function, jsonfile, inputTables),
-                       fullUsingClause,
-                       getAdditionClauses(dss_function))
-        return SELECT_QUERY.format(dss_function.get('select_clause', '*'),
+                       fullUsingClause)
+        return MR_SELECT_QUERY.format(dss_function.get('select_clause', '*'),
                        getFunctionName(config, dss_function['partnerFunction'], useCoprocessor),                       
-                       mapQuery,
+                       mapQuery, #    dss_function['partnerFunction']['required_input'][0]['name'],
+                       "",
+                       getPartitionByMap(dss_function['partnerFunction']['required_input'][0]), getOrderByMap(dss_function['partnerFunction']['required_input'][0]),
                        fullUsingClausePartner,
                        getAdditionClauses(dss_function['partnerFunction']))
     else:
@@ -193,3 +197,44 @@ def getSelectQuery(dss_function, inputTables, config):
     #                    getOnClause(dss_function, jsonfile, inputTables),
     #                    fullUsingClause
     #                    )
+def getPartitionByMap(mapRequiredInputZero):
+    # def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
+    # table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
+    # table.setPropertiesFromDef(input_, useCoprocessor)
+    print('Map Input tables check')
+    # print(inputTables)
+    print(mapRequiredInputZero)
+    partitionByType = mapRequiredInputZero.get('kind','')
+    if partitionByType == 'PartitionByKey':
+        # return " ".join(["Partition BY", mapRequiredInputZero.partitionAttributes])).rstrip() +\
+        partitionAttrbs = mapRequiredInputZero.get('partitionAttributes',[])
+        if isinstance(partitionAttrbs, (list, tuple)) and mapRequiredInputZero.get('partitionAttributes', []) != ['']:
+            partitionCols = ', '.join(mapRequiredInputZero.get('partitionAttributes',[]))
+            print('Partition Column things')
+            print(partitionCols)
+            return "PARTITION BY " + partitionCols
+    elif partitionByType == 'PartitionByAny':
+        return "Partition By Any"
+    elif partitionByType == 'PartitionByOne':
+        return "Partition By 1"
+    else:
+        return "\n"
+
+def getOrderByMap(mapRequiredInputZero):
+    # def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
+    # table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
+    # table.setPropertiesFromDef(input_, useCoprocessor)
+    # print('Input tables check')
+    # print(inputTables)
+    print('Map Input tables check')
+    # print(inputTables)
+    print(mapRequiredInputZero)
+    isOrdered = mapRequiredInputZero.get('isOrdered', False)
+    if isOrdered:
+        if isinstance(mapRequiredInputZero.get('orderByColumn',[]), (list, tuple)) and mapRequiredInputZero.get('orderByColumn',[]) != ['']:
+            orderCols = ', '.join([a + " " +  b for a,b in zip(mapRequiredInputZero.get('orderByColumn',[]),mapRequiredInputZero.get('orderByColumnDirection',[]))])
+            print('Order Column Things')
+            print(orderCols)
+            return "ORDER BY " + orderCols    
+    else:
+        return "\n"
