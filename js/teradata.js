@@ -619,9 +619,10 @@
           // var tableAliasList = 
 
           // const isAliased = KEYS.INPUT_TABLE !== targetTableAlias;
+          // TODO: Look into this
           if (aliasedInputsList !== []) {
             isAliasedInputsPopulated = true;
-            console.log('Into Alias Inputs')
+            console.log('Into Alias Inputs');
             aliasedInputsList.map((input) => {
               // if (input.name.toUpperCase() === targetTableAlias.toUpperCase()) {
               if (targetTableAlias.includes(input.name.toUpperCase())) {
@@ -629,7 +630,7 @@
                 isInAliasedInputsList = true;
               }
               // Test code
-              console.log('Alternate names')
+              console.log('Alternate names');
               console.log(input.alternateNames);    
               console.log(input.name)
               console.log(input)
@@ -638,8 +639,10 @@
                 console.log(input.alternateNames)
                 for (var altNameIndex=0;altNameIndex<input.alternateNames.length;altNameIndex++ ){
                   console.log('Table Alternate name\n');
-                  console.log(input.alternateNames[altNameIndex]);
+                  console.log(input.alternateNames[altNameIndex].toUpperCase());
+                  console.log(targetTableAlias)
                   if(targetTableAlias.includes(input.alternateNames[altNameIndex].toUpperCase())){
+                    console.log('includes alternate')
                     isInAliasedInputsList = true;
                     isInAlternateNames = true;
                     alternateNameIndex = altNameIndex;
@@ -651,13 +654,14 @@
             )
           } else {
             isInAliasedInputsList = false;
-            console.log('Not in alias input anymore')
+            console.log('Not in alias input anymore');
           }
           // const isAliased = aliasedInputsList.includes(targetTableAlias);
           const isAliased = isInAliasedInputsList;
           //console.log(KEYS.INPUT_TABLE);
           //console.log(targetTableAlias);
-
+          console.log('Aliased Inputs List Check');
+          console.log(aliasedInputsList);
           if (isAliased) {
             console.log('isAliased');
             // let matchingInputs = aliasedInputsList.filter(input => targetTableAlias === input.name.toUpperCase());
@@ -666,11 +670,26 @@
               //console.log('Matching inputs > 0');
               // targetTableName = matchingInputs[0].value;
               // matchingInputs[targetTableAlias.length - 1].value
+              if(isInAlternateNames){
+                  let matchingInputsAlt = aliasedInputsList.filter(input => input.alternateNames.some(r=> targetTableAlias.includes(r.toUpperCase())));
+                  console.log(matchingInputsAlt)
+                  if (matchingInputsAlt.length > 0) {               
+                    // targetTableNameAlt = matchingInputsAlt.map(function(input) {
+                    //   return input.value
+                    // });
+                    console.log("matching");
+                    console.log(matchingInputs);
+                    console.log(matchingInputsAlt)
+                    matchingInputs = matchingInputs.concat(matchingInputsAlt);
+                   }
+              }
               targetTableName = matchingInputs.map(function(input) {
                 return input.value
               });
             } else if (matchingInputs == 0 && isInAlternateNames){ //Alternate names additional code
+              console.log('Is in alternates and matching was 0')
               let matchingInputs = aliasedInputsList.filter(input => input.alternateNames.some(r=> targetTableAlias.includes(r.toUpperCase())));
+              console.log(matchingInputs)
               if (matchingInputs.length > 0) {               
                 targetTableName = matchingInputs.map(function(input) {
                   return input.value

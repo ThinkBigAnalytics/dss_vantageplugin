@@ -153,9 +153,10 @@ def getSelectQuery(dss_function, inputTables, config):
     #TODO ADD USING CLAUSE SOMEWHERE    
     # Update to:
     # Following code might have issues with Reduce functions with multiple INPUT TABLES
+    useCoprocessor = dss_function.get('useCoprocessor','')
     if dss_function.get('hasPartnerFunction', False):
         jsonfilePartner= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))
-        useCoprocessor = dss_function.get('useCoprocessor','')
+        # useCoprocessor = dss_function.get('useCoprocessor','')
         outTableClausesPartner = getOutClause(dss_function['partnerFunction'], jsonfilePartner, inputTables)     
         argumentClausesPartner = getArgumentClauses(dss_function['partnerFunction'], jsonfilePartner, inputTables)
         if(outTableClausesPartner == '\n'):
