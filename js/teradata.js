@@ -660,8 +660,8 @@
           const isAliased = isInAliasedInputsList;
           //console.log(KEYS.INPUT_TABLE);
           //console.log(targetTableAlias);
-          console.log('Aliased Inputs List Check');
-          console.log(aliasedInputsList);
+          // console.log('Aliased Inputs List Check');
+          // console.log(aliasedInputsList);
           if (isAliased) {
             console.log('isAliased');
             // let matchingInputs = aliasedInputsList.filter(input => targetTableAlias === input.name.toUpperCase());
@@ -687,9 +687,9 @@
                 return input.value
               });
             } else if (matchingInputs == 0 && isInAlternateNames){ //Alternate names additional code
-              console.log('Is in alternates and matching was 0')
+              // console.log('Is in alternates and matching was 0')
               let matchingInputs = aliasedInputsList.filter(input => input.alternateNames.some(r=> targetTableAlias.includes(r.toUpperCase())));
-              console.log(matchingInputs)
+              // console.log(matchingInputs)
               if (matchingInputs.length > 0) {               
                 targetTableName = matchingInputs.map(function(input) {
                   return input.value
@@ -1007,7 +1007,7 @@
       },
       testPrint: function(element){
         $delay(() => {
-        console.log('Testprint')
+        // console.log('Testprint')
         $('input.flexdatalist').trigger('change');
         $('input.flexdatalist').trigger('input');
         console.log(element.value);
