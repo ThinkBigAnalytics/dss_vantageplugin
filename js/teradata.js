@@ -166,7 +166,7 @@
         if (typeof selectedFunction === 'undefined') {
           return;
         }
-
+        // console.log(${tbl:datasetname});
         const promise = $http
           .get(`${FUNCTION_METADATA_PATH}${selectedFunction}_mle.json`, {
             transformResponse: [function (data) {

@@ -324,7 +324,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                     <option value="" selected>--No Selection--</option>
                   </select>
-
+                  <!-- <span>
+                    Use Column Name Input
+                  </span>
+                  <span>
+                      Use Column Name Input
+                    </span> -->
                     <!-- REMOVED POTENTIAL ERRONEOUS CODE -->
                   <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
@@ -994,7 +999,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
             </tbody>
         
           </table>
-          <span ng-if="!hasOptionalArguments_Partner()">Function has no Optional Arguments</span>
+          <span ng-if="config.function.hasPartnerFunction && !hasOptionalArguments_Partner()">Function has no Optional Arguments</span>
         <!-- PARTNER FUNCTION OPTIONAL END -->
       </div>
 

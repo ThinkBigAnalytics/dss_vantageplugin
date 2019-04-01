@@ -92,6 +92,7 @@ def getOutClause(dss_function, jsonfile, inputTables):
     if dss_function.get('output_tables', []) != []:
         print(dss_function.get('output_tables', []))
         print('This happens in getoutclause')
+        # Put $(project_key)/Table prefix here
         return '\n' + queryutility.getJoinedOutputTableString(dss_function.get('output_tables', []),
                                                  queryutility.getOutputTableClausesFromJson(jsonfile),
                                                  inputTables)   

@@ -195,11 +195,18 @@ def asterDo():
                 print(table)
                 #Need to change this to max of split in order for multiple database or no-database table inputs
                 #Change below might fix issue 4 of Jan 4 2018 for Nico. For non-drop tables
-                main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[len(out_dataset.split('.'))-1] == table.get('value').split('.')[len(table.get('value').split('.'))-1].strip('\"'),get_output_names_for_role('main')))[0]
+                try:
+                    main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[len(out_dataset.split('.'))-1] == table.get('value').split('.')[len(table.get('value').split('.'))-1].strip('\"'),get_output_names_for_role('main')))[0]
+                except Exception as error:
+                    # print(error.message)                    
+                    raise RuntimeError('The following output table does not exist as an output Dataset: '+table.get('value'))
                 print('Output name 2')
                 print(main_output_name2)
                 output_dataset2 =  dataiku.Dataset(main_output_name2)   
-                    
+                print("od2 printer")
+                tableNamePrefix = output_dataset2.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('namingRule').get('tableNameDatasetNamePrefix')
+                if tableNamePrefix != None or tableNamePrefix != '':
+                    print('Table prefix is not empty:' + tableNamePrefix)
                 # except:
                 #     #Need to change this error
                 #     print('Error: Dataset for' + table.get('name') + ' not found')  
