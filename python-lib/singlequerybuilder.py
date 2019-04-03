@@ -239,4 +239,10 @@ def getOrderByMap(mapRequiredInputZero):
             print(orderCols)
             return "ORDER BY " + orderCols    
     else:
-        return "\n"
+        if isinstance(mapRequiredInputZero.get('orderByColumn',[]), (list, tuple)) and mapRequiredInputZero.get('orderByColumn',[]) != ['']:
+            orderCols = ', '.join([a + " " +  b for a,b in zip(mapRequiredInputZero.get('orderByColumn',[]),mapRequiredInputZero.get('orderByColumnDirection',[]))])
+            print('Order Column Things')
+            print(orderCols)
+            return "ORDER BY " + orderCols    
+        else:
+            return "\n"

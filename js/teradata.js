@@ -170,15 +170,20 @@
         const promise = $http
           .get(`${FUNCTION_METADATA_PATH}${selectedFunction}_mle.json`, {
             transformResponse: [function (data) {
-              if (typeof data === 'string') {
+              if (typeof data === 'string') {                
                 // strip json vulnerability protection prefix
                 data = data.replace(")]}',\n", '');
                 data = data.replace(/: Infinity/g, ': "Infinity"');
-                data = data.replace(/: -Infinity/g, ': "-Infinity"');
+                data = data.replace(/: -Infinity/g, ': "-Infinity"');             
+                // WARNING DANGEROUS STRING REPLACEMENT
+                data = data.replace(/NaN(?!")/g,'"NaN"')  
                 // data = data.replace(/^\t|\s*\-NaN/g, '"-NaN"');
-                // data = data.replace(/^\t|\s*NaN/g, '"NaN"');
+                // console.log(JSON.stringify({ "x" : NaN }, undefined, 2));
+                // data = data.replace(/^\t|\s*NaN/g, '"NaN"');                
                 data = JSON.parse(data, function censor(key, value) {
-                  return value == Infinity ? "Infinity" : value;
+                  value == Infinity ? "Infinity" : value;
+                  value == NaN ? "NaN" : value;
+                  return value
                 });
                 // data = JSON.parse(data, function censor(key, value) {
                 //   return value == NaN ? "NaN" : value;
@@ -195,6 +200,7 @@
             functionVersion = functionMetadata.function_version;
             $scope.config.function.partitionAttributes = $scope.config.function.partitionAttributes || [];
             $scope.config.function.orderByColumn = $scope.config.function.orderByColumn || [];
+            // $scope.config.function.orderByColumnDirection = $scope.config.function.orderByColumnDirection || []
             $scope.preprocessDescriptions();
             $scope.preprocessMetadata(shouldSetDefaults);
             $scope.activateTabs();
