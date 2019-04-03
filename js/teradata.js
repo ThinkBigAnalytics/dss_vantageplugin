@@ -1168,7 +1168,7 @@
               argument.value = [""];
               console.log(argument.value);
             } else if ((argument.datatype == "COLUMN_NAMES" || argument.datatype == "COLUMNS") && argument.allowsLists && !argument.isRequired && !(argument.value.constructor === Array)){
-              argument.value = [];
+              argument.value = [""];
               console.log(argument.value);
             }
            /* try {
