@@ -319,11 +319,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <input type="checkbox" ng-model="item.value" ng-if="item.datatype == 'BOOLEAN'" data-toggle="tooltip" data-container="body"
                   data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" />
 
-                <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                     <option value="" selected>--No Selection--</option>
-                  </select>
+                  </select> -->
+
+                  <input required type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'    
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value"
+                  
+                  data-placement="right" data-container="body" >      
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
+
+
                   <!-- <span>
                     Use Column Name Input
                   </span>
@@ -355,11 +371,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   </datalist>      -->
 
                   <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item) && item.isRequired && item.allowsLists && !getPermittedValuesWithName(item)">
-                    <select required
+                    <!-- <select required
                     ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                         <option value="" selected>--No Selection--</option>
-                    </select>                      
+                    </select>                       -->
+                    <input required type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'                      
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value[$index]"
+                  
+                  data-placement="right" data-container="body" >      
+
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
+
+
                     <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
                       title="Remove RETURNS Column">
                       <span class="glyphicon glyphicon-minus-sign orange"></span>
@@ -582,11 +613,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <input type="checkbox" ng-model="item.value" ng-if="item.datatype == 'BOOLEAN'" data-toggle="tooltip" data-container="body"
                   data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" />
 
-                <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
                     <option value="" selected>--No Selection--</option>
-                  </select>
+                  </select> -->
+
+                  <input required type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'    
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value"
+                  
+                  data-placement="right" data-container="body" >      
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
 
                     <!-- REMOVED POTENTIAL ERRONEOUS CODE -->
                   <!-- <select required ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
@@ -613,11 +658,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   </datalist>      -->
 
                   <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item) && item.isRequired && item.allowsLists && !getPermittedValuesWithName(item)">
-                    <select required
+                    <!-- <select required
                     ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
                         <option value="" selected>--No Selection--</option>
-                    </select>                      
+                    </select>                       -->
+
+                        <input required type='text'
+                      placeholder='Add Parameter'                     
+                      list='item{{item.name}}'    
+                      
+                      data-toggle="tooltip" 
+                      data-html="true" 
+                      title="{{ getArgumentDescriptionWithName(item.name) }}"
+                      ng-model="item.value[$index]"
+                      
+                      data-placement="right" data-container="body" >      
+                      <datalist id="item{{item.name}}">
+                          <option ng-repeat="column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                      </datalist>
+
+
                     <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
                       title="Remove RETURNS Column">
                       <span class="glyphicon glyphicon-minus-sign orange"></span>
@@ -766,11 +827,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right"
                 />
 
-                <select ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                <!-- <select ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                     <option value="" selected>--No Selection--</option>
-                  </select>
+                  </select> -->
+
+                  <input type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'    
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value"
+                  
+                  data-placement="right" data-container="body" >      
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
 
                 <!-- <select multiple size="8"  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                   ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
@@ -778,11 +853,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   </select> -->
                   <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item)"> 
                     <!--  -->
-                    <select 
+                    <!-- <select 
                     ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)">
                         <option value="" selected>--No Selection--</option>
-                    </select>                      
+                    </select>          -->
+                    
+                    <input type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'    
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value[$index]"
+                  
+                  data-placement="right" data-container="body" >      
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="column in getSchema(item, config.function.required_input, config.function.unaliased_inputs, config.function.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
+
                     <span ng-if="item.value.length == 0">No columns added, click the + button to add a column</span>
                     <button style="border:none;background: none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
                       title="Remove Column">
@@ -941,11 +1031,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right"
                   />
         
-                  <select ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  <!-- <select ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
                     ng-model="item.value" data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
                       <option value="" selected>--No Selection--</option>
-                    </select>
+                    </select> -->
+                    <input type='text'
+                  placeholder='Add Parameter'                     
+                  list='item{{item.name}}'    
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  data-toggle="tooltip" 
+                  data-html="true" 
+                  title="{{ getArgumentDescriptionWithName(item.name) }}"
+                  ng-model="item.value"
+                  
+                  data-placement="right" data-container="body" >      
+                  <datalist id="item{{item.name}}">
+                      <option ng-repeat="config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                  </datalist>
         
                   <!-- <select multiple size="8"  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                     ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
@@ -953,11 +1056,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     </select> -->
                     <div ng-repeat="col in item.value track by $index" ng-if="multiColumnNamesCheck(item)"> 
                       <!--  -->
-                      <select 
+                      <!-- <select 
                       ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                       data-placement="right" data-container=body ng-options="column.name as column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')' for column in getSchema(item, config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)">
                           <option value="" selected>--No Selection--</option>
-                      </select>                      
+                      </select>                       -->
+
+                      <input type='text'
+                      placeholder='Add Parameter'                     
+                      list='item{{item.name}}{{$index}}'    
+                      ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                      data-toggle="tooltip" 
+                      data-html="true" 
+                      title="{{ getArgumentDescriptionWithName(item.name) }}"
+                      ng-model="item.value"
+                      
+                      data-placement="right" data-container="body" >      
+                      <datalist id="item{{item.name}}{{$index}}">
+                          <option ng-repeat="config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
+                      </datalist>
+
                       <span ng-if="item.value.length == 0">No columns added, click the + button to add a column</span>
                       <button style="border:none;background: none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
                         title="Remove Column">
