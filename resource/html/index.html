@@ -210,7 +210,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                             <option value="" selected>--No Selection--</option>
                           </select>
                           <span>
-                            <select class="orderbyselect" required ng-model="item.orderByColumnDirection[$index]"                            
+                            <select class="orderbyselect" ng-model="item.orderByColumnDirection[$index]"                            
                             title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
                             data-placement="right">                            
                             <option value="" selected>ASC</option>
@@ -272,7 +272,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                           title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
                           data-placement="right">
                           <!-- <option value="" selected>--No Selection--</option> -->
-                          <option value="" selected">ASC</option>
+                          <option value="" selected>ASC</option>
                           <option value="DESC">DESC</option>
                         </select>
                         </span>
@@ -423,12 +423,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   </datalist>
 
 
-                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
-
-<!--                     </select>                      
-                    <button style="border:none;background:none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)" -->
-
-                      title="Remove RETURNS Column">
+                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)" title="Remove RETURNS Column">
                       <span class="glyphicon glyphicon-minus-sign orange"></span>
                     </button>
                   </div>
@@ -534,7 +529,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                           data-html="true" title="<b>Select an ORDER BY Column</b>" data-toggle="tooltip" data-container="body"
                           data-placement="right">
                           <span>
-                            <select class="orderbyselect" required ng-model="item.orderByColumnDirection[$index]"                            
+                            <select class="orderbyselect" ng-model="item.orderByColumnDirection[$index]"                            
                             title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
                             data-placement="right">                            
                             <option value="" selected>ASC</option>
@@ -597,7 +592,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                         data-html="true" title="<b>Select an ORDER BY column</b>" data-toggle="tooltip" data-container="body"
                         data-placement="right">
                         <span>
-                          <select class="orderbyselect" required ng-model="config.function.partnerFunction.orderByColumnDirection[$index]"                            
+                          <select class="orderbyselect" ng-model="config.function.partnerFunction.orderByColumnDirection[$index]"                            
                           title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
                           data-placement="right">
                           <!-- <option value="" selected>--No Selection--</option> -->
@@ -743,12 +738,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       </datalist>
 
 
-                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)"
-
-<!--                     </select>                      
-                    <button style="border:none;background:none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)" -->
-
-                      title="Remove RETURNS Column">
+                    <button style="border:none;background: none;" ng-if="item.value.length > 1" ng-click="removeColumnArgument(item,$index)" title="Remove RETURNS Column">
                       <span class="glyphicon glyphicon-minus-sign orange"></span>
                     </button>
                   </div>
@@ -930,7 +920,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     <input type='text'
                   placeholder='Add Parameter'                     
                   list='item{{item.name}}'    
-                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                  ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" 
                   data-html="true" 
                   title="{{ getArgumentDescriptionWithName(item.name) }}"
@@ -1133,7 +1123,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <input type='text'
                       placeholder='Add Parameter'                     
                       list='item{{item.name}}{{$index}}'    
-                      ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && !item.allowsLists && !getPermittedValuesWithName(item)"
+                      ng-if="(item.datatype == 'COLUMN_NAMES' || item.datatype == 'COLUMNS') && item.allowsLists && !getPermittedValuesWithName(item)"
                       data-toggle="tooltip" 
                       data-html="true" 
                       title="{{ getArgumentDescriptionWithName(item.name) }}"

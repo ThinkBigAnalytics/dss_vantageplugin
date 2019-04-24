@@ -198,8 +198,9 @@
             // console.log(functionMetadata);
             // console.log($scope.config.function)
             functionVersion = functionMetadata.function_version;
-            $scope.config.function.partitionAttributes = $scope.config.function.partitionAttributes || [];
-            $scope.config.function.orderByColumn = $scope.config.function.orderByColumn || [];
+            // PARTITION BY BLANK
+            $scope.config.function.partitionAttributes = $scope.config.function.partitionAttributes || [''];
+            $scope.config.function.orderByColumn = $scope.config.function.orderByColumn || [''];
             // $scope.config.function.orderByColumnDirection = $scope.config.function.orderByColumnDirection || []
             $scope.preprocessDescriptions();
             $scope.preprocessMetadata(shouldSetDefaults);
@@ -340,7 +341,8 @@
     },
 
     initializeColumnArrayOptional: function(columnArray){
-      columnArray = columnArray || [];
+      // MOdified this too
+      columnArray = columnArray || [''];
       return columnArray;
     },
     

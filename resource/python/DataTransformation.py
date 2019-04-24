@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 FUNCTION_CATEGORY="Data Transformation"
 
+PARTNER_LIST=["EvaluateNamedEntityFinderRow"]
 def getConnectionParamsFromDataset(inputDataset):
     return inputDataset.get_location_info(sensitive_info=True)['info']
 
@@ -214,6 +215,11 @@ def do(payload, config, plugin_config, inputs):
                     # print('Partner Check')
                     # print(partnerDetails)
                     # pradfa
+            elif 'partner_function' in keys and f['function_name'] in PARTNER_LIST:
+                d['hasPartnerFunction'] = True
+                partnerDetails = getPartnerDetails(f['partner_function'], map)
+                if partnerDetails != None:
+                    d['partnerFunction'] = partnerDetails
             # print('Working partner check')
             # print(d)                
             choices.append(d);
