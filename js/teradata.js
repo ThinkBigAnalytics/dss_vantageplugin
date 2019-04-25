@@ -308,7 +308,7 @@
     },
 
     addColumnArgument: function(item) {
-      console.log('Adding column');
+      console.log('Adding value to array');
       console.log(item.name);
       console.log(item.value);
       item.value.push("");
@@ -1179,6 +1179,11 @@
               argument.value = [""];
               console.log(argument.value);
             }
+            if((argument.datatype == "STRING") && argument.allowsLists && $scope.getPermittedValuesWithName(argument) && argument.isRequired && !(argument.value.constructor === Array)){
+              argument.value = [""];
+              console.log(argument.value);
+            } 
+
            /* try {
 
               if (functionMetadata.argument_clauses[i]

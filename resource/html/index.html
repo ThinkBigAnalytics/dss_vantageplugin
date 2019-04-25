@@ -333,10 +333,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="item.isRequired && useNativeOrNot(item.inNative)">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
+                <!-- Button for columns-->
                 <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
                 style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Column">
                  <span class="glyphicon glyphicon-plus-sign orange"></span>
                </button>
+               <!-- Button for string permitted values-->
+               <button ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Value">
+                 <span class="glyphicon glyphicon-plus-sign orange"></span>
+               </button>
+              </td>
               </td>
               <td>
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
@@ -439,11 +446,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     <option value="" selected>--No Selection--</option>
                   </select>
                   
-                 <select required multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
-                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                  <!-- PermittedValues + AllowsLists + Main Function Required -->
+                <div ng-if="getPermittedValuesWithName(item) && item.allowsLists" ng-repeat="arg in item.value track by $index">
+                  <select required
+                  ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
                   data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item) || []">
                   </select>
-                  
+                  <button style="border:none;background:none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
+                    title="Remove Column">
+                    <!--  && multiColumnNamesCheck(item)" -->
+                    <span class="glyphicon glyphicon-minus-sign orange"></span>
+                  </button>
+                </div>                                   
               </td>
             </tr>
 
@@ -655,8 +669,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
             <tr ng-repeat="item in config.function.partnerFunction.arguments" ng-model="config.function.partnerFunction.arguments" ng-if="item.isRequired && useNativeOrNot(item.inNative)">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
+                <!-- Button for multi columns -->
                 <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
                 style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Column">
+                 <span class="glyphicon glyphicon-plus-sign orange"></span>
+               </button>
+
+               <!-- Button for  string permitted values-->
+               <button ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Value">
                  <span class="glyphicon glyphicon-plus-sign orange"></span>
                </button>
               </td>
@@ -754,10 +775,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     <option value="" selected>--No Selection--</option>
                   </select>
                   
-                 <select required multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
-                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                  <!-- PermittedValues + AllowsLists + Partner Function Required -->
+                <div ng-if="getPermittedValuesWithName(item) && item.allowsLists" ng-repeat="arg in item.value track by $index">
+                 <select required ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                  ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
                   data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item) || []">
                   </select>
+                  <button style="border:none;background:none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
+                    title="Remove Column">
+                    <!--  && multiColumnNamesCheck(item)" -->
+                    <span class="glyphicon glyphicon-minus-sign orange"></span>
+                  </button>
+                  </div>
                   
               </td>
             </tr>
@@ -865,11 +894,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
             
             <tr ng-repeat="item in config.function.arguments" ng-model="config.function.arguments" ng-if="!item.isRequired && useNativeOrNot(item.inNative)">
               <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
-                
+                <!-- Button for multi columns-->
                 <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
                  style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Column">
                   <span class="glyphicon glyphicon-plus-sign orange"></span>
                 </button>
+                
+                <!-- Button for string permitted values-->
+               <button ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+               style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Value">
+                <span class="glyphicon glyphicon-plus-sign orange"></span>
+              </button>
               
               </td>
               <td>
@@ -962,11 +997,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   title="{{ getArgumentDescriptionWithName(item.name) }}" data-placement="right" ng-options="t as t for t in getPermittedValuesWithName(item)">
                     <option value="" selected>--No Selection--</option>
                   </select>
-                  
-                <select multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
-                  ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                 
+                  <!-- PermittedValues + AllowsLists + Main Function Optional -->
+                <div ng-if="getPermittedValuesWithName(item) && item.allowsLists" ng-repeat="arg in item.value track by $index">
+                <select ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                  ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
                   data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item)">
                   </select>
+                  <button style="border:none;background:none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
+                    title="Remove Column">
+                    <!--  && multiColumnNamesCheck(item)" -->
+                    <span class="glyphicon glyphicon-minus-sign orange"></span>
+                  </button>
+                  </div>
+
               </td>
             </tr>
           </tbody>
@@ -1069,11 +1113,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
               
               <tr ng-repeat="item in config.function.partnerFunction.arguments" ng-model="config.function.partnerFunction.arguments" ng-if="!item.isRequired && useNativeOrNot(item.inNative)">
                 <td style="text-transform: capitalize">{{ getArgumentFormattedName(item.name) }}
-                  
+                  <!-- Button for columns -->
                   <button ng-if="multiColumnNamesCheck(item) && !getPermittedValuesWithName(item)"
                    style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Column">
                     <span class="glyphicon glyphicon-plus-sign orange"></span>
                   </button>
+                  
+                   <!-- Button for string permitted values-->
+                    <button ng-if="getPermittedValuesWithName(item) && item.allowsLists"
+                    style="border:none;background:none;" ng-click="addColumnArgument(item)" title="Add Value">
+                      <span class="glyphicon glyphicon-plus-sign orange"></span>
+                    </button>
                 
                 </td>
                 <td>
@@ -1127,8 +1177,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       data-toggle="tooltip" 
                       data-html="true" 
                       title="{{ getArgumentDescriptionWithName(item.name) }}"
-                      ng-model="item.value"
-                      
+                      ng-model="item.value[$index]"                      
                       data-placement="right" data-container="body" >      
                       <datalist id="item{{item.name}}{{$index}}">
                           <option ng-repeat="config.function.partnerFunction.required_input, config.function.partnerFunction.unaliased_inputs, config.function.partnerFunction.arguments)" value="{{column.name}}">{{column.tableName + '.' + column.name + ' (' + (column.type || 'Column') + ')'}}</option>    
@@ -1166,10 +1215,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <option value="" selected>--No Selection--</option>
                     </select>
                     
-                  <select multiple size="8" ng-if="getPermittedValuesWithName(item) && item.allowsLists"
-                    ng-model="item.value" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}<br><br><b>(Ctrl+Click to multi-select)</b>"
+                    <!-- PermittedValues + AllowsLists + PartnerFunction Optional -->
+                  <div ng-if="getPermittedValuesWithName(item) && item.allowsLists" ng-repeat="arg in item.value track by $index">
+                    <select 
+                    ng-model="item.value[$index]" data-toggle="tooltip" data-html="true" title="{{ getArgumentDescriptionWithName(item.name)}"
                     data-placement="right" data-container="body" ng-options="t as t for t in getPermittedValuesWithName(item)">
                     </select>
+
+                    <button style="border:none;background:none;" ng-if="item.value.length > 0" ng-click="removeColumnArgument(item,$index)"
+                      title="Remove Column">
+                      <!--  && multiColumnNamesCheck(item)" -->
+                      <span class="glyphicon glyphicon-minus-sign orange"></span>
+                    </button>
+                  </div>
+                    
                 </td>
               </tr>
             </tbody>
