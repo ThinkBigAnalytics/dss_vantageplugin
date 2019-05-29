@@ -91,13 +91,14 @@ def do(payload, config, plugin_config, inputs):
                         required_input_dict['isRequired'] = input_tab['isRequired']                    
                     if 'requiredInputKind' in input_tab.keys():
                         partitionByKey = next(iter(x for x in input_tab.get('requiredInputKind',[])), '')
+                        tmp_inputKindChoices = input_tab.get('requiredInputKind',[])
                         if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne']:
                             if 'partitionByOneInclusive' in input_tab.keys() and input_tab['partitionByOneInclusive']: 
-                                partitionByKey.append("PartitionByOne")
+                                tmp_inputKindChoices.append("PartitionByOne")
                             else:
                                 partitionByKey = "PartitionByOne"
                         required_input_dict['kind'] = partitionByKey
-                        required_input_dict['inputKindChoices'] = input_tab.get('requiredInputKind',[])
+                        required_input_dict['inputKindChoices'] = tmp_inputKindChoices
                     if 'isOrdered' in input_tab.keys():
                         required_input_dict['isOrdered'] = input_tab['isOrdered']
                     if 'alternateNames' in input_tab.keys():                        
@@ -352,13 +353,14 @@ def getPartnerDetails(functionName, map):
                     required_input_dict['isRequired'] = input_tab['isRequired']                    
                 if 'requiredInputKind' in input_tab.keys():
                     partitionByKey = next(iter(x for x in input_tab.get('requiredInputKind',[])), '')
+                    tmp_inputKindChoices = input_tab.get('requiredInputKind',[])
                     if 'partitionByOne' in input_tab.keys() and input_tab['partitionByOne']:
                         if 'partitionByOneInclusive' in input_tab.keys() and input_tab['partitionByOneInclusive']: 
-                            partitionByKey.append("PartitionByOne")
+                            tmp_inputKindChoices.append("PartitionByOne")
                         else:
                             partitionByKey = "PartitionByOne"
                     required_input_dict['kind'] = partitionByKey
-                    required_input_dict['inputKindChoices'] = input_tab.get('requiredInputKind',[])
+                    required_input_dict['inputKindChoices'] = tmp_inputKindChoices
                 if 'isOrdered' in input_tab.keys():
                     required_input_dict['isOrdered'] = input_tab['isOrdered']
                 if 'alternateNames' in input_tab.keys():                        

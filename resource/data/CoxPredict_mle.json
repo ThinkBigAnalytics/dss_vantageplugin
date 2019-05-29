@@ -135,7 +135,8 @@
         "PartitionByKey"
       ],
       "isOrdered": false,
-      "partitionByOne": false,
+      "partitionByOne": true,
+      "partitionByOneInclusive": true,
       "name": "PredictorValues",
       "alternateNames": [
         "predicts"

@@ -59,7 +59,9 @@ class inputtableinfo(tableinfo.tableinfo):
         # print(alternateNames[0].encode("utf-8"))
         # if alternate tables
         # if 
+        tmpAlias = '' if 'input' == tablealias else tablealias
         tmpAlias = alternateNames[0].encode("utf-8") if alternateNames != [] else tmpAlias
+        
         self.__alias = tmpAlias
         self.__partitionKey = self.__getPartitionClauseFromAliasedInputDef(
             inputdef.get('kind', 'DSSOTHERS'), inputdef)
@@ -87,10 +89,11 @@ class inputtableinfo(tableinfo.tableinfo):
 
     def __getOrderByKeyFromInputDef(self, inputdef):
         #no empty string checking for orderByColumn since this is mandatory if isOrdered is true
-        orderKeyFromInputDef = inputdef.get("orderByColumn", "")
-        orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", "")
+        orderKeyFromInputDef = inputdef.get("orderByColumn", [])
+        orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", [])
         print('order type thing')
         print(orderKeyFromInputDef)
+        print(orderKeyDirectionFromInputDef)
         # print(orderKeyDirectionFromInputDef)
         # if orderKeyFromInputDef != [] or orderKeyFromInputDef == [''] or (len(orderKeyFromInputDef) == 0 and orderKeyFromInputDef[0].encode('ascii','ignore') != '' ):
         
@@ -100,6 +103,8 @@ class inputtableinfo(tableinfo.tableinfo):
         print(isinstance(orderKeyFromInputDef, (list, tuple)))
         print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
         if isinstance(orderKeyFromInputDef, (list, tuple)) and orderKeyFromInputDef != ['']:
+            returnValue = ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
+            print(returnValue)
             return ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
         else:
             return orderKeyFromInputDef

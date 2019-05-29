@@ -172,6 +172,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <option value="" selected>--No Selection--</option>
                   </select>
                 </div>
+
+                <!-- Input Kind Empty -->
+                <div class="inner-cell" ng-if="item.inputKindChoices.length == 0">
+                  <p class="inner-label">Partition Type </p>
+                  <select ng-model="item.kind">
+                      <option value="" selected>Unpartitioned</option>
+                      <option value="PartitionByKey">PartitionByKey</option>
+                      <option value="PartitionByAny">PartitionByAny</option>
+                      <option value="PartitionByOne">PartitionByOne</option>
+                  </select>
+                </div>
+
                 <!-- Aliased Input Table Partition if Key-->
                 <div class="inner-cell" ng-show="'PartitionByKey' == item.kind">
                   <p class="inner-label">Partition by 
@@ -197,7 +209,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <!-- Aliased Input Table Order isOrdered-->
                 <div class="inner-cell">
                   <p class="inner-label">Order by 
-                      <button style="border:none;background:none;" ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                      <button style="border:none;background:none;" ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addOrderByColumn_WITHDIR(item.orderByColumn, item.orderByColumnDirection)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
                   </p>
                   <!-- IS Ordered -->
                     <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
@@ -217,7 +229,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                             <option value="DESC">DESC</option>
                           </select>
                           </span>
-                              <button style="border:none;background:none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
+                              <button style="border:none;background:none;" ng-if="item.orderByColumn.length > 1" ng-click="removeOrderByColumn_WITHDIR(item.orderByColumn, item.orderByColumnDirection,$index)"
                                 title="Remove Script Argument">
                                 <span class="glyphicon glyphicon-minus-sign orange"></span>
                               </button>
@@ -493,10 +505,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <option value="" selected>--No Selection--</option>
                   </select> -->
                   <span>{{config.function.function_alias_name}}'s output</span>
+                  <!-- Input Kind Required -->
                 <div class="inner-cell" ng-if="item.inputKindChoices.length > 1">
                   <p class="inner-label">Partition Type </p>
                   <select required ng-model="item.kind" ng-options="kind for kind in item.inputKindChoices">
                       <option value="" selected>--No Selection--</option>
+                  </select>
+                </div>
+
+                <!-- Input Kind Empty -->
+                <div class="inner-cell" ng-if="item.inputKindChoices.length == 0">
+                  <p class="inner-label">Partition Type </p>
+                  <select ng-model="item.kind">
+                      <option value="" selected>Unpartitioned</option>
+                      <option value="PartitionByKey">PartitionByKey</option>
+                      <option value="PartitionByAny">PartitionByAny</option>
+                      <option value="PartitionByOne">PartitionByOne</option>
                   </select>
                 </div>
 
@@ -527,7 +551,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 
                 <div class="inner-cell">
                   <p class="inner-label">Order by 
-                      <button style="border:none;background:none;" ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addPartitionByColumn_TEST(item.orderByColumn)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
+                      <button style="border:none;background:none;" ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addOrderByColumn_WITHDIR(item.orderByColumn, item.orderByColumnDirection)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
                   </p>
                   <!-- Is Ordered -->
                     <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
@@ -550,7 +574,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                             <option value="DESC">DESC</option>
                           </select>
                           </span>
-                              <button style="border:none;background:none;" ng-if="item.orderByColumn.length > 1" ng-click="removePartitionByColumn_TEST(item.orderByColumn,$index)"
+                              <button style="border:none;background:none;" ng-if="item.orderByColumn.length > 1" ng-click="removeOrderByColumn_WITHDIR(item.orderByColumn, item.orderByColumnDirection, $index)"
                                 title="Remove Script Argument">
                                 <span class="glyphicon glyphicon-minus-sign orange"></span>
                               </button>
@@ -817,10 +841,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                     <option value="" selected>--No Selection--</option>
                   </select>
                   
+                  <!-- Input Kind Required -->
                 <div class="inner-cell" ng-if="item.inputKindChoices.length > 1">
                   <p class="inner-label">Partition Type </p>
                   <select required ng-model="item.kind" ng-options="kind for kind in item.inputKindChoices">
                       <option value="" selected>--No Selection--</option>
+                  </select>
+                </div>
+                <!-- Input Kind Empty -->
+                <div class="inner-cell" ng-if="item.inputKindChoices.length == 0">
+                  <p class="inner-label">Partition Type </p>
+                  <select ng-model="item.kind">
+                      <option value="" selected>Unpartitioned</option>
+                      <option value="PartitionByKey">PartitionByKey</option>
+                      <option value="PartitionByAny">PartitionByAny</option>
+                      <option value="PartitionByOne">PartitionByOne</option>
                   </select>
                 </div>
 
@@ -1036,12 +1071,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                       <option value="" selected>--No Selection--</option>
                     </select>
                     
+                    <!-- Input Kind Required -->
                   <div class="inner-cell" ng-if="item.inputKindChoices.length > 1">
                     <p class="inner-label">Partition Type </p>
                     <select required ng-model="item.kind" ng-options="kind for kind in item.inputKindChoices">
                         <option value="" selected>--No Selection--</option>
                     </select>
                   </div>
+
+                  <!-- Input Kind Empty -->
+                <div class="inner-cell" ng-if="item.inputKindChoices.length == 0">
+                  <p class="inner-label">Partition Type </p>
+                  <select ng-model="item.kind">
+                      <option value="" selected>Unpartitioned</option>
+                      <option value="PartitionByKey">PartitionByKey</option>
+                      <option value="PartitionByAny">PartitionByAny</option>
+                      <option value="PartitionByOne">PartitionByOne</option>
+                  </select>
+                </div>
         
                   <div class="inner-cell" ng-show="'PartitionByKey' == item.kind">
                     <p class="inner-label">Partition by

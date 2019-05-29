@@ -6,7 +6,7 @@ Dataiku Data Science Studio \(DSS\) is a collaborative platform that enables tea
 
 Dataiku provides a platform that allows to visualize and re-run workflows. In a Dataiku project, one can easily visualize how data flows across tables and recipes.
 
-Aster Analytics Plugin for Dataiku DSS integrates around 150 Aster Analytics SQL-MR functions to Dataiku data science studio. SQL-MR functions can be accessed through the RECIPE menu of the FLOW view of a Dataiku project, and are grouped into nine categories:
+Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates around 150 Vantage Analytic Machine Learning functions to Dataiku data science studio. Machine Learning functions can be accessed through the RECIPE menu of the FLOW view of a Dataiku project, and are grouped into nine categories:
 
 * Time Series, Path and Attribution Analysis
 * Ensemble Methods
@@ -18,5 +18,5 @@ Aster Analytics Plugin for Dataiku DSS integrates around 150 Aster Analytics SQL
 * Cluster Analysis
 * Data Transformation
 
-Aster Analytics Plugin provides a user interface-based way of building SQL-MR queries to be sent to an Aster database. Input and output managed datasets are located in the connected Aster database. All SQL-MR queries are also executed in-database.
+The Teradata Vantage Analytic Functions Plugin provides a user interface-based way of building Vantage Analytic queries to be sent to a Teradata database. Input and output managed datasets are located in the connected Teradata database. All analytic queries are also executed in-database.
 
