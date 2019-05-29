@@ -2,6 +2,7 @@ TDAP_ForUpload/
 /resource/mapping.json_orig
 /resource/mapping_modded.json
 *.zip
+!VantageMLE_DSSPlugin_20190529.zip
 *.DS_Store
 .project
 .pydevproject
