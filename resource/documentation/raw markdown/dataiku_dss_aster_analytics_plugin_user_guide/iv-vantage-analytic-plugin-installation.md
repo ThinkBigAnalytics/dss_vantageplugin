@@ -1,4 +1,4 @@
-# V. Aster Analytics Plugin Installation 
+# IV. Teradata Vantage Analytic Functions Plugin Installation 
 
 ---
 
@@ -7,11 +7,11 @@
     ![](/assets/install_1.png)
     &nbsp;
 
-2.	Click on Choose File and browse to the location of the Aster Analytics zip file in your local filesystem.
+2.	Click on Choose File and browse to the location of the Teradata Vantage Analytic plugin zip file in your local filesystem.
 
     &nbsp;
 
-3.    If a previous installation of Aster Analytics plugin exists, check Is update.
+3.    If a previous installation of the Teradata Vantage Analytic plugin exists, check "Is update".
 
     &nbsp;
     

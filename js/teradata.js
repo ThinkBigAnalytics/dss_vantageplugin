@@ -176,7 +176,7 @@
                 data = data.replace(/: Infinity/g, ': "Infinity"');
                 data = data.replace(/: -Infinity/g, ': "-Infinity"');             
                 // WARNING DANGEROUS STRING REPLACEMENT
-                data = data.replace(/NaN(?!")/g,'"NaN"')  
+                data = data.replace(/NaN(?!.*")/g,'"NaN"')  
                 // data = data.replace(/^\t|\s*\-NaN/g, '"-NaN"');
                 // console.log(JSON.stringify({ "x" : NaN }, undefined, 2));
                 // data = data.replace(/^\t|\s*NaN/g, '"NaN"');                
@@ -300,15 +300,11 @@
           
         
         }
-        
-      
-        
-        
-
     },
+    
 
     addColumnArgument: function(item) {
-      console.log('Adding column');
+      console.log('Adding value to array');
       console.log(item.name);
       console.log(item.value);
       item.value.push("");
@@ -367,12 +363,51 @@
   addOrderByColumn: function() {
     // console.log('Added one column')
     $scope.config.function.orderByColumn.push('');
+    $scope.config.function.orderByColumnDirection.push('');
   },
   removeOrderByColumn: function(index) {
     if (index > -1) {
       $scope.config.function.orderByColumn.splice(index, 1);
+      $scope.config.function.orderByColumnDirection.splice(index, 1);
     }
   },
+
+  addOrderByColumn_WITHDIR: function(orderArray, orderDirArray) {
+    // console.log('Partition array type');
+    // console.log(typeof orderArray);
+    // console.log(orderArray);
+    if(typeof orderArray == undefined || typeof orderArray == 'string'){
+      // console.log('Originally undefined/string');          
+      orderArray = [];
+      // console.log(orderArray)
+      orderArray.push('');
+      // console.log(orderArray)
+      
+    } else {          
+      orderArray.push('');
+      // console.log('Added to partition array');
+      // console.log(partitionArray);         
+    }
+    // DIRECTION
+    if(typeof orderDirArray == undefined || typeof orderDirArray == 'string'){               
+      orderDirArray = [];        
+      orderDirArray.push('');
+      
+      
+    } else {          
+      orderDirArray.push('');
+      // console.log('Added to partition array');
+      // console.log(partitionArray);         
+    }
+},
+removeOrderByColumn_WITHDIR: function(orderArray, orderDirArray, index) {
+  if (index > -1) {
+    // console.log('Removed from partition array')
+    // console.log(orderArray)
+    orderArray.splice(index, 1);
+    orderDirArray.splice(index, 1);
+  }
+},
       validityChanger: function () {
         $('div.ng-invalid').removeClass('ng-invalid')
         $('div.invalid').addClass('ng-invalid')
@@ -1179,6 +1214,11 @@
               argument.value = [""];
               console.log(argument.value);
             }
+            if((argument.datatype == "STRING") && argument.allowsLists && $scope.getPermittedValuesWithName(argument) && argument.isRequired && !(argument.value.constructor === Array)){
+              argument.value = [""];
+              console.log(argument.value);
+            } 
+
            /* try {
 
               if (functionMetadata.argument_clauses[i]

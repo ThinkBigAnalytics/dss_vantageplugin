@@ -66,8 +66,10 @@ def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
            
 # added useCoprocessor
 def getMultipleAliasedInputsClause(dss_function, jsonfile, inputTables):
+    print("getMultipleAliasedInputsClause")
     aliasedinputs = [x for x in dss_function.get('required_input', []) if
                      x.get('name', '') and x.get('value', '')]
+    print(aliasedinputs)
     return ''.join(map(lambda x: getAliasedInputONClause(x, jsonfile, inputTables, dss_function['useCoprocessor']), aliasedinputs))
 
 def getMultipleUnaliasedInputsClause(dss_function, inputTables):
