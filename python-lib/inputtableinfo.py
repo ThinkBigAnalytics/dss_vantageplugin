@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Copyright © 2018 by Teradata.
+Copyright © 2019 by Teradata.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
 including without limitation the rights to use, copy, modify, merge, publish, distribute,
@@ -52,9 +52,9 @@ class inputtableinfo(tableinfo.tableinfo):
         tmpAlias = tablealias
         tmpAlias = '' if 'Dimension' == tablealias else tablealias
         # Test Add new alias if has alternateNames
-        print('Testing alternateNames')
+        # print('Testing alternateNames')
         alternateNames = inputdef.get('alternateNames', [])
-        print(alternateNames)
+        # print(alternateNames)
         # print(alternateNames[0])
         # print(alternateNames[0].encode("utf-8"))
         # if alternate tables
@@ -91,17 +91,19 @@ class inputtableinfo(tableinfo.tableinfo):
         #no empty string checking for orderByColumn since this is mandatory if isOrdered is true
         orderKeyFromInputDef = inputdef.get("orderByColumn", [])
         orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", [])
-        print('order type thing')
-        print(orderKeyFromInputDef)
-        print(orderKeyDirectionFromInputDef)
+        
+        # print('Order type')
+        # print(orderKeyFromInputDef)
+        # print(orderKeyDirectionFromInputDef)
+        
         # print(orderKeyDirectionFromInputDef)
         # if orderKeyFromInputDef != [] or orderKeyFromInputDef == [''] or (len(orderKeyFromInputDef) == 0 and orderKeyFromInputDef[0].encode('ascii','ignore') != '' ):
         
         # return ', '.join([a + b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)]) if \
         #     isinstance(orderKeyFromInputDef, (list, tuple)) else orderKeyFromInputDef #Add DIRECTION
-        print('isinstance?')
-        print(isinstance(orderKeyFromInputDef, (list, tuple)))
-        print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
+        # print('isinstance?')
+        # print(isinstance(orderKeyFromInputDef, (list, tuple)))
+        # print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
         if isinstance(orderKeyFromInputDef, (list, tuple)) and orderKeyFromInputDef != ['']:
             returnValue = ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
             print(returnValue)

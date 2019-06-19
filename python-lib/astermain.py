@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Copyright © 2018 by Teradata.
+Copyright © 2019 by Teradata.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
 including without limitation the rights to use, copy, modify, merge, publish, distribute,
@@ -133,6 +133,7 @@ def asterDo():
         #Start transaction
         #Move to drop query and make each DROP run separately
         dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('output_tables', []))
+        print('Drop ALL Query:')
         print(dropAllQuery)        
         
         # if requiresTransactions:
@@ -203,7 +204,7 @@ def asterDo():
                 print('Output name 2')
                 print(main_output_name2)
                 output_dataset2 =  dataiku.Dataset(main_output_name2)   
-                print("od2 printer")
+                # print("od2 printer")
                 tableNamePrefix = output_dataset2.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('namingRule').get('tableNameDatasetNamePrefix')
                 if tableNamePrefix != None or tableNamePrefix != '':
                     print('Table prefix is not empty:' + tableNamePrefix)

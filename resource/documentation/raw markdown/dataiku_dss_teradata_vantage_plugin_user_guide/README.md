@@ -6,7 +6,7 @@ Dataiku Data Science Studio \(DSS\) is a collaborative platform that enables tea
 
 Dataiku provides a platform that allows to visualize and re-run workflows. In a Dataiku project, one can easily visualize how data flows across tables and recipes.
 
-Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates around 150 Vantage Analytic Machine Learning functions to Dataiku data science studio. Machine Learning functions can be accessed through the RECIPE menu of the FLOW view of a Dataiku project, and are grouped into nine categories:
+The Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates about 180 of the Vantage Machine Learning Engine \(MLE\) analytic functions, by providing a user-friendly, easy-to-use, no-SQL interface for the functions in the Dataiku DSS environment. The MLE analytic functions can be accessed through the \[+RECIPE\] menu of the FLOW view of a Dataiku project, and are grouped into nine categories:
 
 * Time Series, Path and Attribution Analysis
 * Ensemble Methods
@@ -18,5 +18,5 @@ Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates around 150
 * Cluster Analysis
 * Data Transformation
 
-The Teradata Vantage Analytic Functions Plugin provides a user interface-based way of building Vantage Analytic queries to be sent to a Teradata database. Input and output managed datasets are located in the connected Teradata database. All analytic queries are also executed in-database.
+In the background of the Teradata Vantage Analytic Functions Plugin user interface, the plugin essentially translates its user input into SQL queries that are sent to the NewSQL Engine of a connected Vantage system via JDBC. This way, all analytic queries are executed in-database, while also all input and output managed datasets are physically located in the database of the NewSQL Engine on the connected Vantage system.
 

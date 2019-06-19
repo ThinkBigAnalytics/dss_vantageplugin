@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Authors · GitBook</title>
+        <title>III. Creating a Vantage Connection · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -57,8 +57,10 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
+    <link rel="next" href="iv-vantage-analytic-plugin-installation.html" />
     
-    <link rel="prev" href="vi-limitations.html" />
+    
+    <link rel="prev" href="ii-requirements.html" />
     
 
     </head>
@@ -113,12 +115,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
+        <li class="chapter active" data-level="1.3" data-path="iii-creating-a-vantage-connection.html">
             
-                <a href="iii-creating-a-teradata-connection.html">
+                <a href="iii-creating-a-vantage-connection.html">
             
                     
-                    III. Creating a Teradata Connection
+                    III. Creating a Vantage Connection
             
                 </a>
             
@@ -165,19 +167,6 @@
             
         </li>
     
-        <li class="chapter active" data-level="1.7" data-path="authors.html">
-            
-                <a href="authors.html">
-            
-                    
-                    Authors
-            
-                </a>
-            
-
-            
-        </li>
-    
 
     
 
@@ -208,7 +197,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="." >Authors</a>
+        <a href="." >III. Creating a Vantage Connection</a>
     </h1>
 </div>
 
@@ -223,13 +212,40 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="authors">Authors</h1>
-<p>&#xA0;</p>
-<p><strong>DONNA APRIL TEODORO</strong><br>Data Science Practice<br>Global Delivery Center &#x2013; Manila<br><a href="mailto:donnaapril.teodoro@teradata.com" target="_blank">donnaapril.teodoro@teradata.com</a></p>
-<p>&#xA0;</p>
-<p><strong>KEVIN CONTRERAS</strong><br>Data Science Practice<br>Global Delivery Center &#x2013; Manila<br><a href="mailto:kevin.contreras@teradata.com" target="_blank">kevin.contreras@teradata.com</a></p>
-<p>&#xA0;</p>
-<p><strong>JOSEPH ALVIN DE JESUS</strong><br>Data Science Practice<br>Global Delivery Center &#x2013; Manila<br><a href="mailto:josephalvin.dejesus@teradata.com" target="_blank">josephalvin.dejesus@teradata.com</a></p>
+                                <h1 id="iii-creating-a-vantage-connection">III. Creating a Vantage Connection</h1>
+<hr>
+<ol>
+<li><p>Follow the instructions in the Dataiku Reference Document for Installing Database Drivers. In summary, one needs to execute from the command line of a DSS server:</p>
+<p>  a.    Stop the Data Science Studio server, where <code>DATA_DIR</code> is the data directory where Data Science Studio is installed:</p>
+<p>  &#xA0;    <code>DATA_DIR/bin/dss stop</code></p>
+<p>  b.    Copy the Teradata JDBC driver to the <code>DATA_DIR/lib/jdbc</code> directory.<br>  &#xA0;    </p>
+<p>  c.    Restart Data Science Studio<br>  &#xA0;    <code>DATA_DIR/bin/dss start</code></p>
+</li>
+<li><p>Access Dataiku DSS on a browser. Then, on the Dataiku DSS home page click on Apps.         </p>
+<p><img src="assets/1a.png" alt="">
+&#xA0;
+Then, on the submenu click [<code>Administration</code>] (gear icon).
+&#xA0;
+<img src="assets/1b.png" alt="">
+Alternatively, you can go to <code>http://dataikuhost:port/admin/</code>.</p>
+</li>
+<li><p>On the DSS settings page, go to the [<code>Connections</code>] tab. Click on [<code>NEW CONNECTION</code>]. Choose [<code>Teradata</code>] among the options that will be presented.</p>
+<p><img src="assets/2.png" alt=""></p>
+</li>
+<li><p>Fill up the fields as needed:<br>  <strong>Basic Params</strong>
+  <strong>Host</strong>: &lt;<code>database.host.name</code>&gt;
+  <strong>User</strong>: &lt;<code>Username</code>&gt;<br>  <strong>Password</strong>: &lt;<code>User_password</code>&gt; 
+  <strong>Default Database</strong>: &lt;<code>default_database</code>&gt;
+  <strong>Advanced JDBC properties</strong>:
+  <code>CHARSET: UTF8</code>
+  <code>TMODE: TERA</code> or <code>TMODE: ANSI</code></p>
+<p>  All other fields can be left as-is.</p>
+</li>
+</ol>
+<ol>
+<li>Click on the [<code>Test</code>] button to verify that connection details provided are valid.</li>
+<li>Finally, click on the [<code>Save</code>] button.</li>
+</ol>
 
                                 
                                 </section>
@@ -257,10 +273,14 @@
 
             
                 
-                <a href="vi-limitations.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: VI. Limitations">
+                <a href="ii-requirements.html" class="navigation navigation-prev " aria-label="Previous page: II. Requirements">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
+                
+                <a href="iv-vantage-analytic-plugin-installation.html" class="navigation navigation-next " aria-label="Next page: IV. Teradata Vantage Analytic Plugin Installation">
+                    <i class="fa fa-angle-right"></i>
+                </a>
                 
             
         
@@ -269,7 +289,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Authors","level":"1.7","depth":1,"previous":{"title":"VI. Limitations","level":"1.6","depth":1,"path":"vi-limitations.md","ref":"vi-limitations.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"authors.md","mtime":"2019-02-07T12:31:13.481Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-16T11:42:36.356Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"III. Creating a Vantage Connection","level":"1.3","depth":1,"next":{"title":"IV. Teradata Vantage Analytic Plugin Installation","level":"1.4","depth":1,"path":"iv-vantage-analytic-plugin-installation.md","ref":"iv-vantage-analytic-plugin-installation.md","articles":[]},"previous":{"title":"II. Requirements","level":"1.2","depth":1,"path":"ii-requirements.md","ref":"ii-requirements.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"iii-creating-a-vantage-connection.md","mtime":"2019-06-19T13:22:42.597Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-19T13:34:27.324Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

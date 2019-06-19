@@ -57,8 +57,6 @@
     <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="authors.html" />
-    
     
     <link rel="prev" href="v-vantage-analytic-plugin-usage.html" />
     
@@ -115,12 +113,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
+        <li class="chapter " data-level="1.3" data-path="iii-creating-a-vantage-connection.html">
             
-                <a href="iii-creating-a-teradata-connection.html">
+                <a href="iii-creating-a-vantage-connection.html">
             
                     
-                    III. Creating a Teradata Connection
+                    III. Creating a Vantage Connection
             
                 </a>
             
@@ -160,19 +158,6 @@
             
                     
                     VI. Limitations
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.7" data-path="authors.html">
-            
-                <a href="authors.html">
-            
-                    
-                    Authors
             
                 </a>
             
@@ -228,15 +213,22 @@
                                 <h1 id="vi-limitations">VI. Limitations</h1>
 <hr>
 <ol>
-<li><p>For analytic functions that take in output table names as arguments and where the select query produces only a message table indicating the name of the output model/metrics table, it is the responsibility of the user to specify output table names that are not the same with that of an existing table. Some analytic functions provide an option to delete an already existing output table prior to executing an algorithm, others do not. If the former is the case, Teradata Database throws an &#x2018;<output table=""> already exists&#x2019; exception.</output></p>
+<li>For analytic functions that <ul>
+<li>take in output table names as arguments, and</li>
+<li>where the select query produces only a message table indicating the name of the output model/metrics table,</li>
+</ul>
 </li>
-<li><p>The appended version of the Dataiku DSS Teradata Vantage Analytic Functions plugin was tested on Teradata 16.20. Earlier or later function versions may require a different set of function metadata.</p>
+</ol>
+<p>it is the responsibility of the user to specify output table names that are <strong>different</strong> from those of the existing tables.</p>
+<p>Some analytic functions provide an option to delete an already existing output table prior to executing an algorithm, but others do not. In the former case, the NewSQL Engine throws an &quot;<code>Already exists</code>&quot; exception.</p>
+<ol>
+<li><p>The appended version of the Dataiku DSS Teradata Vantage Analytic Functions plugin has been tested to work with the MLE analytic functions on Vantage 1.1 systems. Earlier or later analytic function versions may require a different set of function metadata.</p>
 </li>
-<li><p>The plugin currently only supports Teradata Database datasets as input and output.</p>
+<li><p>The plugin currently only supports NewSQL Engine datasets as input and output.</p>
 </li>
-<li><p>Functions with any OUTPUT TABLE type arguments will require the user to add an output dataset for the SELECT statement results of the query and any additional output tables. Please refer to the Teradata Vantage Machine Learning Engine Analytic Functions Usage Guide to learn about the output tables of each function.</p>
+<li><p>Functions with any OUTPUT TABLE type arguments will require the user to add an output dataset for the SELECT statement results of the query and any additional output tables. Please refer to the <a href="https://docs.teradata.com/reader/AI5zLpFtwEQWIVvpnZgB8g/gaonTshoL4qMQM6~Y~mp5A" target="_blank">Teradata&#xAE; Vantage Machine Learning Engine Analytic Function</a> Reference documentation page at docs.teradata.com to learn about the output tables of each function.</p>
 </li>
-<li><p>MapReduce Function pairs are currently limited to a select few: ApproxDCount, ApproxPercentile, Correlation, PCA, and Naive Bayes. In order to use these functions, please call their corresponding Map Functions on the fuction selection box and it will display the arguments for both functions.</p>
+<li><p>MapReduce Function pairs are currently limited to the following a select few: <code>ApproxDCount</code>, <code>ApproxPercentile</code>, <code>Correlation</code>, <code>PCA</code>, and <code>Na&#xEF;ve Bayes</code>. In order to use these functions, please call their corresponding Map Functions on the function selection box and it will display the arguments for both functions.</p>
 </li>
 <li><p>Usage of certain functions may feature some inaccuracies, or may not work at all. The functions are as follows:</p>
 <ul>
@@ -266,8 +258,6 @@
 </ul>
 </li>
 </ol>
-<!-- 3.    In case HTTP error 413 (Request entity too large) or HTTP error 414 (Request URI too long) is encountered after reloading a saved recipe in Dataiku versions earlier than 4.0.4, one can edit Dataiku’s code itself. This is an issue that will be resolved in Dataiku’s next release. To fix this without updating Dataiku, open INSTALL_DIR/frontend/static/dataiku/js/mainpack.js. Locate the  callPythonDo function, and change the HTTP method associated with it from GET to POST. -->
-<!-- 6.    As of this writing, Aster Analytics plugin could only refer to SQL-MR functions installed in the public schema. -->
 
                                 
                                 </section>
@@ -295,14 +285,10 @@
 
             
                 
-                <a href="v-vantage-analytic-plugin-usage.html" class="navigation navigation-prev " aria-label="Previous page: V. Teradata Vantage Analytic Plugin Usage">
+                <a href="v-vantage-analytic-plugin-usage.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: V. Teradata Vantage Analytic Plugin Usage">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="authors.html" class="navigation navigation-next " aria-label="Next page: Authors">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -311,7 +297,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"VI. Limitations","level":"1.6","depth":1,"next":{"title":"Authors","level":"1.7","depth":1,"path":"authors.md","ref":"authors.md","articles":[]},"previous":{"title":"V. Teradata Vantage Analytic Plugin Usage","level":"1.5","depth":1,"path":"v-vantage-analytic-plugin-usage.md","ref":"v-vantage-analytic-plugin-usage.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"vi-limitations.md","mtime":"2019-05-16T06:59:35.815Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-16T11:42:36.356Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"VI. Limitations","level":"1.6","depth":1,"previous":{"title":"V. Teradata Vantage Analytic Plugin Usage","level":"1.5","depth":1,"path":"v-vantage-analytic-plugin-usage.md","ref":"v-vantage-analytic-plugin-usage.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"vi-limitations.md","mtime":"2019-06-19T13:34:06.891Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-19T13:34:27.324Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>

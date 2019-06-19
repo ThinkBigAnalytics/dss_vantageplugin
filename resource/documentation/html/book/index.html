@@ -113,12 +113,12 @@
             
         </li>
     
-        <li class="chapter " data-level="1.3" data-path="iii-creating-a-teradata-connection.html">
+        <li class="chapter " data-level="1.3" data-path="iii-creating-a-vantage-connection.html">
             
-                <a href="iii-creating-a-teradata-connection.html">
+                <a href="iii-creating-a-vantage-connection.html">
             
                     
-                    III. Creating a Teradata Connection
+                    III. Creating a Vantage Connection
             
                 </a>
             
@@ -158,19 +158,6 @@
             
                     
                     VI. Limitations
-            
-                </a>
-            
-
-            
-        </li>
-    
-        <li class="chapter " data-level="1.7" data-path="authors.html">
-            
-                <a href="authors.html">
-            
-                    
-                    Authors
             
                 </a>
             
@@ -227,7 +214,7 @@
 <hr>
 <p>Dataiku Data Science Studio (DSS) is a collaborative platform that enables teams of people with different data expertise, such as data engineers, data scientists and analysts, to work together efficiently. Dataiku DSS provides a set of built-in recipes or operations that can be applied to transform or analyse a dataset. It also allows users to create their own recipes in Python, SQL or R. Custom reusable recipes for Dataiku are called plugins and can only be written in Python.</p>
 <p>Dataiku provides a platform that allows to visualize and re-run workflows. In a Dataiku project, one can easily visualize how data flows across tables and recipes.</p>
-<p>Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates around 150 Vantage Analytic Machine Learning functions to Dataiku data science studio. Machine Learning functions can be accessed through the RECIPE menu of the FLOW view of a Dataiku project, and are grouped into nine categories:</p>
+<p>The Teradata Vantage Analytic Functions Plugin for Dataiku DSS integrates about 180 of the Vantage Machine Learning Engine (MLE) analytic functions, by providing a user-friendly, easy-to-use, no-SQL interface for the functions in the Dataiku DSS environment. The MLE analytic functions can be accessed through the [+RECIPE] menu of the FLOW view of a Dataiku project, and are grouped into nine categories:</p>
 <ul>
 <li>Time Series, Path and Attribution Analysis</li>
 <li>Ensemble Methods</li>
@@ -239,7 +226,7 @@
 <li>Cluster Analysis</li>
 <li>Data Transformation</li>
 </ul>
-<p>The Teradata Vantage Analytic Functions Plugin provides a user interface-based way of building Vantage Analytic queries to be sent to a Teradata database. Input and output managed datasets are located in the connected Teradata database. All analytic queries are also executed in-database.</p>
+<p>In the background of the Teradata Vantage Analytic Functions Plugin user interface, the plugin essentially translates its user input into SQL queries that are sent to the NewSQL Engine of a connected Vantage system via JDBC. This way, all analytic queries are executed in-database, while also all input and output managed datasets are physically located in the database of the NewSQL Engine on the connected Vantage system.</p>
 
                                 
                                 </section>
@@ -279,7 +266,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"I. Introduction","level":"1.1","depth":1,"next":{"title":"II. Requirements","level":"1.2","depth":1,"path":"ii-requirements.md","ref":"ii-requirements.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-02-11T12:55:12.033Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-16T11:42:36.356Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"I. Introduction","level":"1.1","depth":1,"next":{"title":"II. Requirements","level":"1.2","depth":1,"path":"ii-requirements.md","ref":"ii-requirements.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"README.md","mtime":"2019-06-19T13:13:38.654Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-19T13:34:27.324Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
