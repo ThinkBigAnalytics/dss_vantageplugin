@@ -48,10 +48,10 @@ def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
     table.setPropertiesFromDef(input_, useCoprocessor)
     # print('Input tables check')
     # print(inputTables)
-    print('Table object')
-    print(table)
-    print('Table order key')
-    print(table.orderKey)
+    #print('Table object')
+    #print(table)
+    #print('Table order key')
+    #print(table.orderKey)
     if table.orderKey == [] or table.orderKey == [""] or table.orderKey == '':           
         return ALIASED_ON_CLAUSE.format(input_table=table.tablename,
            input_name=table.alias and ('AS "' + table.alias + '"'),
@@ -66,10 +66,10 @@ def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
            
 # added useCoprocessor
 def getMultipleAliasedInputsClause(dss_function, jsonfile, inputTables):
-    print("getMultipleAliasedInputsClause")
+    #print("getMultipleAliasedInputsClause")
     aliasedinputs = [x for x in dss_function.get('required_input', []) if
                      x.get('name', '') and x.get('value', '')]
-    print(aliasedinputs)
+    #print(aliasedinputs)
     return ''.join(map(lambda x: getAliasedInputONClause(x, jsonfile, inputTables, dss_function['useCoprocessor']), aliasedinputs))
 
 def getMultipleUnaliasedInputsClause(dss_function, inputTables):
@@ -85,25 +85,25 @@ def getMultipleUnaliasedInputsClause(dss_function, inputTables):
     
 def getArgumentClauses(dss_function, jsonfile, inputTables):
     if dss_function.get('arguments', []) != []:
-        print('Has arguments')
+        #print('Has arguments')
         return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('arguments', []),
                                                  queryutility.getArgumentClausesFromJson(jsonfile),
                                                  inputTables)
     else:
-        print('No arguments')
+        #print('No arguments')
         return ''
     
 
 def getOutClause(dss_function, jsonfile, inputTables):
     if dss_function.get('output_tables', []) != []:
-        print(dss_function.get('output_tables', []))
-        print('This happens in getoutclause')
+        #print(dss_function.get('output_tables', []))
+        #print('This happens in getoutclause')
         # Put $(project_key)/Table prefix here
         return '\n' + queryutility.getJoinedOutputTableString(dss_function.get('output_tables', []),
                                                  queryutility.getOutputTableClausesFromJson(jsonfile),
                                                  inputTables)   
     else:
-        print('NOthing happens in getoutclause')
+        #print('NOthing happens in getoutclause')
         return ''
 
     # return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('output_tables', []),
@@ -138,25 +138,25 @@ def getSelectQuery(dss_function, inputTables, config):
         outTableClauses = ''
     if(argumentClauses == '\n'):
         argumentClauses = ''
-    print('outTableClauses')
-    print('START'+outTableClauses+'END')
-    print('argumentClauses')
-    print('START'+argumentClauses + 'END')
+    #print('outTableClauses')
+    #print('START'+outTableClauses+'END')
+    #print('argumentClauses')
+    #print('START'+argumentClauses + 'END')
     completeClause = 'USING ' + outTableClauses + argumentClauses
     fullUsingClause = (outTableClauses or argumentClauses) and completeClause
     # if completeClause == 'USING ':
     #     fullUsingClause = ''
     #     print('Why isn\'t this  working')
     if outTableClauses or argumentClauses:
-        print('This should work')
-    print('fullUsingClause')
-    print(fullUsingClause)
-    print('The and statements')
-    print('(outTableClauses or argumentClauses)')
-    print((outTableClauses or argumentClauses))
-    print('everything')
-    print((outTableClauses or argumentClauses) and completeClause)
-    print(fullUsingClause)
+        print('Running Output Table Clauses')
+    #print('fullUsingClause')
+    #print(fullUsingClause)
+    #print('The and statements')
+    #print('(outTableClauses or argumentClauses)')
+    #print((outTableClauses or argumentClauses))
+    #print('everything')
+    #print((outTableClauses or argumentClauses) and completeClause)
+    #print(fullUsingClause)
     #TODO ADD USING CLAUSE SOMEWHERE    
     # Update to:
     # Following code might have issues with Reduce functions with multiple INPUT TABLES

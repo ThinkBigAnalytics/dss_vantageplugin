@@ -35,13 +35,13 @@ from outputtableinfo import *
 def asterDo():
     # Recipe inputs
     main_input_name = get_input_names_for_role('main')[0]
-    input_dataset = dataiku.Dataset(main_input_name)
+    input_dataset = dataiku.Dataset(main_input_name)    
 
-    print('Printing properties and autocommit mode')
+    print('Connection info:')
     print(input_dataset.get_location_info(sensitive_info=True)['info'])
     properties = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('properties')
     autocommit = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('autocommitMode')
-    print(autocommit)
+    
     requiresTransactions = True
      
     print('I am assuming in TERA MODE by default')

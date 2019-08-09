@@ -14,7 +14,7 @@
         "label" : "Teradata Vantage Analytic Functions Plugin",
 
         "description" : "Plugin to execute Teradata Vantage Analytic functions from DSS.",
-        "author" : "dt186022, kc186029",
+        "author" : "Teradata",
 
         // The icon of a plugin must be one of the FontAwesome 3.1 icons
         "icon" : "icon-database",

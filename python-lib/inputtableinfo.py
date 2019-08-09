@@ -106,7 +106,7 @@ class inputtableinfo(tableinfo.tableinfo):
         # print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
         if isinstance(orderKeyFromInputDef, (list, tuple)) and orderKeyFromInputDef != ['']:
             returnValue = ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
-            print(returnValue)
+            #print(returnValue)
             return ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
         else:
             return orderKeyFromInputDef
