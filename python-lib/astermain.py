@@ -37,8 +37,8 @@ def asterDo():
     main_input_name = get_input_names_for_role('main')[0]
     input_dataset = dataiku.Dataset(main_input_name)    
 
-    print('Connection info:')
-    print(input_dataset.get_location_info(sensitive_info=True)['info'])
+    # print('Connection info:')
+    # print(input_dataset.get_location_info(sensitive_info=True)['info'])
     properties = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('properties')
     autocommit = input_dataset.get_location_info(sensitive_info=True)['info'].get('connectionParams').get('autocommitMode')
     
@@ -200,7 +200,7 @@ def asterDo():
                     main_output_name2 = list(filter(lambda out_dataset: out_dataset.split('.')[len(out_dataset.split('.'))-1] == table.get('value').split('.')[len(table.get('value').split('.'))-1].strip('\"'),get_output_names_for_role('main')))[0]
                 except Exception as error:
                     # print(error.message)                    
-                    raise RuntimeError('The following output table does not exist as an output Dataset: '+table.get('value'))
+                    raise RuntimeError('Unable to find an output dataset for '+table.get('value')+ 'It may not exist as an output Dataset: '+table.get('value')+"\n\Runtime Error:"+ error.message)
                 print('Output name 2')
                 print(main_output_name2)
                 output_dataset2 =  dataiku.Dataset(main_output_name2)   

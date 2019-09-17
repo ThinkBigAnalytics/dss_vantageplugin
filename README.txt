@@ -14,11 +14,11 @@ The Teradata Vantage Plugins for Dataiku Data Science Studio (DSS) allows
 end users to leverage Vantage analytics within their DSS data science workflows.
 The first, the Teradata Vantage Analytic Functions Plugin for Dataiku DSS, 
 supports all 180+ Vantage Machine Learning and Graph Engine functions as well 
-as the new analytic functions built into the NewSQL engine in 16.20.  
+as the new analytic functions built into the Advanced SQL engine in 16.20.  
 
 The second, the Teradata Vantage SCRIPT Table Operator Plugin for R and Python, 
 allows the end user to include custom built R or Python code from notebooks built
-in Dataiku DSS that will push down and execute directly in the NewSQL engine of 
+in Dataiku DSS that will push down and execute directly in the Advanced SQL engine of 
 the Teradata Vantage platform through the built-in table operator, SCRIPT.
 
 Note that Dataiku DSS itself also supports ANSI SQL push-down for most of their 
@@ -37,8 +37,8 @@ The following component versions are required for the Teradata Vantage Plugin:
 
 For R and Python support in Teradata Vantage, one or both of the following are required:
 
-1. 9687-2000-0120	R Interpreter and Add-on Pkg on Teradata NewSQL
-2. 9687-2000-0122	Python Interpreter and Add-on Pkg on Teradata NewSQL
+1. 9687-2000-0120	R Interpreter and Add-on Pkg on Teradata Advanced SQL
+2. 9687-2000-0122	Python Interpreter and Add-on Pkg on Teradata Advanced SQL
 
 II. Install / Upgrade Instructions
 ----------------------------------
@@ -70,14 +70,14 @@ III. Limitations
 	 tables.
    Some analytic functions provide an option to delete an already existing output
    table prior to executing an algorithm, but others do not. In the former case, 
-   the NewSQL Engine throws an "Already exists" exception.
+   the Advanced SQL Engine throws an "Already exists" exception.
 
 2. The appended version of the Dataiku DSS Teradata Vantage Analytic Functions 
    plugin has been tested to work with the MLE analytic functions on Vantage 1.1 
    systems. Earlier or later analytic function versions may require a different 
    set of function metadata.
 
-3. The plugin currently only supports NewSQL Engine datasets as input and output.
+3. The plugin currently only supports Advanced SQL Engine datasets as input and output.
 
 4. Functions with any OUTPUT TABLE type arguments will require the user to add an 
    output dataset for the SELECT statement results of the query and any additional
@@ -192,5 +192,5 @@ For additional information on the Teradata Vantage Analytic Functions search for
 1. "Teradata Vantage SQL Operators and User-Defined Functions"
 2. "Teradata Vantage User Guide"
 3. "Teradata Vantage Analytic Function User Guide"
-4. "Teradata Vantage - NewSQL Engine Analytic Functions"
+4. "Teradata Vantage - Advanced SQL Engine Analytic Functions"
 5. "Teradata Vantage Machine Learning Engine Analytic Function Reference"
