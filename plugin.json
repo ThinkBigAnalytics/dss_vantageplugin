@@ -5,7 +5,7 @@
     "id" : "TeradataVantageAnalyticFunctionsPlugin",
 
     // Version. It is highly recommended to use Semantic Versioning
-    "version" : "0.0.1",
+    "version" : "1.0.0",
 
 
     // Meta data for display purposes
@@ -22,7 +22,7 @@
         "licenseInfo" : "Apache Software License",
 
         // URL where the user can learn more about the plugin
-        "url" : "https://info.teradata.com/download.cfm?ItemID=1007396",
+        "url" : "https://docs.teradata.com/",
 
         // List of tags for filtering the list of plugins
         "tags" : ["Analytics", "Vantage",  "Teradata", "Database", "SQL", "Big Data", "Data Science"]

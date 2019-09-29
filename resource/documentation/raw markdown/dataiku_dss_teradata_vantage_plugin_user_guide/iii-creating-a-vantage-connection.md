@@ -29,16 +29,19 @@ Then, on the submenu click \[`Administration`\] (gear icon).
     
 4.    Fill up the fields as needed:    
         **Basic Params**
-        **Host**: <`database.host.name`>
-        **User**: <`Username`>    
-        **Password**: <`User_password`> 
-        **Default Database**: <`default_database`>
-        **Advanced JDBC properties**:
-	    `CHARSET: UTF8`
-	    `TMODE: TERA` or `TMODE: ANSI`
+        **Host**: <`database.host.name`>  
+        **User**: <`Username`>         
+        **Password**: <`User_password`>  
+        **Default Database**: <`default_database`>  
+        **Advanced JDBC properties**:  
+	    `CHARSET: UTF8`  
+	    `TMODE: TERA`  
         
         All other fields can be left as-is.
 
-	    
-5.    Click on the \[`Test`\] button to verify that connection details provided are valid.
-6.    Finally, click on the \[`Save`\] button.
+5.    Modify “Details readable by” to either `Every Analyst` or `Selected Groups`. 	
+&nbsp;
+![](/assets/connection_security.png)
+
+6.    Click on the \[`Test`\] button to verify that connection details provided are valid.
+7.    Finally, click on the \[`Save`\] button.

@@ -1,8 +1,8 @@
-# V. Teradata Vantage Analytic Functions plugin Usage
+# V. Using the Teradata Vantage Analytic Functions Plugin
 
 ---
 ##Usage
-This section assumes that a Dataiku project already exists and input datasets have already been imported. Note that recipes need a non-empty dataset as input to run.
+This section assumes that a Dataiku DSS project already exists, and input datasets have already been imported. Note that recipes need a non-empty dataset as input to run.
 
 1. Go to the flow view of the Dataiku project, where the recipe is to be created, by clicking on the [`GO TO FLOW`] button or by clicking on the flow icon in the project menu.
 
@@ -48,6 +48,6 @@ SELECT {modified select} FROM function_name(
 
 ##Usage Notes
 
-1. Functions with multiple output datasets will normally require an output dataset for the functions' output message/result alongside any other output tables/datasets specified in the recipe. Please note that the output dataset/s name/s should also match the name within the recipe's settings.
+Functions with multiple output datasets will normally require an output dataset for the functions' output message/result alongside any other output tables/datasets specified in the recipe. Please note that the output dataset/s name/s should also match the name within the recipe's settings.
 
 <!-- 2. Some functions allow -->
