@@ -1,0 +1,297 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "OutlierFilter",
+  "function_version": "1.9",
+  "function_type": "driver",
+  "function_alias_name": "OutlierFilter",
+  "function_r_name": "aa.outlierfilter",
+  "short_description": "Removes outlier values from a target column.",
+  "long_description": "The OutlierFilter function is useful for filtering a numeric data set before applying ML Engine functions for which outliers can skew the estimates of parameters and cause inaccurate predictions. Such functions include time series functions, GLM, LAR, LinReg, PCA, and KMeans. The input data set is expected to have millions of attribute-value pairs. The OutlierFilter function filters outliers from a data set, either deleting them or replacing them with a specified value. Optionally, the function stores the outliers in their own table. The function provides these methods for filtering outliers: Percentile Tukey's test Carling's modification to Tukey's test Median absolute deviation The method determines the criteria for an observation to classify as an outlier.",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the numeric data to be filtered and (optionally) the columns by which to group the data.",
+      "description": "Specifies the name of the table that contains the numeric data to be filtered and (optionally) the columns by which to group the data.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table where the function stores the copy of the input table (including the PARTITION BY column) with the outliers either deleted (by default) or replaced (as specified by the replacement.value argument).",
+      "description": "Specify the name of the table where the function stores the copy of the input table (including the PARTITION BY column) with the outliers either deleted (by default) or replaced (as specified by the ReplacementValue argument).",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.table",
+      "useInR": true,
+      "rOrderNum": 100
+    },
+    {
+      "isOutputTable": true,
+      "name": "OutliersTable",
+      "alternateNames": [
+        "OutlierTable"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the table where the function outputs copies of the rows of the input table that contain outliers.",
+      "description": "Specifies the name of the table where the function outputs copies of the rows of the input table that contain outliers.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "outlier.table",
+      "useInR": true,
+      "rOrderNum": 101
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "TargetColumn"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the input table columns to be filtered.",
+      "description": "Specify the names of the input table columns that contain numeric data to filter.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "target.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "defaultValues": [
+        "groupdummy8675309"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "GroupByColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input table columns by which to group the data. If the data schema format is name:value, then this list must include name.",
+      "description": " Specify the names of the input table columns by which to group the data. If the data schema format is name : value , this list must include name . Default behavior: Function does not group data.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "group.by.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [
+        "PERCENTILE",
+        "TUKEY",
+        "CARLING",
+        "MADMEDIAN",
+        "MAD-MEDIAN"
+      ],
+      "defaultValue": [
+        "PERCENTILE"
+      ],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "TargetColumns",
+      "allowPadding": true,
+      "name": "OutlierMethod",
+      "alternateNames": [
+        "Method"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the outliermethod or methods of filtering outliers:  'percentile' (default), 'tukey': Tukey\u2019s method, 'carling': Carling\u2019s modification, 'MAD-median': Median absolute deviation (MAD). MAD is defined as the median of the absolute values of the residuals. For example, if there are i datapoints and the median value of the data is M, then MAD=mediani (|xi -M|). Specify either one method, which the function uses for all columns specified by target.column, or specify a method for each column specified by target.column.",
+      "description": " Specify one or more of the following methods of filtering outliers: method Description 'percentile' (Default) Percentile. 'tukey' Tukey's test: An outlier is defined as any observation smaller than V1 - k *(V3-V1) or larger than V3 + k *(V3-V1), where V1 and V3 are 25th and 75th percentiles of data and k is specified by IQRMultiplier argument. 'carling' Carling's modification to Tukey's test: An outlier is defined as an observation outside the range V2\u00a0\u00b1\u00a0c*(V3\u00a0-\u00a0V1), where V2 is median of data, V1 and V3 are 25th and 75th percentiles of data, and c is constant (which you cannot change). For more information about Carling's modification, see: Carling, Kenneth. \"Resistant outlier rules and the non-Gaussian case.\" Computational Statistics and Data Analysis 33, no. 3 (2000): 249-258. Available at https://core.ac.uk/download/pdf/6559387.pdf. 'MAD-median' Median absolute deviation (MAD), median of absolute values of residuals. For example, for i datapoints and median value of data M , MAD=median i (|x i - M |). Specify either one method , which the function uses for all columns specified by TargetColumns, or specify a method for each column specified by TargetColumns.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "method",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": [
+        5,
+        95
+      ],
+      "lowerBound": 0,
+      "upperBound": 100,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PercentileThreshold",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the range of percentile values for 'percentile' filtering, [perc_lower, 100 -perc_lower]. The default filter range is [5, 95].",
+      "description": " Specify the range of percentile values for 'percentile' filtering, [ perc_lower ,\u00a0100\u00a0- perc_lower ]. Default: [5,\u00a095]",
+      "datatype": "DOUBLE",
+      "allowsLists": true,
+      "rName": "percentile.threshold",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 0.5,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "PercentAccuracy",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the accuracy of percentiles used for filtering. The default value is 0.5%.",
+      "description": " Specifies the accuracy of percentiles used for filtering. The default value is 0.5%.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": " percent.accuracy",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": 1.5,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "IQRMultiplier",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the multiplier of interquartile range for 'tukey' filtering. The default value is 1.5.",
+      "description": " Specify the multiplier of interquartile range for 'tukey' filtering. Default: 1.5",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "iqr.multiplier",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [
+        "BOTH",
+        "UPPER",
+        "LOWER"
+      ],
+      "defaultValue": "BOTH",
+      "isOutputColumn": false,
+      "name": "RemoveTail",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the side of the distribution to filter. The default value is 'both'.",
+      "description": " Specify the side of the distribution to filter. Default: 'both'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": " remove.tail",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "delete",
+      "isOutputColumn": false,
+      "name": "ReplacementValue",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies how the function handles outliers:'delete' (default): The function does not copy the row to the output table, 'null': The function copies the row to the output table, replacing each outlier with the value NULL, 'median': The function copies the row to the output table, replacing each outlier with the median value for its group, newval: The function copies the row to the output table, replacing each outlier with newval, which must be a numeric value.",
+      "description": " Specify how the function handles outliers: Option Description 'delete' (Default) Function does not copy row to output table. 'null' Function copies row to output table, replacing each outlier with value NULL. 'median' Function copies row to output table, replacing each outlier with median value for its group. newval Function copies row to output table, replacing each outlier with newval , which must be a numeric value.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": " replacement.value",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "defaultValue": false,
+      "name": "ApproxPercentile",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the function calculates the percentiles used as filter limits exactly. The default value is 'false'.Approximate percentiles are typically faster, but might fail when the number of groups exceeds one million.",
+      "description": " Specify whether the function calculates the percentiles used as filter limits exactly. Approximate percentiles are typically faster, but can fail when the number of groups exceeds one million. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "approx.percentile",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 1.4826,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MadScaleConstant",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the scale constant used with 'MAD-median' filtering; a DOUBLE PRECISION value. The default value is 1.4826, which means MAD = 1.4826 * median(|x - median(x)|).",
+      "description": " Specify the scale constant used with 'MAD-median' filtering; a DOUBLE PRECISION value. Default: 1.4826, which means MAD = 1.4826 * median(|x - median(x)|)",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "madscale.constant",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "defaultValue": 3,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MadThreshold",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the threshold used with 'MAD-median' filtering; a DOUBLE PRECISION value. The default value is 3, which means that |x-median(x)|/MAD > 3 is flagged as an outlier.",
+      "description": " Specify the threshold used with 'MAD-median' filtering; a DOUBLE PRECISION value. Default: 3, which means that |x-median(x)|/MAD > 3 is flagged as an outlier",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "mad.threshold",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

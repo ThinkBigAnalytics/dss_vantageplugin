@@ -1,0 +1,97 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "TextChunker",
+  "function_version": "1.6",
+  "function_type": "non-driver",
+  "function_alias_name": "TextChunker",
+  "function_r_name": "aa.text.chunker",
+  "short_description": "Text classification SQL/MR function",
+  "long_description": "The TextChunker function divides text into phrases and assigns each phrase a tag that identifies its type. Text chunking (also called shallow parsing) divides text into phrases in such a way that syntactically related words become members of the same phrase. Phrases do not overlap; that is, a word is a member of only one chunk. For example, the sentence \"He reckons the current account deficit will narrow to only # 1.8 billion in September .\" can be divided as follows, with brackets delimiting phrases: [NP He] [VP reckons] [NP the current account deficit] [VP will narrow] [PP to] [NP only # 1.8 billion] [PP in] [NP September] After each opening bracket is a tag that identifies the chunk type (NP, VP, and so on). For information about chunk types, see TextChunker Output. For more information about text chunking, see: Erik F. Tjong Kim Sang and Sabine Buchholz, Introduction to the CoNLL-2000 Shared Task: Chunking. In: Proceedings of CoNLL-2000 and LLL-2000 , Lisbon, Portugal, 2000. Fei Sha and Fernando Pereira, Shallow Parsing with Conditional Random Fields. [2003]",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The relation contains the text to be scanned",
+      "description": "The relation contains the text to be scanned",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "WordColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column that contains the words to chunk into phrases. Typically, this is the word column of the output table of the  \"ta.postagger\"function",
+      "description": "Specify the name of the input table column that contains the words to chunk into phrases. Typically, this is the word column of the output table of the POSTagger function (described in POSTagger Output).",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "word.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PosColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table column the part-of-speech (POS) tag of words. Typically, this is the pos_tag column of the output table of the \"ta.postagger\" function",
+      "description": "Specify the name of the input table column the part-of-speech (POS) tag of words. Typically, this is the pos_tag column of the output table of the POSTagger function (described in \"POSTagger Output\").",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "pos.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

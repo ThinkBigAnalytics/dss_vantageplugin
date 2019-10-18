@@ -1,0 +1,135 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "1",
+  "json_content_version": "1",
+  "function_name": "NaiveBayesPredict",
+  "function_version": "1.0",
+  "function_type": "fastpath",
+  "function_alias_name": "NaiveBayesPredict",
+  "function_r_name": "aa.naivebayes.predict",
+  "ref_function_r_name": "aa.naivebayes.train",
+  "short_description": "Score rows of data with a Naive Bayes classifier",
+  "long_description": "Score rows of data with a Naive Bayes classifier",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "This table defining the input test data.",
+      "description": "This table defining the input test data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "This table contains the model data.",
+      "description": "This table contains the model data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "modeldata",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "IdColumn",
+      "alternateNames": ["IDCol"],
+      "isRequired": true,
+      "rDescription": "Specify the name of the column that contains the ID that uniquely identifies the test input data.",
+      "description": "Specify the name of the column that contains the ID that uniquely identifies the test input data.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "id.col",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "INTEGER",
+        "STRING"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "CategoricalInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the same categorical_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
+      "description": "Specify the same categorical_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to generate the model table from the training data.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "categorical.inputs",
+      "useInR": true,
+      "rOrderNum": -2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "NumericInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the same numeric_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
+      "description": "Specify the same numeric_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to generate the model table from the training data.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "numeric.inputs",
+      "useInR": true,
+      "rOrderNum": -1
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "ResponsesToOutput",
+      "alternateNames": ["Responses"],
+      "isRequired": true,
+      "rDescription": "Specify a list of Responses to output.",
+      "description": "Specify a list of Responses to output.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "responses",
+      "useInR": true,
+      "rOrderNum": -2
+    }
+  ]
+}

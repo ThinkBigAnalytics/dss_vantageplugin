@@ -1,0 +1,194 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "GMMPredict",
+  "function_version": "1.5",
+  "function_type": "non-driver",
+  "function_alias_name": "GMMPredict",
+  "function_r_name": "aa.gmm.predict",
+  "ref_function_r_name": "aa.gmm",
+  "short_description": "Clusters data using a Gaussian Mixture Model.",
+  "long_description": "The GMMPredict function takes the output from the function GMM and predicts the cluster assignments for each [[\u03c3 The output table of the GMMPredict function can be input to the function GMMProfile.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "testdata"
+      ],
+      "isRequired": true,
+      "rDescription": "Contains the data whose cluster values are to be predicted. The column names for the data to be classified must be the same as the column names in modeldata.",
+      "description": "Contains the data whose cluster values are to be predicted. The column names for the data to be classified must be the same as the column names in modeldata.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [
+        "modeldata"
+      ],
+      "isRequired": true,
+      "rDescription": "Contains a GMM model output by ta.gmmfit.",
+      "description": "Contains a GMM model output by GMMFit.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of newdata columns to copy to the output table.",
+      "description": " Specify the names of testdata columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "Attributes"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the names of newdata columns that correspond to the attributes in the modeldata table. By default, these columns are all newdata columns except the first",
+      "description": " Specify the names of testdata columns that correspond to the attributes in the modeldata table. Default: All testdata columns except the first",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "attributes",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IdColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the input table column that defines the row identifier. The default value is the first input table column.",
+      "description": " Specify the input table column that defines the row identifier. Default: First input table column",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "id.column",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [
+        "dense",
+        "sparse"
+      ],
+      "defaultValue": "sparse",
+      "isOutputColumn": false,
+      "name": "OutputFormat",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies how the function outputs the weights that it assigns to each of the top N clusters: \u2022 'sparse' (default): The function outputs each weight to a separate row of the output table. \u2022 'dense': The function outputs the weights to a single row of the output table. ",
+      "description": " Specify how the function outputs the weights that it assigns to each of the top N clusters: Option Description 'sparse' (Default) Function outputs each weight to separate output table row. 'dense' Function outputs all weights to single output table row.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "output.format",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "defaultValue": 1,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "TopK",
+      "alternateNames": [
+        "TopNClusters"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the number of cluster weights that the function outputs. This value must be an INTEGER. For the value n, the function outputs for each data point the cluster with the greatest weight, the cluster with the second-greatest weight, and so on, ending with the cluster with the kth-greatest weight. The default value is 1.",
+      "description": " Specify the number of cluster weights that the function outputs. This value must be an INTEGER. For the value n , the function outputs for each data point the cluster with the greatest weight, the cluster with the second-greatest weight, and so on, ending with the cluster with the k th-greatest weight. Default: 1",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "top.n.clusters",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": false,
+      "name": "OutputLogLikelihood",
+      "alternateNames": [
+        "PrintLogLikelihood"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output the log likelihood of an observation, given the data. The default value is 'false'.",
+      "description": " Specify whether to output the log likelihood of an observation, given the data. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "print.log.likelihood",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

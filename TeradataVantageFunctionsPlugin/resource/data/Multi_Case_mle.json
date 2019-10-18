@@ -1,0 +1,67 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Multi_Case",
+  "function_version": "1.5",
+  "function_type": "non-driver",
+  "function_alias_name": "MultiCaseMatch",
+  "function_r_name": "aa.multicase",
+  "short_description": "This function is used to categorize the input rows.",
+  "long_description": "This function is used to categorize the input rows. Each row can be part of multiple groups.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input table",
+      "description": "Specifies the name of the input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "labels",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies a label for each case. Each case corresponds to a condition, which is a SQL predicate that includes input column names. When an input value satisfies condition, that is a match, and the function outputs the input row and the corresponding label.",
+      "description": "Specify a label for each case . Each case corresponds to a condition , which is a SQL predicate that includes input column names. When an input value satisfies condition , that is a match, and the function outputs the input row and the corresponding label.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "labels",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

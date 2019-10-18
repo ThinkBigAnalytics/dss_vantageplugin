@@ -1,0 +1,201 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "XGBoost_Predict",
+  "function_version": "2.4",
+  "function_type": "non-driver",
+  "function_alias_name": "XGBoostPredict",
+  "function_r_name": "aa.xgboost.predict",
+  "ref_function_r_name": "aa.xgboost.drive",
+  "short_description": "This function predicts input data based on XGBoost_Drive function.",
+  "long_description": "This function predicts input data based on XGBoost_Drive function.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "input"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the input test data.",
+      "description": "Specifies the table containing the input test data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rFormulaUsage": false,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [
+        "ModelTable"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the model data.",
+      "description": "Specifies the table containing the model data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rFormulaUsage": false,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IdColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a column containing a unique identifier for each test point in the test set",
+      "description": " Specify the name of the input table column that contains a unique identifier for each data point in the input data set.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "id.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input columns to copy to the output table.",
+      "description": " Specify the names of the input columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "terms",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "AttributeNameColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Required for sparse data format, if the data set is in sparse format, this argument indicates the column containing the attributes in the input table",
+      "description": "[Required for sparse format input data.] Specify the name of the input table column that contains the names of the predictors in the sparse format input data set.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "attribute.name.column",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "AttributeValueColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "If the data is in the sparse format, this argument indicates the column containing the attribute values in the input table",
+      "description": "[Required for sparse format input data.] Specify the name of the input table column that contains the values of the predictors in the sparse-format input data set.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "attribute.value.column",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "IterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of iterations for each boosted tree to use for prediction. The number must an INTEGER. The lower bound is 1. If this argument is not specified, the value is the same as used for training model. The number of iterations used is upperbounded by the number of iterations used during training.",
+      "description": " Specify the number of iterations for each boosted tree to consider during prediction. The iterations must be at least 1 and cannot exceed the number of parallel boosted trees in the training model. Default behavior: The function considers all subtrees (iterations) in the training model during prediction.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "iter.num",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "NumBoostedTrees",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of boosted trees to be used for prediction. If this argument is not specified, the value is the same as used for training model. The number of boosted trees used for prediciton is upper bounded by the number of boosted trees used during training.",
+      "description": " Specify the number of parallel boosted trees to consider during prediction. The num_trees is an INTEGER value of at least 1 and cannot exceed the number of parallel boosted trees in the training model. A lower num_trees value might improve function run time but decrease prediction accuracy. Default behavior: The function considers all trees in the training model during prediction.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "num.boosted.trees",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

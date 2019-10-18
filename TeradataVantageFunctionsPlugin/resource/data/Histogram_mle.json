@@ -1,0 +1,232 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Histogram",
+  "function_version": "1.5",
+  "function_type": "driver",
+  "function_alias_name": "Histogram",
+  "function_r_name": "aa.hist",
+  "short_description": "Performs histogram calculation on a data set",
+  "long_description": "Histograms are useful for assessing the shape of a data distribution. The Histogram function calculates the frequency distribution of a data set using either the Sturges or Scott algorithm to compute binning (bin width and number of bins). The bin width is the range for each group of values. Binning algorithms make strong assumptions about the shape of the distribution. Appropriate bin width depends on the actual data distribution and analysis goals. The function maps each input row to one bin and returns the row count (frequency) and percentage of rows (proportion) of each bin. The ML Engine histogram implementation, redesigned for release 6.21, includes these capabilities: User-selected or automatic bin determination User-selected left-inclusive or right-inclusive binning Multiple histograms for distinct groups",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The table containing the input data.",
+      "description": "The table containing the input data.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "CustomBinTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "A table containing the boundary points between bins. If this argument is present, custom.bin.column must also be present. auto.bin, start.value, bin.size, and end.value cannot be present.",
+      "description": "A table containing the boundary points between bins. If this argument is present, CustomBinColumn must also be present. AutoBin, StartValue, BinSize, and EndValue cannot be present.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "custom.bin.table",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Name for the table that the function will generate, containing the output.",
+      "description": "Specify the name for the table that the function creates for the output.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "output.table",
+      "useInR": true,
+      "rOrderNum": 100
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumn",
+      "alternateNames": [
+        "ValueColumn"
+      ],
+      "isRequired": true,
+      "rDescription": "The column in the input table for which statistics will be computed. Column must contain a numeric SQL types (integer, bigint, real, double precision, numeric, decimal, smallint).",
+      "description": "Specify the name of the InputTable column for which to compute statistics. This column must have a numeric SQL data type.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "value.column",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "targetTable": [
+        "CustomBinTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CustomBinColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The column in the custom.bin.table containing the boundary values. Input columns must contain numeric SQL types. If this argument is present, custom.bin.table must also be present. auto.bin, start.value, bin.size, and end.value cannot be present.",
+      "description": "[Required if you specify CustomBinTable, disallowed otherwise.] If you specify this argument, you must not specify AutoBin, StartValue, BinSize, or EndValue. Specify the name of the bin_table column that contains the boundary values. This column must have a numeric SQL data type.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "custom.bin.column",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "GROUPTYPE"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "GroupbyColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Columns in the input table used to group values for binning. These columns cannot contain doubles or floats.",
+      "description": " Specify the names of the InputTable columns that contain the group values for binning. These columns cannot contain DOUBLE PRECISION values.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "groupby.columns",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "permittedValues": [
+        "left",
+        "right"
+      ],
+      "defaultValue": "left",
+      "isOutputColumn": false,
+      "name": "Inclusion",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Indicates whether points on bin boundaries should be included in the bin on the left or the bin on the right. The permitted values are [left, right]. The default value is left.",
+      "description": " Specify whether to include points on bin boundaries in the bin on the left or the bin on the right. Default: 'left'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "inclusion",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "AutoBin",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies either the algorithm to be used for selecting bin boundaries or the approximate number of bins to be found. The permitted values are STURGES, SCOTT, or a positive integer. If this argument is present, custom.bin.table, custom.bin.column, start.value, bin.size, and end.value cannot be present.",
+      "description": " If you specify this argument, you must not specify CustomBinTable, CustomBinColumn, StartValue, BinSize, or EndValue. Specify either the algorithm for selecting bin boundaries or the approximate number of bins to find. The number_of_bins must be a positive integer. Sturges algorithm for calculating bin width can be written as: w = r /(1 + log 2 n ) where w is the bin width, r is the range of the data values and n is the number of elements in the data set. Sturges algorithm performs best if the data is normally distributed and n is at least 30. The Scott algorithm for calculating bin width can be written as: w = 3.49 s /( n 1/3 ) where w is the bin width, s is the standard deviation of the data values and n is the number of elements in the data set. The number of bins is r / w , where r is the range of the data values. The Scott algorithm performs best on normally distributed data.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "auto.bin",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StartValue",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The smallest value to be used in binning. If this argument is present, bin.size and en.value must also be present. auto.bin, custom.bin.table and custom.bin.column cannot be present.",
+      "description": " If you specify this argument, you must also specify BinSize and EndValue, and you must not specify AutoBin, CustomBinTable, or CustomBinColumn. Specify the smallest value to use in binning.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "start.value",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "EndValue",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The largest value to be used in binning. If this argument is present, start.value and bin.size must also be present. auto.bin, custom.bin.table and custom.bin.column cannot be present.",
+      "description": " If you specify this argument, you must also specify StartValue and BinSize, and you must not specify AutoBin, CustomBinTable, or CustomBinColumn. Specify the largest value to use in binning.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "end.value",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "BinSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "For equally sized bins, a double value specifying the width of the bin. Omit this argument if you are not using equally sized bins. The input value must be greater than 0.0. If this argument is present, start.value and end.value must also be present. auto.bin, custom.bin.table and custom.bin.column cannot be present.",
+      "description": " If you specify this argument, you must also specify StartValue and EndValue, and you must not specify AutoBin, CustomBinTable, or CustomBinColumn. Specify this argument only for equally sized bins. The bin_size is the width of each bin, a positive DOUBLE PRECISION value.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "bin.size",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

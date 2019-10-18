@@ -1,0 +1,190 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "NaiveBayesPredict",
+  "function_version": "1.12",
+  "function_type": "non-driver",
+  "function_alias_name": "NaiveBayesPredict",
+  "function_r_name": "aa.naivebayes.predict",
+  "ref_function_r_name": "aa.naivebayes.train",
+  "short_description": "Score rows of data with a Naive Bayes classifier",
+  "long_description": "The NaiveBayesPredict function uses the model output by the NaiveBayesReduce function to predict the outcomes for a test set of data. This function can be used with real-time applications. See AMLGenerator.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "This table defining the input test data.",
+      "description": "This table defining the input test data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "model",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "This table contains the model data.",
+      "description": "This table contains the model data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "modeldata",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IDColumn",
+      "alternateNames": [
+        "IdCol"
+      ],
+      "isRequired": true,
+      "rDescription": "Specify the name of the column that contains the ID that uniquely identifies the test input data.",
+      "description": "Specify the name of the column that contains the ID that uniquely identifies the test input data.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "id.col",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "INTEGER",
+        "STRING"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CategoricalInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the same categorical_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
+      "description": "[Required if NumericInputs is omitted.] Specify the same categorical_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to create the model table from the training data. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "categorical.inputs",
+      "useInR": true,
+      "rOrderNum": -2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NumericInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the same numeric_input_columns that you specified when you used the ta.naivebayesmap and ta.naivebayesreduce functions to generate the model table from the training data.",
+      "description": "[Required if CategoricalInputs is omitted.] Specify the same numeric_input_columns that you specified when you used the NaiveBayesMap and NaiveBayesReduce functions to create the model table from the training data.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "numeric.inputs",
+      "useInR": true,
+      "rOrderNum": -1
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of input table columns to copy to the output table.",
+      "description": "Specifies the names of input table columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "terms",
+      "useInR": true,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Responses",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify a list of Responses to output.",
+      "description": "Specify the responses to output. You must specify this argument if you provide the model table as an input table.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "responses",
+      "useInR": true,
+      "rOrderNum": -2
+    },
+    {
+      "defaultValue": false,
+      "name": "OutputProb",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output probabilities.",
+      "description": "Specifies whether to output probabilities.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "output.prob",
+      "useInR": true,
+      "rOrderNum": 0
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

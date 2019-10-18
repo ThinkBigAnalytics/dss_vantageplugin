@@ -1123,7 +1123,8 @@ removeOrderByColumn_WITHDIR: function(orderArray, orderDirArray, index) {
         $a
           .text('Teradata Vantage Analytic Functions\nLearn more about Teradata Vantage')
           .css('color', 'orange')
-          .attr('target', '_blank');
+          .attr('target', '_blank')
+          .attr('href', 'https://docs.teradata.com/');
         $a.html($a.html().replace(/\n/g,'<br/>'));
         $a.parent().css('text-align', 'center');
         $('#main-container > div > div:nth-child(1) > div > select')[0].value = '';

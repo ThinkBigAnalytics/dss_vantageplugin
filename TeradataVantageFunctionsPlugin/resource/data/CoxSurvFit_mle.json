@@ -1,0 +1,162 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "CoxSurvFit",
+  "function_version": "1.9",
+  "function_type": "driver",
+  "function_alias_name": "CoxSurvival",
+  "function_r_name": "aa.cox.survfit",
+  "ref_function_r_name": "aa.coxph",
+  "short_description": "Fit cox survival curves (survival functions) from given new predictions.",
+  "long_description": "Fit cox survival curves (survival functions) from given new predictions.",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "CoxLinearPreds",
+      "alternateNames": [
+        "CoxLinearPredictorModelTable"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the Cox linear predictor model table, which was output by the ta.coxph function.",
+      "description": "Specifies the name of the Cox linear predictor model table, which was output by the CoxPH function.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "cox.model.table",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "CoxCoeffModel",
+      "alternateNames": [
+        "CoxCoefModelTable"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the Cox coefficient model table, which was output by the ta.coxph function.",
+      "description": "Specifies the name of the Cox coefficient model table, which was output by the CoxPH function.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "PredictorValues",
+      "alternateNames": [
+        "PredictTable"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the predict table, which contains new prediction feature values for survival calculation.",
+      "description": "Specifies the name of the predict table, which contains new prediction feature values for survival calculation.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "predict.table",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the output table that contains survival probabilities. The table must not exist",
+      "description": "Specify the name of the output table that contains survival probabilities. The table must not exist.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "survival.probability",
+      "useInR": true,
+      "rOrderNum": 100
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "PredictTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC",
+        "STRING"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PredictFeatureColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns that contain the values for the features in the Cox model\u2014one column name for each feature name. The ith feature name corresponds to the ith column name. For example, consider this pair of arguments: predict.feature.names('name', 'age'), predict.feature.columns('c1', 'c2') The predictive values of the feature 'name' are in column 'c1', and the predictive values of the feature 'age' are in column 'c2'",
+      "description": "Specify the names of the columns that contain the values for the features in the Cox model\u2014one column name for each feature name. The ith feature name corresponds to the ith column name. For example, consider this pair of arguments: PredictFeatureNames ('name','age') PredictFeatureColumns ('c1','c2') The predictive values of the feature name are in column c1, and the predictive values of the feature age are in column c2.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "predict.feature.columns",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "targetTable": [
+        "PredictTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns in predict_table that the function copies to the output table.",
+      "description": " Specify the names of the columns in predict_table that the function copies to the output table.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PredictFeatureNames",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of features in the Cox model.",
+      "description": "Specify the names of features in the Cox model.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "predict.feature.names",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

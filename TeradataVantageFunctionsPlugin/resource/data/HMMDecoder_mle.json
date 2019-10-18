@@ -1,0 +1,486 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "HMMDecoder",
+  "function_version": "1.9",
+  "function_type": "non-driver",
+  "function_alias_name": "HMMDecoder",
+  "function_r_name": "aa.hmm.decoder",
+  "short_description": "Find the state sequence that produces the observation sequence with the highest probability, with respecting to each trained HMM.",
+  "long_description": "The HMMDecoder function finds the state sequence with the highest probability, given the learned model and observed sequences. If a set of phrases or words was trained using HMMSupervised or HMMUnsupervised function, you can use HMMDecoder to decode the parts of speech in the set.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "ObservationTable",
+      "alternateNames": [
+        "observation"
+      ],
+      "isRequired": true,
+      "rDescription": "observation table",
+      "description": "observation table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "observation",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "initialStateProbs",
+      "alternateNames": [
+        "InitStateProb"
+      ],
+      "isRequired": true,
+      "rDescription": "init state table",
+      "description": "init state table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "init.state.prob",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "TransitionProbs",
+      "alternateNames": [
+        "TransProb"
+      ],
+      "isRequired": true,
+      "rDescription": "state transition table",
+      "description": "state transition table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "state.transition.prob",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "EmissionProbs",
+      "alternateNames": [
+        "EmissionProb"
+      ],
+      "isRequired": true,
+      "rDescription": "emission probability table",
+      "description": "emission probability table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "emission.prob",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InitStateProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InitStateModelColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the model attribute column in the init.state.prob table.",
+      "description": "Specify the name of the model attribute column in the InitStateProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "state.model.key",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "targetTable": [
+        "InitStateProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InitStateColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the state attribute column in the init.state.prob table.",
+      "description": "Specify the name of the state attribute column in the InitStateProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "state.key",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "targetTable": [
+        "InitStateProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InitStateProbColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the initial probability column in the init.state.prob table.",
+      "description": "Specify the name of the initial probability column in the InitStateProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "state.prob.key",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "targetTable": [
+        "TransProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TransAttributeColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the model attribute column in the state.transition.prob table.",
+      "description": "Specify the name of the model attribute column in the TransProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "trans.model.key",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "targetTable": [
+        "TransProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TransFromStateColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the source of the state transition column in the state.transition.prob table.",
+      "description": "Specify the name of the source of the state transition column in the TransProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "trans.from.key",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "targetTable": [
+        "TransProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TransToStateColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the target of the state transition column in the state.transition.prob table.",
+      "description": "Specify the name of the target of the state transition column in the TransProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "trans.to.key",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "targetTable": [
+        "TransProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TransProbColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the state transition probability column in the state.transition.prob table.",
+      "description": "Specify the name of the state transition probability column in the TransProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "trans.prob.key",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "targetTable": [
+        "EmissionProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EmitModelColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the model attribute column in the emission.prob table.",
+      "description": "Specify the name of the model attribute column in the EmissionProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "emit.model.key",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "targetTable": [
+        "EmissionProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EmitStateColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the state attribute in the emission.prob table.",
+      "description": "Specify the name of the state attribute in the EmissionProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "emit.state.key",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "targetTable": [
+        "EmissionProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EmitObsColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the observation attribute column in the emission.prob table.",
+      "description": "Specify the name of the observation attribute column in the EmissionProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "emit.observed.key",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "targetTable": [
+        "EmissionProb"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EmitProbColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the emission probability in the emission.prob table.",
+      "description": "Specify the name of the emission probability in the EmissionProb table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "emit.prob.key",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "targetTable": [
+        "observation"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ModelColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the column that contains the model attribute. If you specify this argument, then model_attribute must match a model_key in the observation.partition clause.",
+      "description": "Specify the name of the column that contains the model attribute. Then model_column must match a model_key in the PARTITION BY clause.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "model.key",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "targetTable": [
+        "observation"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SeqColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The name of the column that contains the sequence attribute. The sequence_attribute must be a sequence attribute in the observation.partition clause.",
+      "description": "Specify the name of the column that contains the sequence attribute. The sequence_column must be a sequence attribute in the PARTITION BY clause.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "sequence.key",
+      "useInR": true,
+      "rOrderNum": 17
+    },
+    {
+      "targetTable": [
+        "observation"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ObservationColumn",
+      "alternateNames": [
+        "ObsColumn"
+      ],
+      "isRequired": true,
+      "rDescription": "The name of the column that contains the observed symbols. Note: Observed symbols are case-sensitive.",
+      "description": "The name of the column that contains the observed symbols. Note: Observed symbols are case-sensitive.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "observed.key",
+      "useInR": true,
+      "rOrderNum": 18
+    },
+    {
+      "targetTable": [
+        "observation"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns in input_table that the function copies to the output table.",
+      "description": " Specify the names of the input_table columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 21
+    },
+    {
+      "targetTable": [
+        "observation"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SkipColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The name of the column whose values determine whether the function skips the row. The function skips the row if the value is \u201ctrue\u201d, \u201cyes\u201d, \u201cy\u201d, or \u201c1\u201d. The function does not skip the row if the value is \u201cfalse\u201d, \u201cf\u201d, \u201cno\u201d, \u201cn\u201d, \u201c0\u201d, or NULL.",
+      "description": " Specify the name of the input column whose value determines whether the function skips the row.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "skip.key",
+      "useInR": true,
+      "rOrderNum": 20
+    },
+    {
+      "defaultValue": 2147483647,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SequenceMaxSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The maximum length, in rows, of a sequence in the observation table.",
+      "description": " Specify the maximum length, in rows, of a sequence in the observation table.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "sequence.max.size",
+      "useInR": true,
+      "rOrderNum": 19
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

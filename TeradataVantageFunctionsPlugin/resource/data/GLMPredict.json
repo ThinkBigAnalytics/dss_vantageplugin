@@ -1,0 +1,121 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "GLMPredict",
+  "function_version": "1.9",
+  "function_type": "fastpath",
+  "function_alias_name": "GLMPredict",
+  "function_r_name": "aa.glm.predict",
+  "ref_function_r_name": "aa.glm",
+  "short_description": "This function gives score according to generalized linear model.",
+  "long_description": "This function gives score according to generalized linear model.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the input data.",
+      "description": "Specifies the table containing the input data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "model",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the model data.",
+      "description": "Specifies the table containing the model data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "modeldata",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of input table columns to copy to the output table.",
+      "description": "Specifies the names of input table columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "terms",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [
+        "LOGISTIC",
+        "BINOMIAL",
+        "POISSON",
+        "GAUSSIAN",
+        "GAMMA",
+        "INVERSE_GAUSSIAN",
+        "NEGATIVE_BINOMIAL"
+      ],
+      "isOutputColumn": false,
+      "name": "Family",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the distribution exponential family. The default value is read from model table. If you specify this argument, you must give it the same value that you used for the Family argument of the function  when you generated the model table.",
+      "description": "Specifies the distribution exponential family. The default value is read from model table. If you specify this argument, you must give it the same value that you used for the Family argument of the function  when you generated the model table.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "family",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [
+        "CANONICAL",
+        "IDENTITY",
+        "INVERSE",
+        "LOG",
+        "COMPLEMENTARY_LOG_LOG",
+        "SQUARE_ROOT",
+        "INVERSE_MU_SQUARED",
+        "LOGIT",
+        "PROBIT",
+        "CAUCHIT"
+      ],
+      "defaultValue": "CANONICAL",
+      "isOutputColumn": false,
+      "name": "LinkFunction",
+      "alternateNames": ["Link"],
+      "isRequired": false,
+      "rDescription": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",
+      "description": "The default value is 'CANONICAL'. The canonical link functions (default link functions) and the link functions that are allowed for each exponential family Note: Use the same value that you used for the Link argument of the function  when you generated the model table.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "linkfunction",
+      "useInR": true,
+      "rOrderNum": 5
+    }
+  ]
+}

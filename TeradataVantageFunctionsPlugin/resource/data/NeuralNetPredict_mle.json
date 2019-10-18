@@ -1,0 +1,212 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "NeuralNetPredict",
+  "function_version": "1.2",
+  "function_type": "non-driver",
+  "function_alias_name": "NeuralNetPredict",
+  "function_r_name": "aa.neuralnet.predict",
+  "ref_function_r_name": "aa.neuralnet",
+  "short_description": "Using a Neural Network to predict output for testing data",
+  "long_description": "The NeuralNetPredict function predicts the output for specific arbitrary covariate inputs, using a particular trained neural network output weight table.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "testdata"
+      ],
+      "isRequired": true,
+      "rDescription": "Contains the data whose dependent values are to be predicted.",
+      "description": "Contains the data whose dependent values are to be predicted.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [
+        "modeldata"
+      ],
+      "isRequired": true,
+      "rDescription": "Contains a neural network weights model output by ta.neuralnet.",
+      "description": "Contains a neural network weights model output by NeuralNet. ",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InputColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns of newdata that contain the numerical input predictor variables x1, x2, x3, etc.",
+      "description": "Specify the names of the columns of testdata that contain the numerical input predictor variables (x1, x2, x3, and so on).",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "input.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "GroupByColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the columns that are used to output different neural networks for different groups (should be in object, if specified).",
+      "description": " Specify the weight table columns to which to output different neural networks for different groups.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "group.by.columns",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "testdata"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns in the input_table that the function copies to linear_predictor_table.",
+      "description": " Specify the names of the input table columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "defaultValue": [
+        1
+      ],
+      "lowerBound": 0,
+      "upperBound": 1000,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "HiddenLayers",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the number of hidden neurons in each layer, from left to right, by list of integers. Default value is 1 layer, 1 neuron.",
+      "description": "Specify the number of hidden neurons in each layer, from left to right. The hidden_layers must be a nonnegative INTEGER. Default: 1 layer, 1 neuron",
+      "datatype": "INTEGER",
+      "allowsLists": true,
+      "rName": "hidden.layers",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [
+        "logistic",
+        "tanh"
+      ],
+      "defaultValue": "logistic",
+      "isOutputColumn": false,
+      "name": "ActivationFunction",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the differentiable function that is applied to the result of the cross-product of the neurons and the weights. Available choices are \u2018logistic\u2019 (default) and hyperbolic tangent (\u2018tanh\u2019).",
+      "description": " Specify the name of the differentiable function that the function applies to the result of the cross-product of the neurons and the weights: Option Description 'logistic' (Default) Logistic. 'tanh' Hyperbolic tangent.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "activation.function",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": true,
+      "name": "LinearOutput",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "This logical value defines whether the activation.function should (FALSE) or should not (TRUE) be applied to the output neurons.",
+      "description": " Specify whether to apply the ActivationFunction to the output neurons. Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "linear.output",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": 1,
+      "lowerBound": 1,
+      "upperBound": 1000,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "NumOutputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of outputs from the neural net. Default value is 1. Maximum value is 1000.",
+      "description": " Specify the number of outputs from the neural net. The outputs must be a nonnegative INTEGER value. Default: 1 Maximum: 1000",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "num.outputs",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

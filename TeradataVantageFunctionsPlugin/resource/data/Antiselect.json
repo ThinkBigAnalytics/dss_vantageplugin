@@ -1,0 +1,55 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "1",
+  "json_content_version": "1",
+  "function_name": "Antiselect",
+  "function_version": "1.0",
+  "function_alias_name": "Antiselect",
+  "function_type": "fastpath",
+  "function_r_name": "aa.antiselect",
+  "short_description": "Outputs columns except for excluded ones.",
+  "long_description": "Outputs columns from input table or inputselect query and removes columns in exclude list.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Input table",
+      "description": "Input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "Exclude",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns not to return.",
+      "description": "Specifies the names of the columns not to return.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "exclude",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ]
+}

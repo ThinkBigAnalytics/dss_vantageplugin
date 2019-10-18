@@ -1,0 +1,122 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "2",
+  "function_name": "TimeSeriesOrders",
+  "function_version": "1.1",
+  "function_type": "non-driver",
+  "function_alias_name": "TimeSeriesOrders",
+  "function_r_name": "aa.timeseriesorders",
+  "short_description": "The function automatically determines the non-seasonal orders for univariate time series.",
+  "long_description": "The TimeSeriesOrders function automatically determines the following for nonseasonal, univariate time series: The orders ( p , d , q ) For descriptions of these orders, see the information about nonseasonal ARIMA models in https://www.otexts.org/fpp/8. Whether to include a nonzero constant term (mean) and an explicit dependence on time (a drift term) For descriptions of these orders, see the information about nonseasonal ARIMA models in https://www.otexts.org/fpp/8. If a time series has a seasonal component, the function reports You can use the TimeSeriesOrders output as the orders table of the ARIMA or VARMAX function.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey",
+        "PartitionByOne"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "data"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input time series.",
+      "description": "Specifies the name of the input time series.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ResponseColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the columns containing the response data. ",
+      "description": "Specify the name of the input_table column that contains the response variable.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "response.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PartitionColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the partition columns that will be passed to the output. It must be specified when the function is not partition by 1. Otherwise, the result will be incorrect. ",
+      "description": "[Required if you partition by columns, disallowed otherwise] Specify the partition columns to pass to the output, which must be the same as those in the PARTITION BY clause.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "partition.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TimeColumns",
+      "alternateNames": [
+        "TimestampColumns"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input table columns that specify the sequence (time points). ",
+      "description": "Specify the names of the input_table columns that contain the time stamps of the points in the time sequence.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "timstamp.columns",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

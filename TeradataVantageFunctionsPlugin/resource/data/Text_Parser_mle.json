@@ -1,0 +1,684 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Text_Parser",
+  "function_version": "1.11",
+  "function_type": "non-driver",
+  "function_alias_name": "TextParser",
+  "function_r_name": "aa.text.parser",
+  "short_description": "Tokenizes document and returns counts for each unique token",
+  "long_description": "Tokenizes the document and returns counts for each unique token.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(Accumulate)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "Accumulate.*",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "inputTable",
+                    "name": "input.*",
+                    "dataType": "unchanged",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputByWord)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "false,f,0,n,no"
+              },
+              {
+                "leftOperand": "valueFromParameter(TokenColumn)",
+                "operator": "Not Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "tokens",
+                    "dataType": "varchar",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputByWord)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "false,f,0,n,no"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "TokenColumn.*",
+                    "dataType": "varchar",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(TokenColumn)",
+                "operator": "Not Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "token",
+                    "dataType": "varchar(2048)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "TokenColumn.*",
+                    "dataType": "varchar(2048)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputByWord)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "false,f,0,n,no"
+              }
+            ],
+            "action": []
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(FrequencyColumn)",
+                "operator": "Not Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "frequency",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "FrequencyColumn.*",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputByWord)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "false,f,0,n,no"
+              }
+            ],
+            "action": []
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(ListPositions)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "true,t,1,y,yes"
+              },
+              {
+                "leftOperand": "valueFromParameter(PositionColumn)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "PositionColumn.*",
+                    "dataType": "varchar(1000)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(ListPositions)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "true,t,1,y,yes"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "location",
+                    "dataType": "varchar(1000)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(PositionColumn)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "PositionColumn.*",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "location",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(OutputByWord)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "false,f,0,n,no"
+              }
+            ],
+            "action": []
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(TotalWordsNum)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "true,t,1,y,yes"
+              },
+              {
+                "leftOperand": "valueFromParameter(TotalColumn)",
+                "operator": "Exists"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "parameter",
+                    "name": "TotalColumn.*",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(TotalWordsNum)",
+                "operator": "In",
+                "valueType": "string",
+                "rightOperand": "true,t,1,y,yes"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "total_count",
+                    "dataType": "integer",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The relation that contains the text to be tokenized.",
+      "description": "The relation that contains the text to be tokenized.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "STRING"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TextColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input column whose contents are to be tokenized.",
+      "description": "Specify the name of the input column with contents to tokenize.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "text.column",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input columns to copy to the output table. By default, the function copies all input columns to the output table. Note: No accumulate_column can be the same as token_column or total_column.",
+      "description": " Specify the names of the input columns to copy to the output table. Note: No accumulate_column can be the same as token_column or total_column . Default: All input columns",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": true,
+      "name": "ConvertToLowerCase",
+      "alternateNames": [
+        "ToLowerCase"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies whether to convert input text to lowercase. The default value is 'true'. Note: The function ignores this argument if the Stemming argument has the value 'true'.",
+      "description": "Specifies whether to convert input text to lowercase. The default value is 'true'. Note: The function ignores this argument if the Stemming argument has the value 'true'.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "to.lower.case",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "defaultValue": false,
+      "name": "StemTokens",
+      "alternateNames": [
+        "Stemming"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies whether to stem the tokens\u2014that is, whether to apply the Porter2 stemming algorithm to each token to reduce it to its root form. Before stemming, the function converts the input text to lowercase and applies the remove.stop.words argument. The default value is 'false'.",
+      "description": "Specifies whether to stem the tokens\u2014that is, whether to apply the Porter2 stemming algorithm to each token to reduce it to its root form. Before stemming, the function converts the input text to lowercase and applies the RemoveStopWords argument. The default value is 'false'.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "stemming",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": true,
+      "name": "OutputByWord",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output each token of each input document in its own row in the output table. The default value is 'true'. If you specify 'false', then the function outputs each tokenized input document in one row of the output table.",
+      "description": " Specify whether to output each token of each input document in its own row in the output table. If you specify 'false', then the function outputs each tokenized input document in one row of the output table. Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "output.by.word",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "StemExceptions",
+      "alternateNames": [
+        "StemmingExceptions"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the location of the file that contains the stemming exceptions. A stemming exception is a word followed by its stemmed form. The word and its stemmed form are separated by white space. Each stemming exception is on its own line in the file. For example: bias bias news news goods goods lying lie ugly ugli sky sky early earli The words 'lying', 'ugly', and 'early' are to become 'lie', 'ugli', and 'earli', respectively. The other words are not to change.",
+      "description": "Specifies the location of the file that contains the stemming exceptions. A stemming exception is a word followed by its stemmed form. The word and its stemmed form are separated by white space. Each stemming exception is on its own line in the file. For example: bias bias news news goods goods lying lie ugly ugli sky sky early earli The words 'lying', 'ugly', and 'early' are to become 'lie', 'ugli', and 'earli', respectively. The other words are not to change.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "stemming.exceptions",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "defaultValue": false,
+      "name": "RemoveStopWords",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies whether to remove stop words from the input text before parsing. The default value is 'false'.",
+      "description": " Specify whether to remove stop words from the input text before parsing. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "remove.stop.words",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "StopWords",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the location of the file that contains the stop words (words to ignore when parsing text). Each stop word is on its own line in the file. For example: a an the and this with but will",
+      "description": " Specify the location of the file that contains the stop words (words to ignore when parsing text). Each stop word is on its own line in the file. For example: Default: No stop words",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "stop.words",
+      "useInR": true,
+      "rOrderNum": 17
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "[ \t\f\r\n]+",
+      "isOutputColumn": false,
+      "name": "Delimiter",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a regular expression that represents the word delimiter. The default value is '[\t\b\f\r]+').",
+      "description": " Specify a regular expression that represents the word delimiter. Default: '[\\t\\f\\r\\n]+'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "delimiter",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": false,
+      "name": "OutputTotalWords",
+      "alternateNames": [
+        "TotalWordsNum"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output a column that contains the total number of words in the input document. The default value is 'false'.",
+      "description": "Specifies whether to output a column that contains the total number of words in the input document. The default value is 'false'.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "total.words.num",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "[.,!?]",
+      "isOutputColumn": false,
+      "name": "Punctuation",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a regular expression that represents the punctuation characters to remove from the input text. With stemming ('true'), the recommended value is '[\\\\\\[.,?!:;~()\\\\\\]]+'. The default value is '[.,!?]'.",
+      "description": " Specify a regular expression that represents the punctuation characters to remove from the input text. With Stemming ('true'), the recommended value is '[\\\\\\[.,?\\!:;~()\\\\\\]]+' . Default: '[.,!?]'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "punctuation",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": false,
+      "name": "ListPositions",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output the position of a word in list form. The default value is 'false', which causes the function to output a row for each occurrence of the word. Note: The function ignores this argument if the output.by.word argument has the value 'false'.",
+      "description": " Specify whether to output the position of a word in list form. Note: The function ignores this argument if the OutputByWord argument has the value 'false'. Default: 'false' (The function outputs a row for each occurrence of the word.)",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "list.positions",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "token",
+      "isOutputColumn": true,
+      "name": "TokenColName",
+      "alternateNames": [
+        "TokenColumn"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the output column that contains the tokens. The default value is 'token'.",
+      "description": "Specifies the name of the output column that contains the tokens. The default value is 'token'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "token.column",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "frequency",
+      "isOutputColumn": true,
+      "name": "FrequencyColName",
+      "alternateNames": [
+        "FrequencyColumn"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the output column that contains the frequency of each token. The default value is 'frequency'. Note: The function ignores this argument if the output.by.word argument has the value 'false'.",
+      "description": "Specifies the name of the output column that contains the frequency of each token. The default value is 'frequency'. Note: The function ignores this argument if the OutputByWord argument has the value 'false'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "frequency.column",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "total_count",
+      "isOutputColumn": true,
+      "name": "TotalColName",
+      "alternateNames": [
+        "TotalColumn"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the output column that contains the total number of words in the input document. The default value is 'total_count'.",
+      "description": "Specifies the name of the output column that contains the total number of words in the input document. The default value is 'total_count'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "total.column",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": "location",
+      "isOutputColumn": true,
+      "name": "PositionColName",
+      "alternateNames": [
+        "PositionColumn"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the output column that contains the position of a word within a document. The default value is 'position'.",
+      "description": "Specifies the name of the output column that contains the position of a word within a document. The default value is 'position'.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "position.column",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

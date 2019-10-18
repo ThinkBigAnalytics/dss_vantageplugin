@@ -1,0 +1,473 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Forest_Drive",
+  "function_version": "2.17",
+  "function_type": "driver",
+  "function_alias_name": "DecisionForest",
+  "function_r_name": "aa.forest",
+  "short_description": "This function trains a random forest tree model.",
+  "long_description": "This function takes as input a training set of data and uses it to generate a predictive model.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "predefined",
+            "name": "message",
+            "dataType": "varchar(500)",
+            "manipulations": []
+          }
+        ]
+      }
+    ]
+  },
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the input data set.",
+      "description": "Specifies the table containing the input data set.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the output table in which the function stores the predictive model that it generates.If a table with this name exists in the database, the function drops the existing table and creates a new table with the same name.",
+      "description": "Specifies the name of the output table in which the function stores the predictive model that it generates.If a table with this name exists in the database, the function drops the existing table and creates a new table with the same name.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "predictive.model",
+      "useInR": true,
+      "rOrderNum": 100,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "OutputTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "worker_ip",
+                "dataType": "varchar(20)",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "task_index",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "tree_num",
+                "dataType": "integer",
+                "manipulations": []
+              },
+              {
+                "source": "predefined",
+                "name": "tree",
+                "dataType": "varchar",
+                "manipulations": []
+              }
+            ]
+          },
+          {
+            "instruction": "CASE",
+            "arguments": [
+              {
+                "condition": [
+                  {
+                    "leftOperand": "valueFromParameter(DisplayNumProcessedRows)",
+                    "operator": "In",
+                    "valueType": "string",
+                    "rightOperand": "true,t,1,y,yes"
+                  }
+                ],
+                "action": [
+                  {
+                    "instruction": "ADD",
+                    "placement": "end",
+                    "arguments": [
+                      {
+                        "source": "predefined",
+                        "name": "num_processed_rows",
+                        "dataType": "integer",
+                        "manipulations": []
+                      },
+                      {
+                        "source": "predefined",
+                        "name": "num_total_rows",
+                        "dataType": "integer",
+                        "manipulations": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "isOutputTable": true,
+      "defaultValue": "default_dt_monitor_table",
+      "name": "OutputMessageTable",
+      "alternateNames": [
+        "MonitorTable"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the table in which the function stores monitoring information. The default value is 'default_dt_monitor_table' in the current schema.",
+      "description": "Specifies the name of the table in which the function stores monitoring information. The default value is 'default_dt_monitor_table' in the current schema.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "monitor.table",
+      "useInR": true,
+      "rOrderNum": 101,
+      "outputSchema": {
+        "property": "outputSchema",
+        "outputId": "MonitorTable",
+        "instructions": [
+          {
+            "instruction": "ADD",
+            "placement": "end",
+            "arguments": [
+              {
+                "source": "predefined",
+                "name": "message",
+                "dataType": "varchar",
+                "manipulations": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ResponseColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the column that contains the response variable. (that is, the quantity that you want to predict).",
+      "description": "Specify the name of the column that contains the response variable (that is, the quantity that you want to predict).",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "response.column ",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": 0
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NumericInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns that contain the numeric predictor variables (which must be numeric values).",
+      "description": "[Required if CategoricalInputs is omitted.] Specify the names of the columns that contain the numeric predictor variables (which must be numeric values).",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "numeric.inputs",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": -1
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CategoricalInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases.",
+      "description": "[Required if NumericInputs is omitted.] Specify the names of the columns that contain the categorical predictor variables (which can be either numeric or VARCHAR values). Each categorical input column can have at most max_cat_values distinct categorical values. If max_cat_values exceeds 20, the function might run out of memory, because classification trees grow rapidly as max_cat_values increases. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "categorical.inputs",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": -2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "TreeType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the analysis is a regression (continuous response variable) or a multiclass classification (predicting result from the number of classes). The default value is 'regression' if the response variable is numeric and 'classification' if the response variable is nonnumeric.",
+      "description": " Specify whether the analysis is a regression (continuous response variable) or a multiple-class classification (predicting result from the number of classes). Default: 'regression' if the response variable is numeric, 'classification' otherwise",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "tree.type",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 10000,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "NumTrees",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of trees to grow in the forest model. When specified, number_of_trees must be greater than or equal to the number of vworkers.When not specified, the function builds the minimum number of trees that provides the input dataset with full coverage.",
+      "description": " Specify the number of trees to grow in the forest model. When specified, number_of_trees must be greater than or equal to the number of vworkers. When not specified, the function builds the minimum number of trees that provides the input data set with full coverage.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "ntree",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "TreeSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of rows that each tree uses as its input data set. If not specified, the function builds a tree using either the number of rows on a vworker or the number of rows that fit into the vworker\u2019s memory, whichever is less.",
+      "description": " Specify the number of rows that each tree uses as its input data set. Default behavior: The function builds a tree using either the number of rows on a vworker or the number of rows that fit into the vworker\u2019s memory, whichever is less.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "tree.size",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 1,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MinNodeSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a decision tree stopping criterion; the minimum size of any node within each decision tree The default value is 1.",
+      "description": " Specify a decision tree stopping criterion; the minimum size of any node within each decision tree. Default: 1",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "nodesize",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 0,
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Variance",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a decision tree stopping criterion. If the variance within any nodedips below this value, the algorithm stops looking for splits in the branch. The default value is 0.",
+      "description": " Specify a decision tree stopping criterion. If the variance within any node dips below this value, the algorithm stops looking for splits in the branch. Default: 0",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "variance",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": 12,
+      "lowerBound": 1,
+      "upperBound": 500,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxDepth",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a decision tree stopping criterion. If the tree reaches a depth pastthis value, the algorithm stops looking for splits. Decision trees can grow to (2(max_depth+1) - 1) nodes. This stopping criteria has the greatest effect on the performance of the function. The default value is 12.",
+      "description": " Specify a decision tree stopping criterion. If the tree reaches a depth past this value, the algorithm stops looking for splits. Decision trees can grow to (2 ( max_depth +1) - 1) nodes. This stopping criteria has the greatest effect on the performance of the function. Default: 12",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.depth",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": 20,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxNumCategoricalValues",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum number of distinct values for a single categorical variable. The max_cat_values must be a positive INTEGER. The default value is 20. A max_cat_values greater than 20 is not recommended.",
+      "description": "Specifies the maximum number of distinct values for a single categorical variable. The max_cat_values must be a positive INTEGER. The default value is 20. A max_cat_values greater than 20 is not recommended.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "maxnum.categorical",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "defaultValue": false,
+      "name": "DisplayNumProcessedRows",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to display the number of processed rows of input table. The default value is 'false'.",
+      "description": " Specify whether to output the number of input rows allocated to each worker and the number of input rows processed by each worker (excluding rows skipped because they contained NULL values). Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "display.num.processed.rows",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Mtry",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of variables to randomly sample from each inputvalue. For example, if mtry is 3, then the function randomly samples 3variables from each input at each split. The mtry must be an INTEGER.",
+      "description": " Specify the number of variables to randomly sample from each input value. For example, if mtry is 3, then the function randomly samples 3 variables from each input at each split. The mtry must be an INTEGER. Default behavior: The function randomly samples all predictors. Tip: Calculate the initial value for mtry , where p is number of variables used for prediction, as follows: Tree Type mtry Initial Value Classification round(sqrt( p )) Regression round( p /3)",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "mtry",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "lowerBound": -9223372036854775808,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MtrySeed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a LONG value to use in determining the random seed for mtry",
+      "description": " Specify a LONG value to use in determining the random seed for mtry .",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "mtry.seed",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "lowerBound": -9223372036854775808,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Seed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a LONG value to use in determining the seed for the random number generator. If you specify this value, you can specify the same value in future calls to this function and the function will build the same tree.",
+      "description": " Specify the random seed the algorithm uses for repeatable results (for more information, see Nondeterministic Results). The seed must be a LONG value.",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "seed",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "defaultValue": false,
+      "name": "OutOfBag",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output the out-of-bag estimate of error rate.",
+      "description": " Specify whether to output the out-of-bag estimate of error rate. The bootstrapping technique provides a convenient method for estimating the test error that does not require cross-validation. When creating a decision forest, each tree is built on a subset of the original data set that is created by sampling with replacement. The points in the original data set that were not used in creating a particular tree are called the out-of-bag observations for that tree. You can use this set of data points as a test set for this particular tree. By creating such a test set for each tree in the forest, you can estimate the test error of the model. If OutOfBag is 'true', the function calculates the out-of-bag error for a decision forest model with this procedure: For each observation i , use each tree for which the observation was out-of-bag to predict a response. Combine the responses to make an out-of-bag prediction for observation i : For classification trees, take the majority vote of the predicted responses. For regression trees, take the average of the predicted responses. Compare the out-of-bag predictions to the actual response for all observations to calculate the overall mean squared error or misclassification rate. The preceding calculations increase the time that the function takes to complete. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "outofbag",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [
+        "graycode",
+        "ordinal",
+        "hashing"
+      ],
+      "defaultValue": "graycode",
+      "isOutputColumn": false,
+      "name": "CategoricalEncoding",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies which encoding method is used for categorical variables.",
+      "description": "Specifies which encoding method is used for categorical variables.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "categorical.encoding",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

@@ -1,0 +1,453 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Single_Tree_Drive",
+  "function_version": "1.22",
+  "function_type": "driver",
+  "function_alias_name": "DecisionTree",
+  "function_r_name": "aa.single.tree.drive",
+  "short_description": "This is a driver function to build a single tree model",
+  "long_description": "The Single_Tree_Drive function takes the entire data set as training input and builds a single decision tree from it",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "AttributeTable",
+      "alternateNames": [
+        "AttributeTableName"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the table that contains the attribute names and the values. *Required if you omit data.",
+      "description": "Specifies the name of the table that contains the attribute names and the values. *Required if you omit InputTable.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "attribute.table",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the table that contains the input data set. *Required if you omit attribute.table and response.table.",
+      "description": "Specifies the name of the table that contains the input data set. *Required if you omit AttributeTableName and ResponseTableName.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "CategoricalAttributeTable",
+      "alternateNames": [
+        "CategoricalAttributeTableName"
+      ],
+      "isRequired": false,
+      "rDescription": "The name of the input table containing the categorical attributes.",
+      "description": "The name of the input table containing the categorical attributes.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "categorical.attribute.table",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "ResponseTable",
+      "alternateNames": [
+        "ResponseTableName"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the table that contains the response values. *Required if you omit data.",
+      "description": " Specifies the name of the table that contains the response values. *Required if you omit InputTable.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "response.table",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "SplitsTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the input table that contains the user-specified splits. By default, the function creates new splits.",
+      "description": "Specifies the name of the input table that contains the user-specified splits. By default, the function creates new splits.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "splits.table",
+      "useInR": true,
+      "rOrderNum": 9
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name for the model.table that is to contain the final decision tree (the model table). The name must not exceed 64 characters.",
+      "description": "Specify the name for the output table that is to contain the final decision tree (the model table). The output_table must not exceed 64 characters.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "model.table",
+      "useInR": true,
+      "rOrderNum": 100
+    },
+    {
+      "isOutputTable": true,
+      "name": "IntermediateSplitsTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name for the intermediate splits table, if it is to be saved. By default, the function does not save the intermediate splits table.",
+      "description": "[Disallowed with SplitsTable, optional otherwise] Specify the name for the intermediate splits table, if it is to be saved. Default behavior: The function does not save the intermediate splits table.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "intermediate.splits.table",
+      "useInR": true,
+      "rOrderNum": 101
+    },
+    {
+      "isOutputTable": true,
+      "name": "FinalResponseTable",
+      "alternateNames": [
+        "SaveFinalResponseTableTo"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the name for the output table that is to contain the final PID and response pair from the response table and the node_id from the final single drive tree.",
+      "description": "Specifies the name for the output table that is to contain the final PID and response pair from the response table and the node_id from the final single drive tree.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "final.response.tableto",
+      "useInR": true,
+      "rOrderNum": 102
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable",
+        "AttributeTableName"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "AttributeNameColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the attribute table columns that define the attribute.",
+      "description": "Specify the names of the input or attribute table columns that have the attribute names.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "attribute.name.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "InputTable",
+        "AttributeTableName"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IdColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the columns in the response and attribute tables that specify the ID of the instance.",
+      "description": "Specify the names of the columns in the response and attribute tables that specify the ID of the instance.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "id.columns",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "InputTable",
+        "AttributeTableName"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "AttributeValueColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Specifies the names of the attribute table columns that define the value.",
+      "description": "Specify the name of the input or attribute table columns that have the attribute values.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "attribute.value.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "InputTable",
+        "ResponseTableName"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ResponseColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the response table column that contains the response variable.",
+      "description": "Specify the name of the response table column that contains the response variable.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "response.column",
+      "useInR": true,
+      "rFormulaUsage": true,
+      "rOrderNum": 7
+    },
+    {
+      "targetTable": [
+        "SplitsTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SplitsValueColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "If you specify splits.table, this argument specifies the name of the column that contains the split value. If approx.splits is 'true', then the default value is splits_valcol; if not, then the default value is the attribute.value.column argument, node_column.",
+      "description": " If you specify SplitsTable, this argument specifies the name of the column that contains the split value. Default: splits_valcol if UseApproximateSplits is 'true', attribute_value_column (the AttributeValueColumn argument value) otherwise",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "split.value",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "targetTable": [
+        "InputTable",
+        "ResponseTableName"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "WeightColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the response table column that contains the weights of the attribute values.",
+      "description": "[Required with Weighted, otherwise optional] Specify the name of the response table column that contains the weights of the attribute values.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "weight.column",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "defaultValue": 10,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "NumSplits",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of splits to consider for each variable. The default value is 10. The function does not consider all possible splits for all attributes.",
+      "description": " Specify the number of splits to consider for each variable. The function does not consider all possible splits for all attributes. Default: 10",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "num.splits",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "defaultValue": true,
+      "name": "ApproxSplits",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to use approximate percentiles (true) or exact percentiles (false). The default value is true. Internally, the function uses percentile values as split values.",
+      "description": " Specify whether to use approximate percentiles (true) or exact percentiles (false). Internally, the function uses percentile values as split values. Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "approx.splits",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "defaultValue": 100,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MinNodeSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the decision tree stopping criterion and the minimum size of any particular node within each decision tree. The default value is 100.",
+      "description": " Specify the decision tree stopping criterion and the minimum size of any particular node within each decision tree. Default: 100",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "nodesize",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "defaultValue": 5,
+      "rDefaultValue": 30,
+      "lowerBound": 1,
+      "upperBound": 60,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxDepth",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies a decision tree stopping criterion. If the tree reaches a depth past this value, the algorithm stops looking for splits. Decision trees can grow up to (2(max_depth+1) - 1) nodes. This stopping criteria has the greatest effect on function performance. The maximum value is 60. The default value is 30. ",
+      "description": "Specify a decision tree stopping criterion. If the tree reaches a depth past this value, the algorithm stops looking for splits. Decision trees can grow up to (2 ( max_depth +1) - 1) nodes. This stopping criteria has the greatest effect on function performance. Default: 5 Maximum: 60",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.depth",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "permittedValues": [
+        "GINI",
+        "ENTROPY",
+        "CHISQUARE"
+      ],
+      "defaultValue": "gini",
+      "isOutputColumn": false,
+      "name": "SplitMeasure",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the impurity measurement to use while constructing the decision tree. The default value is 'gini'. If the tree is weighted, this value cannot be 'chisquare'.",
+      "description": " Specify the impurity measurement to use while constructing the decision tree. If the tree is weighted, this value cannot be 'chisquare'. Default: 'gini'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "split.measure",
+      "useInR": true,
+      "rOrderNum": 17
+    },
+    {
+      "defaultValue": false,
+      "name": "Weighted",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies whether to build a weighted decision tree. The default value is 'false'. If you specify 'true', then you must also specify the weight.column argument.",
+      "description": " Specify whether to build a weighted decision tree. If you specify 'true', you must also specify the WeightColumn argument. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "weighted",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "defaultValue": false,
+      "name": "OutputProb",
+      "alternateNames": [
+        "OutputResponseProbDist"
+      ],
+      "isRequired": false,
+      "rDescription": "Switch to enable/disable output of probability distribution for output labels.",
+      "description": "Switch to enable/disable output of probability distribution for output labels.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "output.response.probdist",
+      "useInR": true,
+      "rOrderNum": 18
+    },
+    {
+      "permittedValues": [
+        "Laplace",
+        "Frequency",
+        "RawCount"
+      ],
+      "defaultValue": "Laplace",
+      "isOutputColumn": false,
+      "name": "ResponseProbDistType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the type of algorithm to use to generate output probability distribution for output labels. Uses one of Laplace, Frequency or RawCounts to generate Probability Estimation Trees (PET) based distributions.",
+      "description": " Specifies the probability distribution type. Default: 'laplace'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "response.probdist.type",
+      "useInR": true,
+      "rOrderNum": 19
+    },
+    {
+      "permittedValues": [
+        "graycode",
+        "ordinal",
+        "hashing"
+      ],
+      "defaultValue": "graycode",
+      "isOutputColumn": false,
+      "name": "CategoricalEncoding",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies which encoding method is used for categorical variables.",
+      "description": "Specifies which encoding method is used for categorical variables.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "categorical.encoding",
+      "useInR": true,
+      "rOrderNum": 20
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

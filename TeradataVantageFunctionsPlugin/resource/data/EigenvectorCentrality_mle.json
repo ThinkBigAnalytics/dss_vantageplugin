@@ -1,0 +1,242 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "EigenvectorCentrality",
+  "function_version": "1.4",
+  "function_type": "graph",
+  "function_alias_name": "EigenVectorCentrality",
+  "function_r_name": "aa.eigenvector.centrality",
+  "short_description": "Algorithm to calculate eigenvector centrality.",
+  "long_description": "The EigenVectorCentrality function calculates the centrality (relative importance) of each node in a graph.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "vertices",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The input table contains vertices in the graph. ",
+      "description": "The input table contains vertices in the graph. ",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "vertices.data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "edges",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The input table contains edges in the graph. ",
+      "description": "The input table contains edges in the graph. ",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "edges.data",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "edges"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetKey",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the names of the target key columns in the edges table. The number and data types of columns must correspond to those of vertex_key.",
+      "description": "Specify the names of the target key columns in the edges table. The number and data types of columns must correspond to those of vertex_key .",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "target.key",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "edges"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EdgeWeight",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the edges table column that contains the edge weights. The edge weights must be positive values. If you omit this argument, then the graph is unweighted.",
+      "description": " Specify the name of the edges table column that contains the edge weights. The edge weights must be positive values. Default behavior: The graph is unweighted.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "weights",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "vertices"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input columns to copy to the output table.",
+      "description": " Specify the names of the input columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "permittedValues": [
+        "katz",
+        "bonacich",
+        "eigenvector"
+      ],
+      "defaultValue": "eigenvector",
+      "isOutputColumn": false,
+      "name": "Family",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the centrality formula. The default value is 'eigenvector'. For descriptions of the centrality formulas",
+      "description": " Specify the centrality formula: 'eigenvector' (Default) 'katz' 'bonacich' For descriptions of the centrality formulas, see Centrality Formulas.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "family",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 0.85,
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Alpha",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the alpha value for the Katz or Bonacich centrality formula. The default value is 0.85.",
+      "description": " Specify the alpha value for the Katz or Bonacich centrality formula. Default: 0.85",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "alpha",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "lowerBound": -Infinity,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Beta",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the beta value for the Katz or Bonacich centrality formula. The default value is 1 for Katz and 0 for Bonacich.",
+      "description": " Specify the beta value for the Katz or Bonacich centrality formula. Default: 1 for Katz and 0 for Bonacich",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "beta",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "defaultValue": true,
+      "name": "Directed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the graph is directed. The default value is 'true'.",
+      "description": " Specify whether the graph is directed. Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "directed",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": 20,
+      "rDefaultValue": 100000.0,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxIterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum number of iterations for the function. The default value is 100000.0. ",
+      "description": " Specify the maximum number of iterations for the function. Default: 20",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "maxiter",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "defaultValue": 0.001,
+      "rDefaultValue": 1e-10,
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StopThreshold",
+      "alternateNames": [
+        "Threshold"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the threshold for convergence (the difference of between bk+1 and bk). ",
+      "description": " Specify the threshold for convergence (the difference of between b k+1 and b k ) . Default: 0.001",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "tol",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Forest_Predict",
+  "function_version": "1.13",
+  "function_type": "non-driver",
+  "function_alias_name": "DecisionForestPredict",
+  "function_r_name": "aa.forest.predict",
+  "ref_function_r_name": "aa.forest",
+  "short_description": "This function generates predictions on a response variable for a data set",
+  "long_description": "The Forest_Predict function uses the model output by the DecisionForest function to create predictions on a response variable for a test set of data. The model can be stored in either a table or a file. This function can be used with real-time applications. See AMLGenerator.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "parameter",
+            "name": "Accumulate.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
+            "source": "parameter",
+            "name": "IDColumn.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "prediction",
+            "dataType": "varchar(1000)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "confidence_lower",
+            "dataType": "double precision",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "confidence_upper",
+            "dataType": "double precision",
+            "manipulations": []
+          }
+        ]
+      },
+      {
+        "instruction": "CASE",
+        "arguments": [
+          {
+            "condition": [
+              {
+                "leftOperand": "valueFromParameter(Detailed)",
+                "operator": "=",
+                "valueType": "string",
+                "rightOperand": "true"
+              }
+            ],
+            "action": [
+              {
+                "instruction": "ADD",
+                "placement": "end",
+                "arguments": [
+                  {
+                    "source": "predefined",
+                    "name": "tree_num",
+                    "dataType": "varchar(20)",
+                    "manipulations": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the table containing the input test data.",
+      "description": "Specifies the table containing the input test data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "newdata",
+      "useInR": true,
+      "rFormulaUsage": false,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [
+        "ModelTable"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the table containing the model data.",
+      "description": "Specifies the table containing the model data.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rFormulaUsage": false,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "IdColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies a column containing a unique identifier for each test point in the test set",
+      "description": "Specify the column that contains a unique identifier for each test point in the test set.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "id.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NumericInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns that contain the numeric predictor variables. By default, the function gets these variables from the model generated by ta.forest_drive. If you specify this argument, you must specify it exactly as you specified it in the ta.forest_drive call that generated the model.",
+      "description": " Specify the names of the columns that contain the numeric predictor variables. Default behavior: The function gets these variables from the model output by DecisionForest. If you specify this argument, you must specify it exactly as you specified it in the DecisionForest call that created the model.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "numeric.inputs",
+      "useInR": true,
+      "rOrderNum": -1
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CategoricalInputs",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the columns that contain the categorical predictor variables. By default, the function gets these variables from the model generated by ta.forest_drive. If you specify this argument, you must specify it exactly as you specified it in the ta.forest_drive call that generated the model.",
+      "description": " Specify the names of the columns that contain the categorical predictor variables. Default behavior: The function gets these variables from the model output by DecisionForest. If you specify this argument, you must specify it exactly as you specified it in the DecisionForest call that created the model. Note: For information about columns that you must identify as categorical, see Identification of Categorical Columns.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "categorical.inputs",
+      "useInR": true,
+      "rOrderNum": -2
+    },
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input columns to copy to the output table.",
+      "description": " Specify the names of the input columns to copy to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "terms",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "ModelFile",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the text file or ZIP file that contains the trained model generated by the ta.forest_drive function. You must have installed this model previously using the ACT ''install command. If you specify model.table, then the function uses it and ignores object and forest. If you specify both object and forest, then the function uses Forest.",
+      "description": "Specifies the name of the text file or ZIP file that contains the trained model generated by the Forest_Drive function. You must have installed this model previously using the ACT install command.If you specify ModelTable, then the function uses it and ignores ModelFile and Forest. If you specify both ModelFile and Forest, then the function uses Forest.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "model.file",
+      "useInR": true,
+      "rOrderNum": -999
+    },
+    {
+      "defaultValue": false,
+      "name": "Detailed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether to output detailed information about the forest trees; that is, the decision tree and the specific tree information, including task index and tree index for each tree. The default value is 'false'.",
+      "description": " Specify whether to output detailed information about the forest trees; that is, the decision tree and the specific tree information, including task index and tree index for each tree. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "detailed",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

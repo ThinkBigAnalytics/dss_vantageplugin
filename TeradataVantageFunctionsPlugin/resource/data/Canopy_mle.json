@@ -1,0 +1,83 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Canopy",
+  "function_version": "2.2",
+  "function_type": "driver",
+  "function_alias_name": "Canopy",
+  "function_r_name": "aa.canopy",
+  "short_description": "Implements the canopy algorithm for clustering data points.",
+  "long_description": "Canopy clustering is a simple, fast, accurate method for grouping objects into preliminary clusters. It is often performed in preparation for more rigorous clustering techniques, such as The canopy clustering algorithm uses a fast approximate distance metric and two distance thresholds, T For distance measurement, the Canopy function uses Euclidean distance. If there are more than 10,000 canopy centers, the function fails. Run the function again, increasing the value of T 2 (specified by the TightDistance argument). The canopy clustering algorithm is nondeterministic, and the randomness of the canopy assignments cannot be controlled by a seed argument (for more information, see Nondeterministic Results).",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the data to be clustered.",
+      "description": "Specifies the name of the table that contains the data to be clustered.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "LooseDistance",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the maximum distance that any point can be from a canopy center to be considered part of that canopy",
+      "description": "Specify the maximum distance that any point can be from a canopy center to be considered part of that canopy (T 1 ).",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "loose.distance",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "TightDistance",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Specifies the minimum distance that separates two canopy centers.",
+      "description": "Specify the minimum distance that separates two canopy centers (T 2 ).",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "tight.distance",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

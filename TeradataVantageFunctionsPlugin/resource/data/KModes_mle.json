@@ -1,0 +1,300 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "KModes",
+  "function_version": "1.6",
+  "function_type": "driver",
+  "function_alias_name": "KModes",
+  "function_r_name": "aa.kmodes",
+  "short_description": "Performs K-Modes clustering on a data set",
+  "long_description": "KModes is an extension of KMeans that supports categorical data. KModes models are fit similarly to KMeans models. The core algorithm is an expectation-maximization algorithm that finds a locally optimal solution. These are the main steps to fitting the model: Select a set of K initial cluster centers. You can create this set with the RandomSample function, which samples rows from an input table using the kmeans++ and kmeans|| algorithms. These initialization algorithms create initial cluster centers that are more likely to lead to better local optima. A mapper assigns each point in the input table to one of the K clusters, and stores the sums of the numerical attributes and counts of the categorical attributes. A reducer aggregates the the statistics created for each worker in the E step and creates new cluster centers. For numerical attributes, the new center is the mean of the value of the attribute for the points assigned to the cluster. For categorical attributes, the new center is the mode of the attribute value for the points assigned to the cluster. The algorithm runs for either a set number of iterations or until the change in movement of the cluster centers drops below a user-specified threshold. When assigning points to a cluster, a hybrid distance function that combines a numeric distance and a categorical distance is required. The default distance between two data points in a KModes model is the squared Euclidean distance: where N denotes the indexes of numerical attributes, C denotes the indexes of categorical attributes, and w The Manhattan distance can also be used:",
+  "input_tables": [
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Input table is the table containing the list of features by which we are clustering the data.",
+      "description": " Input table is the table containing the list of features by which we are clustering the data.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "InitialSeedTable",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "An input table containing the points that serve as initial cluster centers. initial.seed cannot be used if modes is used and is required if modes is not used.",
+      "description": "An input table containing the points that serve as initial cluster centers. InitialSeedTable cannot be used if NumClusters is used and is required if NumClusters is not used.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "initial.seed",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ],
+  "output_tables": [
+    {
+      "isOutputTable": true,
+      "name": "OutputTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Output table is the table where output is stored. The output table contains the centroids of the clusters.",
+      "description": "Specify the name of the table in which to output the centroids of the clusters.",
+      "datatype": "TABLE_NAME",
+      "allowsLists": false,
+      "rName": "clusters.centroids",
+      "useInR": true,
+      "rOrderNum": 100
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "InputColumns"
+      ],
+      "isRequired": true,
+      "rDescription": " Indicates which columns from the input table will be used for clustering.",
+      "description": "Specify the input table columns to use for clustering.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "input.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NumericAsCategorical",
+      "alternateNames": [
+        "AsCategories"
+      ],
+      "isRequired": false,
+      "rDescription": "Indicates which numeric categories should be interpreted as categorical variables. Input columns must contain numeric SQL types.",
+      "description": " Specify the input table columns that contain numeric variables to interpret as categorical variables. These columns must have numeric SQL data types. Default behavior: No numeric variables are treated as categorical variables.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "as.categories",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "targetTable": [
+        "InitialSeedTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ModelIdColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "If this argument is present, it indicates that the table specified in initial.seed contains more than one set of seed values (that is, it contains seed values for more than one model). This argument specifies the column in initial.seed that identifies which rows are associated with each model.",
+      "description": " Specify the name of the initial_seed_table column that contains seed values for multiple models.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": false,
+      "rName": "model.id.column",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "InputTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "GROUPTYPE"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "SeedColumn",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The seed.column is required to ensure repeatable sampling if the seed is specified.",
+      "description": " Specify the names of the input_table columns by which to partition the input. Function calls that use the same input data, seed , and seed_column output the same result. If you specify SeedColumn, you must also specify Seed. Note: Ideally, the number of distinct values in the seed_column is the same as the number of workers in the cluster. A very large number of distinct values in the seed_column degrades function performance.",
+      "datatype": "COLUMN_NAMES",
+      "allowsLists": true,
+      "rName": "seed.column",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "lowerBound": 0,
+      "lowerBoundType": "EXCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "NumClusters",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "An integer or a list of integers. If a single value is given, the function trains a model with that number of clusters. If a list of integers is supplied, the function trains a model for each value. Initial seeds are specified by performing ta.kmeans|| sampling using the FixedSample function. modes cannot be used if initial.seed is used and is required if initial.seed is not used.",
+      "description": "[Required if InitialSeedTable is omitted, disallowed otherwise] Specify either the number of clusters. If you specify a single value, the function trains a single model with the specified number of clusters. If you specify multiple values, the function trains a model for each value.",
+      "datatype": "INTEGER",
+      "allowsLists": true,
+      "rName": "modes",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "defaultValue": 0.0395,
+      "lowerBound": 0,
+      "upperBound": Infinity,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StopThreshold",
+      "alternateNames": [
+        "Threshold"
+      ],
+      "isRequired": false,
+      "rDescription": "This is the convergence threshold. When the centroids move by less than this amount, the algorithm has converged. The input value must be no less than 0.0. The default value is 0.0395.",
+      "description": " Specify the convergence threshold. When the centroids move by less than threshold , the algorithm has converged. The threshold must be a nonnegative DOUBLE value. Default: 0.0395",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "threshold",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 10,
+      "rDefaultValue": 10,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxIterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " An integer specifying the maximum number of iterations that the algorithm will runbefore quitting if the convergence threshold has not been met. The input value must be greater than 0. The default value is 10.",
+      "description": " Specify the maximum number of iterations that the algorithm runs before quitting if the convergence threshold is not met. The max_iterations must be a positive INTEGER. Default: 10",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "iter.max",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "permittedValues": [
+        "MANHATTAN",
+        "EUCLIDEAN"
+      ],
+      "defaultValue": "EUCLIDEAN",
+      "isOutputColumn": false,
+      "name": "NumericDistanceMethod",
+      "alternateNames": [
+        "Distance"
+      ],
+      "isRequired": false,
+      "rDescription": "Indicates which distance metric the ta.kmodes function will use for numeric dimensions. The permitted input values are [Manhattan, Euclidean]. The default value is Euclidean.",
+      "description": " Specify the distance metric for numeric dimensions. Default: 'euclidean'",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "distance",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [
+        "OVERLAP",
+        "HAMMING"
+      ],
+      "defaultValue": "OVERLAP",
+      "isOutputColumn": false,
+      "name": "CategoricalDistanceMethod",
+      "alternateNames": [
+        "CategoricalDistance"
+      ],
+      "isRequired": false,
+      "rDescription": "Indicates which distance metric the ta.kmodes function will use for categorical dimensions. The permitted input values are [Overlap, Hamming]. The default value is Overlap. Overlap: distance is 0 if two points are in the same category or 1 if they are in different categories. Hamming: Used for categories that are strings of equal length. The fraction of characters that are different.",
+      "description": " Specify the distance metric for categorical dimensions: Option Description overlap (Default) Distance is 0 if two points are in same category, 1 otherwise. hamming Used for categories that are strings of equal length. Percentage of different characters.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "categorical.distance",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "allowNaN": true,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "CategoryWeights",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The weights to be assigned to each category in the ta.kmodes distance.",
+      "description": " Specify the weight of each category in the KModes distance. Each weight must be a DOUBLE value. Default behavior: All categories have equal weight.",
+      "datatype": "DOUBLE",
+      "allowsLists": true,
+      "rName": "category.weights",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "lowerBound": -9223372036854775808,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Seed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "",
+      "description": " Specify the random seed the algorithm uses for repeatable results (for more information, see Nondeterministic Results). The seed must be a LONG value. Note: If you specify Seed: You must also specify SeedColumn. You must specify NumClusters, not InitialSeedTable.",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "seed",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

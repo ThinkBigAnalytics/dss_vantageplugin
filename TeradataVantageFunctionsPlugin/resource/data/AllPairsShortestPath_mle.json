@@ -1,0 +1,196 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "AllPairsShortestPath",
+  "function_version": "1.4",
+  "function_type": "graph",
+  "function_alias_name": "AllPairsShortestPath",
+  "function_r_name": "aa.allpairs.shortest.path",
+  "short_description": "This function computes the shortest distances between all combinations of the specified source and target vertices.",
+  "long_description": "The AllPairsShortestPath function computes the shortest distances between all combinations of the specified source and target vertices. The function works on directed, undirected, weighted, and unweighted graphs. The function is useful in social network analysis. The resulting pairs and distances can be aggregated to determine a closeness metric or the k-degree for each vertex in a graph.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "vertices",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "vertex table",
+      "description": "vertex table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "vertices.data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "edges",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "edge table",
+      "description": "edge table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "edges.data",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "sources",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "source table",
+      "description": "source table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "sources.data",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "targets",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "target table",
+      "description": "target table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "targets.data",
+      "useInR": true,
+      "rOrderNum": 4
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "edges"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetKey",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the target key (the names of the edges table columns that identify the target vertex). If you specify targets_table, then the function uses only the vertices in targets_table as targets (which must be a subset of those that this argument specifies).",
+      "description": "Specify the target key (the names of the edges table columns that identify the target vertex). If you specify targets_table , the function uses only the vertices in targets_table as targets (which must be a subset of those that this argument specifies).",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "target.key",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "targetTable": [
+        "edges"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "EdgeWeight",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the name of the edges table column that contains edge weights. The weights are positive values. By default, the weight of each edge is 1 (that is, the graph is unweighted).",
+      "description": " Specify the name of the edges table column that contains edge weights. Each edge_weight is a positive value. Default: Each edge_weight is 1 (that is, the graph is unweighted)",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "edge.weight",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 10,
+      "lowerBound": -2147483648,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxDistance",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the maximum distance between source and target for which the function outputs the vertices. The max_distance must be an integer. If max_distance is negative, the distance between source and target is unbounded. The default is value is 10.",
+      "description": " Specify the maximum distance between source and target for which the function outputs the vertices. The max_distance must be an integer. If max_distance is negative, the distance between source and target is unbounded. Default: 10",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.distance",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": true,
+      "rDefaultValue": true,
+      "name": "Directed",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the graph is directed. The default value is 'true'.",
+      "description": " Specify whether the graph is directed. Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "directed",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "lowerBound": 1,
+      "upperBound": 9223372036854775807,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "GroupSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of source vertices that execute a single-node shortest path (SNSP) algorithm in parallel. If group_size exceeds the number of source vertices in a partition, then the number of source vertices in the partition is the group size. By default, the function uses cluster and query characteristics to determine the optimal group size.",
+      "description": " Specify the number of source vertices that run a single-node shortest path (SNSP) algorithm in parallel. If group_size exceeds the number of source vertices in a partition, the number of source vertices in the partition is the group size. Default behavior: The function uses cluster and query characteristics to determine the optimal group size.",
+      "datatype": "LONG",
+      "allowsLists": false,
+      "rName": "group.size",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

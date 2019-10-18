@@ -1,0 +1,117 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Pack",
+  "function_version": "1.5",
+  "function_type": "non-driver",
+  "function_alias_name": "Pack",
+  "function_r_name": "aa.pack",
+  "short_description": "Packs data across several columns into a single data column.",
+  "long_description": "The Pack function packs data from multiple input columns into a single column. The packed column has a virtual column for each input column. By default, virtual columns are separated by commas and each virtual column value is labeled with its column name. Pack complements the function Unpack, but you can use it on any columns that meet the input requirements. Before packing columns, note their data types\u2014you need them if you want to unpack the packed column.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByAny"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "The table containing the input attributes.",
+      "description": "The table containing the input attributes.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": false,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "InputColumns"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the names of the input columns to pack into a single output column. These names become the column names of the virtual columns. By default, all input table columns are packed into a single output column. If you specify this argument, but do not specify all input table columns, the function copies the unspecified input tablecolumns to the output table.",
+      "description": "Specifies the names of the input columns to pack into a single output column. These names become the column names of the virtual columns. By default, all input table columns are packed into a single output column. If you specify this argument, but do not specify all input table columns, the function copies the unspecified input tablecolumns to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "input.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": true,
+      "name": "OutputColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": " Specifies the name to give to the packed output column.",
+      "description": "Specify the name to give to the packed output column.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "output.column",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "defaultValue": ",",
+      "isOutputColumn": false,
+      "name": "Delimiter",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the delimiter (a string) that separates the virtual columns in the packed data. The default delimiter is comma (,).",
+      "description": " Specify the delimiter (a string) that separates the virtual columns in the packed data. Default: ',' (comma)",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "delimiter",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": true,
+      "name": "IncludeColumnName",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies whether to label each virtual column value with its column name (making the virtual column 'input_column:value'). The default value is 'true'.",
+      "description": " Specify whether to label each virtual column value with its column name (making the virtual column input_column : value ). Default: 'true'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": " include.column.name",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

@@ -1,0 +1,316 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "Interpolator",
+  "function_version": "1.2",
+  "function_type": "non-driver",
+  "function_alias_name": "Interpolator",
+  "function_r_name": "aa.interpolator",
+  "short_description": "The function inserts missing points based on interpolation type and aggregation type.",
+  "long_description": "The Interpolator function calculates missing values in a time series, using either interpolation or aggregation. Interpolation estimates missing values between known values. Aggregation combines known values to produce an aggregate value. The time intervals between calculated values can either be the same length (specified by the TimeInterval argument) or have specific start and end times (specified by time_table). The choice of TimeInterval or time_table affects the behavior of interpolation, but not aggregation.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "input_table"
+      ],
+      "isRequired": true,
+      "rDescription": "Input table",
+      "description": "Input table",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "Dimension"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "TimeIntervalTable",
+      "alternateNames": [
+        "time_table"
+      ],
+      "isRequired": false,
+      "rDescription": "time_table (optional) If omitted, then the time.interval argument must be specified.",
+      "description": "time_table (optional) If omitted, then the TimeInterval argument must be specified.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "time.data",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "RowCounts",
+      "alternateNames": [
+        "count_row_number"
+      ],
+      "isRequired": false,
+      "rDescription": "count_row_number (optional), only used with interpolation.type('loess'(weights ({constant | tricube}), degree ({0 |1 |2}), span(m))), where m is between (\u03bb+1)/n and 1.",
+      "description": "count_row_number (optional), only used with InterpolationType('loess'(weights ({constant | tricube}), degree ({0 |1 |2}), span(m))), where m is between (\u03bb+1)/n and 1.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "count.rownumber",
+      "useInR": true,
+      "rOrderNum": 3
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input_table"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "requiredLength": 1,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TimeColumn",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the input_table column that contains the time points of the time series whose missing values are to be calculated.",
+      "description": "Specify the name of the input_table column that contains the time points of the time series whose missing values are to be calculated.",
+      "datatype": "COLUMNS",
+      "allowsLists": false,
+      "rName": "time.column",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "targetTable": [
+        "input_table"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "ValueColumns"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the names of input_table columns to interpolate to the output table.",
+      "description": "Specifies the names of input_table columns to interpolate to the output table.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "value.columns",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "targetTable": [
+        "input_table"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "Accumulate",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the names of input_table columns (other than those specified by time.column and value.columns) to copy to the output table. By default, the function copies to the output table only the columns specified by time.column and value.columns.",
+      "description": " Specify the names of input_table columns (other than those specified by TimeColumn and ValueColumns) to copy to the output table. Default: Only the columns specified by TimeColumn and ValueColumns",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "accumulate",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "lowerBound": 0.0,
+      "upperBound": Infinity,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "TimeInterval",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the length of time, in seconds, between calculated values. This value must be either INTEGER or DOUBLE PRECISION. Note: Specify exactly one of time_table or time.interval.",
+      "description": " Specify exactly one of time_table or TimeInterval. Specify the length of time, in seconds, between calculated values. This value must be either INTEGER or DOUBLE PRECISION.",
+      "datatype": "DOUBLE",
+      "allowsLists": false,
+      "rName": "time.interval",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "InterpolationType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies interpolation types for the columns that value.columns specifies. If you specify interpolation.type, then it must be the same size as value.columns. That is, if value.columns specifies n columns, then interpolation.type must specify n interpolation types. For i in [1, n], value_column_i has interpolation_type_i. However, interpolation_type_i can be empty; for example: value.columns (c1, c2, c3), interpolation.type ('linear', ,'constant]') An empty interpolation_type has the default value. The possible values of interpolation_type are as follows. Note: In interpolation_type syntax, brackets do not indicate optional elements\u2014you must include them. 'linear' (default): The value for each missing data point is determined using linear interpolation between the two nearest points, 'constant': The only interpolation type supported if value_column has data type CHARACTER, CHARACTER(n), CHARACTER VARYING, CHARACTER VARYING(n), or VARCHAR. The value for each missing data point is set to the nearest value, 'spline[(type(cubic))]]': The value for each missing data point is determined by fitting a cubic spline to the nearest three points, 'median[(window(n))]': n must be greater than or equal to 2. The default value of n is 5. The value for each missing data point is set to the median value of the nearest four points, 'loess[(weights({constant | tricube}), degree ({0 |1 |2}), span(m))]': weights: The default value is constant, degree: The default value is 1, m is either an integer greater than 1 (which specifies the number of neighboring points) or a real number between (\u03bb+1)/n and 1 (\u03bb is the degree of the local polynomial and n is the number of data points). The default value of m is 5. The value for each missing data point is a low-degree polynomial based on a set of nearest neighbors. The fitting can be weighted so that points closer to the missing data have more influence than points farther away. Your choice of time.interval or time_table affects interpolation:If you specify time.interval, then the function calculates the value for the time point only if the value is missing; otherwise, the function copies the original value, If you specify time_table, then the function always calculates the value of the time point. Note: Specify only one of interpolation.type or aggregation.type If you omit both arguments, the function uses interpolation.type with its default value, 'linear'.'",
+      "description": " Specify interpolation types for the columns that ValueColumns specifies. Must be the same size as ValueColumns. That is, if ValueColumns specifies n columns, InterpolationType must specify n interpolation types. For i in [1, n ], value_column_i has interpolation_type_i . However, interpolation_type_i can be empty; for example: An empty interpolation_type has the default value. The possible values of interpolation_type are as follows: Note: In interpolation_type syntax, brackets do not indicate optional elements\u2014you must include them. interpolation_type Description 'linear' (Default) Function determines value for each missing data point using linear interpolation between two nearest points. 'constant' Function sets value for each missing data point to nearest value. Note: You must use this option if value_column has data type CHARACTER, CHARACTER( n ), or VARCHAR. 'spline[(type(cubic))]]' Function determines value for each missing data point by fitting a cubic spline to nearest three points. 'median[(window( n ))]' Function sets value for each missing data point to median value of nearest four points. n must be greater than or equal to 2. Default: 5. 'loess[(weights({constant|tricube}), degree ({0|1|2}), span( m ))]' Option Description weights Default: constant degree Default: 1 m Either an integer greater than 1 (which specifies number of neighboring points) or a real number between (\u03bb+1)/ n and 1 (\u03bb is degree of local polynomial and n is number of data points). Default: 5 The value for each missing data point is a low-degree polynomial based on a set of nearest neighbors. The fitting can be weighted so that points closer to the missing data have more influence than points farther away. Your choice of TimeInterval or time_table affects interpolation: TimeInterval Function calculates value for time point only if value is missing; otherwise, function copies original value. time_table Function always calculates value of time point. Note: Specify only one of InterpolationType or AggregationType. If you omit both arguments, the function uses InterpolationType with its default value, 'linear'.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "interpolation.type",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "AggregationType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the aggregation types of the columns that value.columns specifies. If you specify aggregation.type, then it must be the same size as value.columns. That is, if value.columns specifies n columns, then aggregation.type must specify n aggregation types. For i in [1, n], value_column_i has aggregation_type_i. However, aggregation_type_i can be empty; for example: value.columns (c1, c2, c3), aggregation.type (min, ,max) An empty aggregation_type has the default value. The syntax of aggregation_type is: { min | max | mean | mode | sum } [(window(n))] Note: In aggregation_type syntax, brackets do not indicate optional elements\u2014you must include them. The function calculates the aggregate value as the minimum, maximum, mean, mode, or sum within a sliding window of length n. n must be greater than or equal to 2. The default value of n is 5. The default aggregation method is min. The Interpolator function can calculate the aggregates of values of these data types: INTEGER, BIGINT, SMALLINT, DOUBLE PRECISION, DECIMAL(n,n), DECIMAL, NUMERIC, NUMERIC(n,n) Your choice of time.interval or time_table does not affect aggregation. The function always calculates the aggregated value. Note: Specify only one of aggregation.type or interpolation.type. If you omit both arguments, the function uses interpolation.type with its default value, 'linear'. ",
+      "description": " Specify the aggregation types of the columns that ValueColumns specifies. Must be the same size as ValueColumns. That is, if ValueColumns specifies n columns, AggregationType must specify n aggregation types. For i in [1, n ], value_column_i has aggregation_type_i . However, aggregation_type_i can be empty; for example: An empty aggregation_type has the default value. This is the syntax of aggregation_type : n ))] Note: In aggregation_type syntax, brackets do not indicate optional elements\u2014you must include them. The function calculates the aggregate value as the minimum, maximum, mean, mode, or sum within a sliding window of length n . n must be greater than or equal to 2. Default: n is 5 and the default aggregation method is min. The Interpolator function can calculate the aggregates of values of these data types: INTEGER BIGINT SMALLINT DOUBLE PRECISION NUMERIC NUMERIC( n [, m ]) Your choice of TimeInterval or time_table does not affect aggregation. The function always calculates the aggregated value. Note: Specify only one of AggregationType or InterpolationType. If you omit both arguments, the function uses InterpolationType with its default value, 'linear'.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "aggregation.type",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "TimeDataType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the data type of the output column that corresponds to the input table column that time.column specifies (time_column). If you omit this argument, then the function infers the data type of time_column from the input table and uses the inferred data type for the corresponding output table column. If you specify this argument, then the function can transform the input data to the specified output data type only if both the input column data type and the specified output column data type are in this list: INTEGER, BIGINT, SMALLINT, DOUBLE PRECISION, DECIMAL(n,n), DECIMAL, NUMERIC, NUMERIC(n,n)",
+      "description": " Specify the data type of the output column that corresponds to the input table column that TimeColumn specifies ( time_column ). If you omit this argument, the function infers the data type of time_column from the input table and uses the inferred data type for the corresponding output table column. If you specify this argument, the function can transform the input data to the specified output data type only if both the input column data type and the specified output column data type are in this list: INTEGER BIGINT SMALLINT DOUBLE PRECISION NUMERIC( n [, m ])",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "time.datatype",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ValueDataType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": " Specifies the data types of the output columns that correspond to the input table columns that value.columns specifies. If you omit this argument, then the function infers the data type of each time_column from the input table and uses the inferred data type for the corresponding output table column.If you specify value.datatype, then it must be the same size as value.columns. That is, if value.columns specifies n columns, then value.datatype must specify n data types. For i in [1, n], value_column_i has value_type_i. However, value_type_i can be empty; for example: value.columns (c1, c2, c3), value.datatype (INTEGER, ,VARCHAR) If you specify this argument, then the function can transform the input data to the specified output data type only if both the input column data type and the specified output column data type are in this list: INTEGER, BIGINT, SMALLINT, DOUBLE PRECISION, DECIMAL(n,n), DECIMAL, NUMERIC, NUMERIC(n,n)",
+      "description": " Specify the data types of the output columns that correspond to the input table columns that ValueColumns specifies. If you omit this argument, the function infers the data type of each time_column from the input table and uses the inferred data type for the corresponding output table column. If you specify ValueDataType, it must be the same size as ValueColumns. That is, if ValueColumns specifies n columns, ValueDataType must specify n data types. For i in [1, n], value_column_i has value_type_i . However, value_type_i can be empty; for example: If you specify this argument, the function can transform the input data to the specified output data type only if both the input column data type and the specified output column data type are in this list: INTEGER BIGINT SMALLINT DOUBLE PRECISION NUMERIC( n [, m ])",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "value.datatype",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "StartTime",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the start time for the time series. The default value is the start time of the time series in input_table.",
+      "description": " Specify the start time for the time series. Default: Start time of the time series in input_table",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "start.time",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "EndTime",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the end time for the time series. The default value is the end time of the time series in input_table.",
+      "description": " Specify the end time for the time series. Default: End time of the time series in input_table",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "end.time",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ValuesBeforeFirst",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the values to use if start_time is before the start time of the time series in input_table. Each of these values must have the same data type as its corresponding value_column. Values of data type VARCHAR are case-insensitive. If value.columns specifies n columns, then values.before.first must specify n values. For in [1, n], value_column_i has the value before_first_value_i. However, before_first_value_i can be empty; for example: value.columns (c1, c2, c3), values.before.first (1, ,'abc') If before_first_value_i is empty, then value_column_i has the value NULL. If you do not specify Values_Before_First, then value_column_i has the value NULL for i in [1, n].",
+      "description": " Specify the values to use if start_time is before the start time of the time series in input_table. Each of these values must have the same data type as its corresponding value_column . Values of data type VARCHAR are case-insensitive. If ValueColumns specifies n columns, ValuesBeforeFirst must specify n values. For i in [1, n ], value_column_i has the value before_first_value_i . However, before_first_value_i can be empty; for example: If before_first_value_i value_column_i has the value NULL. Default: value_column_i n ].",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "values.before.first",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ValuesAfterLast",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the values to use if end_time is after the end time of the time series in input_table. Each of these values must have the same data type as its corresponding value_column. Values of data type VARCHAR are case-insensitive. If value.Columns specifies n columns, then values.after.last must specify n values. For i in [1, n], value_column_i has the value after_last_value_i. However, after_last_value_i can be empty; for example: value.columns (c1, c2, c3), values.after.last (1, ,'abc') If after_last_value_i is empty, then value_column_i has the value NULL. If you do not specify values.after.last, then value_column_i has the value NULL for i in [1, n].",
+      "description": " Specify the values to use if end_time is after the end time of the time series in input_table. Each of these values must have the same data type as its corresponding value_column . Values of data type VARCHAR are case-insensitive. If ValueColumns specifies n columns, ValuesAfterLast must specify n values. For i in [1, n ], value_column_i has the value after_last_value_i . However, after_last_value_i can be empty; for example: If after_last_value_i value_column_i has the value NULL. Default: value_column_i i in [1, n ].",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "values.after.last",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "lowerBound": 0,
+      "lowerBoundType": "EXCLUSIVE",
+      "allowNaN": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "DuplicateRowsCount",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of rows to duplicate across split boundaries if you use the function \u201cseries_splitter\u201d  If you specify this argument but do not use series_splitter, or do not conform to the conditions that apply for the value for each interpolation or aggregation type, then the function either issues an error message or produces incorrect results. If you specify only value1, then the function duplicates value1 rows from the previous partition and value1 rows from the next partition. If you specify both value1 and value2, then the function duplicates value1 rows from the previous partition and value2 rows from the next partition. Each argument value must be nonnegative INTEGER. Both value1 and value2 must exceed the number of data points that the function needs for every specified interpolation or aggregation method. The interpolation methods and the number of data points that the function needs for them are:'linear' and 'constant': 1 , spline: 2, 'median [(window(n))]': n/2, 'loess [(weights ({constant | tricube}), degree ({0 |1 |2}), span(m))]': If m > 1: m-1, If m < 1: (m * n)-1, where n is total number of data rows, found in column n of the count_row_number table",
+      "description": " Specify the number of rows to duplicate across split boundaries if you use the function SeriesSplitter (SeriesSplitter Example 2 : Using SeriesSplitter with Interpolator shows how to use Interpolator with SeriesSplitter). If you specify this argument but do not use SeriesSplitter, or do not conform to the conditions that apply for the value for each interpolation or aggregation type, the function either issues an error message or produces incorrect results. If you specify only value1 , the function duplicates value1 rows from the previous partition and value1 rows from the next partition. If you specify both value1 and value2 , the function duplicates value1 rows from the previous partition and value2 rows from the next partition. Each argument value must be nonnegative INTEGER. Both value1 and value2 must exceed the number of data points that the function needs for every specified interpolation or aggregation method. The following table shows how many data points the function needs for each interpolation method. Interpolation Method Number of Data Points Needed 'linear' 1 'constant' 1 'spline' 2 'median [(window( n ))]' n /2 'loess [(weights ({constant|tricube}), degree ({0|1|2}), span( m ))]' If m > 1: m -1 If m < 1: ( m * n )-1, where n is total number of data rows, found in column n of the count_row_number table",
+      "datatype": "INTEGER",
+      "allowsLists": true,
+      "rName": "duplicate.rows.count",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

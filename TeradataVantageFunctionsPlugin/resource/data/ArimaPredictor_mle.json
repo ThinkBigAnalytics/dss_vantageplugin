@@ -1,0 +1,111 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "ArimaPredictor",
+  "function_version": "1.4",
+  "function_type": "non-driver",
+  "function_alias_name": "ARIMAPredict",
+  "function_r_name": "aa.arima.predict",
+  "ref_function_r_name": "aa.arima",
+  "short_description": "Estimate the predict values based on given ARIMA model.",
+  "long_description": "Estimate the predict values based on parameters of ARIMA model original sereis and the residuals of original series.",
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "Model",
+      "alternateNames": [
+        "ModelTable"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the model. This table is the model table that is output by the ta.arima function.",
+      "description": "  Specifies the name of the table that contains the model. This table is the model table that is output by the Arima function.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "object",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "ResidualTable",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the original input parameters and their residuals. This table is the residual table that is output by the ta.arima function.",
+      "description": "Specifies the name of the table that contains the original input parameters and their residuals. This table is the residual table that is output by the Arima function.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "residual.table",
+      "useInR": true,
+      "rOrderNum": 2
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "ModelTable"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PartitionColumns",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the partition columns that are in model table and residual table.",
+      "description": " Specify the columns by which the ModelTable and ResidualTable are partitioned.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "partition.columns",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "rDefaultValue": 1,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StepAhead",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the number of steps to forecast after the end of the time series. This value must be a positive integer.",
+      "description": "Specify the number of steps to forecast after the end of the time series. This value must be a positive integer.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "n.ahead",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}

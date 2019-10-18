@@ -1,0 +1,366 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "1",
+  "function_name": "MovingAverage",
+  "function_version": "1.0",
+  "function_type": "fastpath",
+  "function_alias_name": "MovingAverage",
+  "function_r_name": "aa.mavg",
+  "short_description": "Computes Simple Moving Averages",
+  "long_description": "The moving average table operator computes the moving average over a number of points in a series based on the selected MavgType.",
+  "outputSchema": {
+      "property": "outputSchema",
+      "outputId": "standard",
+      "instructions": [
+        {
+          "instruction": "ADD",
+          "placement": "end",
+          "arguments": [
+            {
+              "source": "inputTable",
+              "name": "input1.*",
+              "dataType": "unchanged",
+              "manipulations": []
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "C"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_cmavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "S"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_smavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "E"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_emavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "W"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_wmavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "M"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_mmavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "instruction": "CASE",
+          "arguments": [
+            {
+              "condition": [
+                {
+                  "leftOperand": "valueFromParameter(MAvgType)",
+                  "operator": "=",
+                  "valueType": "string",
+                  "rightOperand": "T"
+                }
+              ],
+              "action": [
+                {
+                  "instruction": "ADD",
+                  "placement": "end",
+                  "arguments": [
+                    {
+                      "source": "parameter",
+                      "name": "TargetColumns.*",
+                      "dataType": "double precision",
+                      "manipulations": [
+                        {
+                          "operation": "postfix",
+                          "argument": "_tmavg"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+  },
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "input",
+      "alternateNames": [],
+      "isRequired": true,
+      "rDescription": "Specifies the name of the table that contains the columns",
+      "description": "Specifies the name of the table that contains the columns",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "input"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": false,
+      "name": "TargetColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the input column names for which the moving average is to be computed. If you omit this argument, then the function copies every input column to the output table but does not compute moving average.",
+      "description": "Specifies the input column names for which the moving average is to be computed. If you omit this argument, then the function copies every input column to the output table but does not compute moving average.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "target.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "defaultValue": false,
+      "name": "IncludeFirst",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies whether the first START_ROWS rows should be included in the output or not.",
+      "description": "Specifies whether the first START_ROWS rows should be included in the output or not.",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "include.first",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "defaultValue": 0.1,
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Alpha",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the damping factor, a value in the range [0, 1], which represents a percentage in the range [0, 100]. For example, if alpha is 0.2, then the damping factor is 20%. A higher alpha discounts older observations faster. The default value is 0.1.",
+      "description": "Specifies the damping factor, a value in the range [0, 1], which represents a percentage in the range [0, 100]. For example, if alpha is 0.2, then the damping factor is 20%. A higher alpha discounts older observations faster. The default value is 0.1.",
+      "datatype": "DOUBLE PRECISION",
+      "allowsLists": false,
+      "rName": "alpha",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "defaultValue": 2,
+      "lowerBound": 1,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StartRows",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of rows at the beginning of the time series that the function \"skips\" before it begins the calculation of the exponential moving average. The function uses the arithmetic average of these rows as the initial value of the exponential moving average. The value n must be an integer. The default value of n is 2.",
+      "description": "Specifies the number of rows at the beginning of the time series that the function \"skips\" before it begins the calculation of the exponential moving average. The function uses the arithmetic average of these rows as the initial value of the exponential moving average. The value n must be an integer. The default value of n is 2.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "start.rows",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "defaultValue": 10,
+      "lowerBound": 3,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "WindowSize",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the number of previous values to include in the computation of the simple moving average. The default value is 10.",
+      "description": "Specifies the number of previous values to include in the computation of the simple moving average. The default value is 10.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "window.size",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [
+        "C",
+        "S",
+        "M",
+        "W",
+        "E",
+        "T"
+      ],
+      "defaultValue": "C",
+      "isOutputColumn": false,
+      "name": "MavgType",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the moving average type that needs to be used for computing moving averages of TargetColumns.",
+      "description": "Specify the moving average type that needs to be used for computing moving averages of TargetColumns.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "mavgtype",
+      "useInR": true,
+      "rOrderNum": 7
+    }
+  ]
+}

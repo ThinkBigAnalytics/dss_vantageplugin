@@ -1,0 +1,448 @@
+{
+  "json_schema_major_version": "1",
+  "json_schema_minor_version": "2",
+  "json_content_version": "2",
+  "function_name": "VARMAX",
+  "function_version": "1.11",
+  "function_type": "non-driver",
+  "function_alias_name": "VARMAX",
+  "function_r_name": "aa.varmax",
+  "short_description": "Estimate the parameters for given VARMAX model.",
+  "long_description": "VARMAX (Vector Autoregressive Moving Average model with eXogenous variables) extends the ARMA/ARIMA model in two ways: To work with time series with multiple response variables (vector time series). To work with exogenous variables, or variables that are independent of the other variables in the system. The model includes both the dynamic relationship between the multiple response variables and the relationship between the dependent and independent variables.",
+  "outputSchema": {
+    "property": "outputSchema",
+    "outputId": "standard",
+    "instructions": [
+      {
+        "instruction": "ADD",
+        "placement": "end",
+        "arguments": [
+          {
+            "source": "parameter",
+            "name": "PartitionColumns.*",
+            "dataType": "unchanged",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "coef",
+            "dataType": "varchar(100)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "coef_value",
+            "dataType": "varchar(8192)",
+            "manipulations": []
+          },
+          {
+            "source": "predefined",
+            "name": "stepahead",
+            "dataType": "varchar(10)",
+            "manipulations": []
+          },
+          {
+            "source": "parameter",
+            "name": "ResponseColumns.*",
+            "dataType": "double precision",
+            "manipulations": [
+              {
+                "operation": "prefix",
+                "argument": "predict_"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "input_tables": [
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": true,
+      "partitionByOne": false,
+      "name": "InputTable",
+      "alternateNames": [
+        "data"
+      ],
+      "isRequired": true,
+      "rDescription": "The table or view stores the input sequence.",
+      "description": "The table or view stores the input sequence.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data",
+      "useInR": true,
+      "rOrderNum": 1
+    },
+    {
+      "requiredInputKind": [
+        "PartitionByKey"
+      ],
+      "isOrdered": false,
+      "partitionByOne": false,
+      "name": "orders",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "It is the output table from TimeSeriesParameters.",
+      "description": "It is the output table from TimeSeriesParameters.",
+      "datatype": "TABLE_ALIAS",
+      "allowsLists": false,
+      "rName": "data.orders",
+      "useInR": true,
+      "rOrderNum": 14
+    }
+  ],
+  "argument_clauses": [
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "TargetColumns",
+      "alternateNames": [
+        "ResponseColumns"
+      ],
+      "isRequired": true,
+      "rDescription": "Specifies the columns containing the response data. Null values are acceptable at the end of the series. If step.ahead is specified, the function will report predicted values for the missing values, taking into account values from the predictor columns for those time periods.",
+      "description": "Specifies the columns containing the response data. Null values are acceptable at the end of the series. If StepAhead is specified, the function will report predicted values for the missing values, taking into account values from the predictor columns for those time periods.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "response.columns",
+      "useInR": true,
+      "rOrderNum": 2
+    },
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "NUMERIC"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "ExogenousColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the columns containing the independent (exogenous) predictors. If not specified, the model will be calculated without exogenous vectors.",
+      "description": " Specify the columns containing the exogenous (independent) predictors. Default behavior: The function calculates the model without exogenous vectors.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "exogenous.columns",
+      "useInR": true,
+      "rOrderNum": 3
+    },
+    {
+      "targetTable": [
+        "data"
+      ],
+      "checkDuplicate": true,
+      "allowedTypes": [],
+      "allowedTypeGroups": [
+        "ALL"
+      ],
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "PartitionColumns",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the partition columns that will be passed to the output. If not specified, the output will not contain partition columns.",
+      "description": " Specify the partition columns to pass to the output.",
+      "datatype": "COLUMNS",
+      "allowsLists": true,
+      "rName": "partition.columns",
+      "useInR": true,
+      "rOrderNum": 4
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "PDQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify the parameters p, d, q for VARMA model. This argument consists of 3 non-negative int values separated by commas. It should be three non-negative int values separated by commas. The p and q must be an integer between 0 and 10, inclusive. The d must be between 0 and 1, inclusive.",
+      "description": "[Required if orders_table is omitted, disallowed otherwise.] Specify the parameters p , d , and q for the VARMA part of the model. These values must be nonnegative integers in the range [0, 20].",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "orders",
+      "useInR": true,
+      "rOrderNum": 5
+    },
+    {
+      "permittedValues": [
+        "SSE",
+        "ML"
+      ],
+      "defaultValue": "SSE",
+      "isOutputColumn": false,
+      "name": "FitMethod",
+      "alternateNames": [
+        "Method"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the method for fitting the model parameters: SSE (Default): Sum of squared error. ML: Maximum likelihood",
+      "description": "Specifies the method for fitting the model parameters: SSE (Default): Sum of squared error. ML: Maximum likelihood",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "method",
+      "useInR": true,
+      "rOrderNum": 13
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "name": "SeasonalPDQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify seasonal parameters sp, sd, sq for VARMA model. This argument consists of 3 non-negative integer values separated by commas. The sp and sq must be an integer between 0 and 10, inclusive. The sd must be between 0 and 3, inclusive If not specified, the model will be treated as a non-seasonal model.If the seasonal.orders argument is used, the period argument should also be present.",
+      "description": "[Optional if orders_table is omitted, disallowed otherwise.] Specify seasonal parameters sp , sd , and sq for the VARMA part of the model. These values must be nonnegative integers in the range [0, 20]. Note: If you specify this argument, you must also specify the Period argument. Default behavior: The function treats the model as nonseasonal.",
+      "datatype": "STRING",
+      "allowsLists": false,
+      "rName": "seasonal.orders",
+      "useInR": true,
+      "rOrderNum": 6
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 1000000,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Period",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the period of each season. Must be a positive integer value. If the period argument is used, the seasonal.orders argument must also be present. If not specified, the model will be treated as a non-seasonal model. ",
+      "description": "[Optional if orders_table is omitted, disallowed otherwise.] Specify the period of each season. The period must be a positive INTEGER value. Note: If you specify this argument, you must also specify the SeasonalPDQ argument. Default behavior: The function treats the model as nonseasonal.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "period",
+      "useInR": true,
+      "rOrderNum": 7
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "ExogenousOrder",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the order of exogenous variables. If the current time is t and exogenous.order isb, the following values of the exogenous time series will be used in calculating the response: Xt Xt-1 ... Xt-b+1. If not specified, the model will be calculated without exogenous vectors. ",
+      "description": " Specify the order of the exogenous variables. If the current time is t and ExogenousOrder is b , the following values of the exogenous time series are used in calculating the response: X t X t -1 ... X t - b +1 . Default behavior: The function calculates the model without exogenous vectors.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "exogenous.order",
+      "useInR": true,
+      "rOrderNum": 8
+    },
+    {
+      "defaultValue": false,
+      "name": "IncludeMean",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify whether mean vector of the response data series (constant c in the formula) is added in the VARMA model. Default value is False. Note that if this argument is True, the difference parameters d (in the orders argument) and sd (in the seasonal.orders argument) should be 0.",
+      "description": "[Optional if orders_table is omitted, disallowed otherwise.] Specify whether to add the mean vector of the response series in the VARMAX model. Note: If this argument is 'true', the values of the difference parameters d (in the PDQ argument) and sd (in the SeasonalPDQ argument) must be 0. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "include.mean",
+      "useInR": true,
+      "rOrderNum": 10
+    },
+    {
+      "defaultValue": false,
+      "name": "IncludeDrift",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specify whether drift term is included in the VARMAX model. Default value is False. Note that this argument can only be True when d is non-zero and less than 2. ",
+      "description": "[Optional if orders_table is omitted, disallowed otherwise.] Specify whether to add the drift term of the response series in the VARMAX model. The drift term applies only when d is 1. Note: IncludeDrift and IncludeMean cannot both be true. If either the arguments or order table specifies true for both IncludeDrift and IncludeMean, the function issues an error message. Default: 'false'",
+      "datatype": "BOOLEAN",
+      "allowsLists": false,
+      "rName": "include.drift",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "defaultValue": 0,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "Lag",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "Specifies the lag in the effect of the exogenous variables on the response variables. For example, if lag = 3, and exogenous.order is b, Yi will be predicted based on Xi-3 to Xi-b-2. Default value is 0.",
+      "description": " Specify the lag in the effect of the exogenous variables on the response variables. For example, if lag is 3, and ExogenousOrder is b , the prediction Y i is based on X i -3 to X i - b -2 . Default: 0",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "lag",
+      "useInR": true,
+      "rOrderNum": 9
+    },
+    {
+      "defaultValue": 100,
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "MaxIterNum",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "A positive integer value. The maximum number of iterations performed. Default value is 100.",
+      "description": " Specify the maximum number of iterations performed. The max_iteration_number must be a positive INTEGER value. Default: 100",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "max.iter.num",
+      "useInR": true,
+      "rOrderNum": 11
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 2147483647,
+      "lowerBoundType": "EXCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "StepAhead",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "A positive integer value. The number of steps to forecast after the end of the time series. If not provided, no forecast values are calculated.",
+      "description": " Specify the number of steps to forecast after the end of the time series. The predict_steps must be a positive INTEGER value. Default behavior: The function calculates no forecast values.",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "step.ahead",
+      "useInR": true,
+      "rOrderNum": 12
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderP",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The p value of the non-seasonal order parameter. The p value must be an integer between 0 and 10, inclusive. ",
+      "description": "The p value of the non-seasonal order parameter. The p value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.p",
+      "useInR": true,
+      "rOrderNum": 14
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 1,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderD",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The d value of the non-seasonal order parameter. The d value must be an integer between 0 and 1, inclusive. ",
+      "description": "The d value of the non-seasonal order parameter. The d value must be an integer between 0 and 1, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.d",
+      "useInR": true,
+      "rOrderNum": 15
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "OrderQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The q value of the non-seasonal order parameter. The q value must be an integer between 0 and 10, inclusive. ",
+      "description": "The q value of the non-seasonal order parameter. The q value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "order.q",
+      "useInR": true,
+      "rOrderNum": 16
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderP",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sp value of the seasonal order parameter. The sp value must be an integer between 0 and 10, inclusive. ",
+      "description": "The sp value of the seasonal order parameter. The sp value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.p",
+      "useInR": true,
+      "rOrderNum": 17
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 3,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderD",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sd value of the seasonal order parameter. The sd value must be an integer between 0 and 3, inclusive. ",
+      "description": "The sd value of the seasonal order parameter. The sd value must be an integer between 0 and 3, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.d",
+      "useInR": true,
+      "rOrderNum": 18
+    },
+    {
+      "lowerBound": 0,
+      "upperBound": 10,
+      "lowerBoundType": "INCLUSIVE",
+      "upperBoundType": "INCLUSIVE",
+      "allowNaN": false,
+      "name": "SeasonalOrderQ",
+      "alternateNames": [],
+      "isRequired": false,
+      "rDescription": "The sq value of the seasonal order parameter. The sq value must be an integer between 0 and 10, inclusive. ",
+      "description": "The sq value of the seasonal order parameter. The sq value must be an integer between 0 and 10, inclusive. ",
+      "datatype": "INTEGER",
+      "allowsLists": false,
+      "rName": "seasonal.order.q",
+      "useInR": true,
+      "rOrderNum": 19
+    },
+    {
+      "permittedValues": [],
+      "isOutputColumn": false,
+      "matchLengthOfArgument": "",
+      "allowPadding": true,
+      "name": "UniqueId",
+      "alternateNames": [
+        "SequenceInputBy"
+      ],
+      "isRequired": false,
+      "rDescription": "Specifies the LIST_VECTOR of column(s) that uniquely identifies each row of the input argument INPUT_ARG_NAME. The argument is used to ensure deterministic results for functions which produce results that vary from run to run.",
+      "description": "Specifies the input column(s) that uniquely identify each row of input table. The format is 'input1:c1' where input1 refers to the alias used by the input table that contains such column named c1.",
+      "datatype": "STRING",
+      "allowsLists": true,
+      "rName": "sequence.column",
+      "useInR": true,
+      "rOrderNum": 50
+    }
+  ]
+}
