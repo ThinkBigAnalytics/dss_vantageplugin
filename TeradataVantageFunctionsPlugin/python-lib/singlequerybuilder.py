@@ -46,12 +46,6 @@ def getOrderByClause(inputdef):
 def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
     table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
     table.setPropertiesFromDef(input_, useCoprocessor)
-    # print('Input tables check')
-    # print(inputTables)
-    #print('Table object')
-    #print(table)
-    #print('Table order key')
-    #print(table.orderKey)
     if table.orderKey == [] or table.orderKey == [""] or table.orderKey == '':           
         return ALIASED_ON_CLAUSE.format(input_table=table.tablename,
            input_name=table.alias and ('AS "' + table.alias + '"'),
@@ -69,7 +63,6 @@ def getMultipleAliasedInputsClause(dss_function, jsonfile, inputTables):
     #print("getMultipleAliasedInputsClause")
     aliasedinputs = [x for x in dss_function.get('required_input', []) if
                      x.get('name', '') and x.get('value', '')]
-    #print(aliasedinputs)
     return ''.join(map(lambda x: getAliasedInputONClause(x, jsonfile, inputTables, dss_function['useCoprocessor']), aliasedinputs))
 
 def getMultipleUnaliasedInputsClause(dss_function, inputTables):
@@ -96,19 +89,12 @@ def getArgumentClauses(dss_function, jsonfile, inputTables):
 
 def getOutClause(dss_function, jsonfile, inputTables):
     if dss_function.get('output_tables', []) != []:
-        #print(dss_function.get('output_tables', []))
-        #print('This happens in getoutclause')
         # Put $(project_key)/Table prefix here
         return '\n' + queryutility.getJoinedOutputTableString(dss_function.get('output_tables', []),
                                                  queryutility.getOutputTableClausesFromJson(jsonfile),
                                                  inputTables)   
     else:
-        #print('NOthing happens in getoutclause')
         return ''
-
-    # return '\n' + queryutility.getJoinedArgumentsString(dss_function.get('output_tables', []),
-    #                                              queryutility.getArgumentClausesFromJson(jsonfile),
-    #                                              inputTables)                                                 
 
 def getOnClause(dss_function, jsonfile, inputTables):
     return (getMultipleUnaliasedInputsClause(dss_function, inputTables) +
@@ -138,32 +124,19 @@ def getSelectQuery(dss_function, inputTables, config):
         outTableClauses = ''
     if(argumentClauses == '\n'):
         argumentClauses = ''
-    #print('outTableClauses')
-    #print('START'+outTableClauses+'END')
-    #print('argumentClauses')
-    #print('START'+argumentClauses + 'END')
+    
     completeClause = 'USING ' + outTableClauses + argumentClauses
     fullUsingClause = (outTableClauses or argumentClauses) and completeClause
-    # if completeClause == 'USING ':
-    #     fullUsingClause = ''
-    #     print('Why isn\'t this  working')
+    
     if outTableClauses or argumentClauses:
         print('Running Output Table Clauses')
-    #print('fullUsingClause')
-    #print(fullUsingClause)
-    #print('The and statements')
-    #print('(outTableClauses or argumentClauses)')
-    #print((outTableClauses or argumentClauses))
-    #print('everything')
-    #print((outTableClauses or argumentClauses) and completeClause)
-    #print(fullUsingClause)
+    
     #TODO ADD USING CLAUSE SOMEWHERE    
     # Update to:
     # Following code might have issues with Reduce functions with multiple INPUT TABLES
     useCoprocessor = dss_function.get('useCoprocessor','')
     if dss_function.get('hasPartnerFunction', False):
-        jsonfilePartner= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))
-        # useCoprocessor = dss_function.get('useCoprocessor','')
+        jsonfilePartner= queryutility.getJson(dss_function.get('name',''), dss_function.get('useCoprocessor',''))        
         outTableClausesPartner = getOutClause(dss_function['partnerFunction'], jsonfilePartner, inputTables)     
         argumentClausesPartner = getArgumentClauses(dss_function['partnerFunction'], jsonfilePartner, inputTables)
         if(outTableClausesPartner == '\n'):
@@ -179,7 +152,7 @@ def getSelectQuery(dss_function, inputTables, config):
                        fullUsingClause)
         return MR_SELECT_QUERY.format(dss_function.get('select_clause', '*'),
                        getFunctionName(config, dss_function['partnerFunction'], useCoprocessor),                       
-                       mapQuery, #    dss_function['partnerFunction']['required_input'][0]['name'],
+                       mapQuery, 
                        "",
                        getPartitionByMap(dss_function['partnerFunction']['required_input'][0]), getOrderByMap(dss_function['partnerFunction']['required_input'][0]),
                        fullUsingClausePartner,
@@ -195,26 +168,12 @@ def getSelectQuery(dss_function, inputTables, config):
                        getOnClause(dss_function, jsonfile, inputTables),
                        fullUsingClause,
                        getAdditionClauses(dss_function))
-    # return SELECT_QUERY.format(dss_function.get('select_clause', '*'),
-    #                    getFunctionName(config, dss_function),                       
-    #                    getOnClause(dss_function, jsonfile, inputTables),
-    #                    fullUsingClause,
-    #                    getAdditionClauses(dss_function)
-    #                    )
-    # return SELECT_QUERY.format(getFunctionName(config, dss_function),                       
-    #                    getOnClause(dss_function, jsonfile, inputTables),
-    #                    fullUsingClause
-    #                    )
+    
 def getPartitionByMap(mapRequiredInputZero):
-    # def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
-    # table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
-    # table.setPropertiesFromDef(input_, useCoprocessor)
-    print('Map Input tables check')
-    # print(inputTables)
-    print(mapRequiredInputZero)
+
     partitionByType = mapRequiredInputZero.get('kind','')
     if partitionByType == 'PartitionByKey':
-        # return " ".join(["Partition BY", mapRequiredInputZero.partitionAttributes])).rstrip() +\
+        
         partitionAttrbs = mapRequiredInputZero.get('partitionAttributes',[])
         if isinstance(partitionAttrbs, (list, tuple)) and mapRequiredInputZero.get('partitionAttributes', []) != ['']:
             partitionCols = ', '.join(mapRequiredInputZero.get('partitionAttributes',[]))
@@ -229,14 +188,7 @@ def getPartitionByMap(mapRequiredInputZero):
         return "\n"
 
 def getOrderByMap(mapRequiredInputZero):
-    # def getAliasedInputONClause(input_, jsonfile, inputTables, useCoprocessor):
-    # table = getInputTableFromDatasets(input_.get('value', ''), inputTables)
-    # table.setPropertiesFromDef(input_, useCoprocessor)
-    # print('Input tables check')
-    # print(inputTables)
-    print('Map Input tables check')
-    # print(inputTables)
-    print(mapRequiredInputZero)
+    
     isOrdered = mapRequiredInputZero.get('isOrdered', False)
     if isOrdered:
         if isinstance(mapRequiredInputZero.get('orderByColumn',[]), (list, tuple)) and mapRequiredInputZero.get('orderByColumn',[]) != ['']:
