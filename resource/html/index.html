@@ -340,7 +340,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span>This same table name must be entered into the Input / Output tab above as an Output</span>
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
               </td>
             </tr>
 
@@ -688,7 +688,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span>This same table name must be entered into the Input / Output tab above as an Output</span>  
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>  
               </td>
             </tr>
 
@@ -924,7 +924,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                 <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span>This same table name must be entered into the Input / Output tab above as an Output</span>
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
               </td>
             </tr>
 
@@ -1156,7 +1156,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
                   <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                     data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" />
-                  <span>This same table name must be entered into the Input / Output tab above as an Output</span>
+                  <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
                 </td>
               </tr>
         
