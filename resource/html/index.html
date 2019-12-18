@@ -30,7 +30,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
   <div ng-controller="TeradataVantageController">
 
-     <div class="control-group">
+    <div class="control-group">
       <label class="control-label">Function Name</label>
       <div class="controls">
         <!-- <select ng-model="config.function" ng-options="cleanName(choice.name) for choice in choices track by choice.name" ng-change="refresh(config.function.name)"> -->
@@ -42,39 +42,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
         <!-- <a href="#" class="link1" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-question-sign"></span></a> -->
         
       </div>
-  </div>
+    </div>
   <!-- <div>
     
 <H1>{{ config.function.test_model }}</H1>
 
 
   </div> -->
-  <div class="control-group" ng-if="config.function">
-    <label class="control-label">Description</label>
-    <div class="controls" style="max-width: 40%; text-align: justify">
-      {{ getFunctionDescription() }}
+    <div class="control-group" ng-if="config.function">
+      <label class="control-label">Description</label>
+      <div class="controls" style="max-width: 40%; text-align: justify">
+        {{ getFunctionDescription() }}
+      </div>
     </div>
-  </div>
-  
-  <!-- <div class="control-group" ng-if="checkIfDriverFunction()">    
-    <label class="control-label">Output Table to be used</label>
-    <div class="controls">        
-        <select ng-model="config.function.recipeOutputTable" ng-options="output_table.name for output_table in config.function.output_tables" title="Select an output table to be used as the recipe's main output.">        
-            <option value="" selected>Default Function Output</option>
-          </select>
-    </div>
-  </div> -->
 
-  <div class="control-group" ng-if="hasNativeJSON(config.function.name)">
-    <!-- <label class="control-label">Drop Output Table If Exists</label> -->
-    <label class="control-label">Use @Coprocessor Alias</label>
-    <div class="controls">
-      <input type="checkbox" ng-model="config.function.useCoprocessor" ng-click="refreshTeraTabs()" title="Override Native Function with @Coprocessor Function Alias"></input>
+    <div class="control-group" ng-if="hasNativeJSON(config.function.name)">
+      <!-- <label class="control-label">Drop Output Table If Exists</label> -->
+      <label class="control-label">Use @Coprocessor Alias</label>
+      <div class="controls">
+        <input type="checkbox" ng-model="config.function.useCoprocessor" ng-click="refreshTeraTabs()" title="Override Native Function with @Coprocessor Function Alias"></input>
+      </div>
     </div>
-  </div>
 
 
-  <div class="control-group" ng-if="checkIfDriverFunction()">
+    <div class="control-group" ng-if="checkIfDriverFunction()">
       <!-- <label class="control-label">Drop Output Table If Exists</label> -->
       <label class="control-label">Drop Output Table/s</label>
       <div class="controls">
@@ -82,18 +73,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
       </div>
     </div>
 
-
-<!-- 
-  <div class="control-group">
-    <label class="control-label">Distribution Type</label>
-    <div class="controls">
-      <select ng-model="config.distribution">
-          <option value="" disabled selected>Select a Distribution Type...</option>
-          <option value="fact">Fact</option>
-          <option value="dimension">Dimension</option>
-        </select>
-    </div>
-  </div> -->
 
   <!--<div><p >Test</p></div>-->
   <div class="control-group" ng-if="config.distribution == 'fact'">
@@ -104,32 +83,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
     </div>
   </div>
 
-  <!-- <div class="control-group">
-    <label class="control-label">AAF Schema</label>
-    <div class="controls" style="max-width: 40%; text-align: justify">      
-        <label class="control-label">{{aafschema}}</label>
-    </div>
-  </div>
-  <label>
-    <em><small>*The AAF schema can be changed in the DSS Connections page, JDBC properties,
-    using the keyword aafschema_700. If left blank, it will be set to the default search path.
-    </small></em>
-  </label> -->
-
 
   <hr ng-if="config.function">
 
-  <!-- <div class="warning-div" ng-if="checkVersionMismatch()">
-    <span class="label label-warning" >Function version mismatch! Some argument values may not be transferred.</span>
-  </div> -->
 
   <div class="control-group" ng-if="config.function">
 
-    <!-- <div id="tabs"> -->
-      <!-- <ul>
-        <li><a href="#tabs-required">Required Arguments</a></li>
-        <li><a href="#tabs-optional" ng-if="hasOptionalArguments()">Optional Arguments</a></li>
-      </ul> -->
+  
       <div class="tabplugin">
         <button class="tablinks" id="defaultOpen" ng-click="openTabs($event, 'tabs-required')">Required Arguments</button>
         <button class="tablinks" ng-if="hasOptionalArguments()" ng-click="openTabs($event, 'tabs-optional')">Optional Arguments</button>        

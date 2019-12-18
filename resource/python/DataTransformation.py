@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 FUNCTION_CATEGORY="Data Transformation"
 
-PARTNER_LIST=["EvaluateNamedEntityFinderRow"]
+PARTNER_LIST=["EvaluateNamedEntityFinderRow","LinRegMatrix"]
 def getConnectionParamsFromDataset(inputDataset):
     return inputDataset.get_location_info(sensitive_info=True)['info']
 
