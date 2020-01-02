@@ -25,6 +25,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 <script src="/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/js/jquery.flexdatalist.min.js"></script>
 <!-- <script src="/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/tagsinput/bootstrap-tagsinput-angular.js"></script> -->
 
+<script>  
+
+function removeNull(list_choices){
+
+  list_choices.filter(x => x['function_alias_name'] != null);
+
+  return list_choices
+}
+</script>
 
 <div id="main-container">
 
@@ -36,11 +45,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
         <!-- <select ng-model="config.function" ng-options="cleanName(choice.name) for choice in choices track by choice.name" ng-change="refresh(config.function.name)"> -->
         <!-- Replaced above with function_alias_name -->
         <select ng-model="config.function" ng-options="choice.function_alias_name for choice in choices track by choice.name" ng-change="refresh(config.function.name)"></select>
-          <option value="" disabled selected>Select a Vantage function...</option>
+          <option  value="" disabled selected>Select a Vantage function...</option>
         </select>
         <a href ="/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/documentation/DSSVantagePlugins-UserGuide.pdf" class="link1" target="_blank" download><span class="glyphicon glyphicon-question-sign"></span></a>
         <!-- <a href="#" class="link1" data-toggle="modal" data-target="#basicModal"><span class="glyphicon glyphicon-question-sign"></span></a> -->
-        
       </div>
     </div>
   <!-- <div>

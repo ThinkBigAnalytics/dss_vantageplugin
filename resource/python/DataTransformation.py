@@ -71,6 +71,11 @@ def do(payload, config, plugin_config, inputs):
                  }
                 }
             keys = f.keys()
+            
+            if 'function_alias_name' in keys:
+                if f['function_alias_name'] == "LinRegInternal":
+                    continue
+
             required_input = []
             d['partitionInputKind']
             unaliased_inputs = {'desc':{}, 'values':[], 'count':0}

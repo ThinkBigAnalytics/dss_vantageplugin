@@ -5,7 +5,7 @@
   "function_name": "LinRegMatrix",
   "function_version": "2.4",
   "function_type": "non-driver",
-  "function_alias_name": "LinRegInternal",
+  "function_alias_name": "LinReg",
   "function_r_name": "aa.lm",
   "short_description": "Outputs linear-regression matrix corresponding to the input samples.",
   "long_description": "Outputs linear-regression matrix corresponding to the input samples. The <n+2> column of the matrix corresponds to the right-hand side of the model.",
