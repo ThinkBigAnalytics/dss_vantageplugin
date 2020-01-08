@@ -25,15 +25,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 <script src="/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/js/jquery.flexdatalist.min.js"></script>
 <!-- <script src="/plugins/TeradataVantageAnalyticFunctionsPlugin/resource/tagsinput/bootstrap-tagsinput-angular.js"></script> -->
 
-<script>  
-
-function removeNull(list_choices){
-
-  list_choices.filter(x => x['function_alias_name'] != null);
-
-  return list_choices
-}
-</script>
 
 <div id="main-container">
 
@@ -131,7 +122,9 @@ function removeNull(list_choices){
               <td style="text-transform: capitalize">{{ cleanName(item.name) }} {{ cleanKind(item.kind) }}</td>
               <td>
                 <!-- Aliased Input Table Selection-->
-                <select required ng-model="item.value" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs">
+                <select required ng-model="item.value" ng-options="t.fullName.split('.')[1] as t.fullName.split('.')[1] for t in inputs"
+                        ng-change="changeInputModelTable(item)"
+                >
                       <option value="" selected>--No Selection--</option>
                   </select>
 
@@ -178,12 +171,12 @@ function removeNull(list_choices){
                 </div>
                 <!-- Aliased Input Table Order isOrdered-->
                 <div class="inner-cell">
-                  <p class="inner-label">Order by 
+                  <p class="inner-label">Order by
                       <button style="border:none;background:none;" ng-init="item.orderByColumn = initializeColumnArray(item.orderByColumn); item.orderByColumnDirection = initializeColumnArray(item.orderByColumnDirection)" ng-click="addOrderByColumn_WITHDIR(item.orderByColumn, item.orderByColumnDirection)" title="Add Order BY Column"><span class="glyphicon glyphicon-plus-sign orange"></span></button>
                   </p>
                   <!-- IS Ordered -->
                     <div ng-if="item.isOrdered" ng-repeat="col in item.orderByColumn track by $index ">
-                        <span ng-show="item.isOrdered">ORDER BY column {{$index+1}}</span>                        
+                        <span ng-show="item.isOrdered">ORDER BY column {{$index+1}}</span>          
                         <div >
                             <select required ng-model="item.orderByColumn[$index]"
                             ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in inputschemas[item.value]"
@@ -247,21 +240,21 @@ function removeNull(list_choices){
                           ng-options="column.name as column.name + ' (' + (column.type || 'Column') + ')' for column in getSchemaOfUnaliasedInputs(config.function.unaliased_inputs)"
                           data-html="true" title="<b>Select an ORDER BY column</b>" data-toggle="tooltip" data-container="body"
                           data-placement="right">
-                          <option value="" selected>--No Selection--</option>
-                        </select>
-                        <span>
-                          <select class="orderbyselect" required ng-model="config.function.orderByColumnDirection[$index]"                            
-                          title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
-                          data-placement="right">
-                          <!-- <option value="" selected>--No Selection--</option> -->
-                          <option value="" selected>ASC</option>
-                          <option value="DESC">DESC</option>
-                        </select>
-                        </span>
-                            <button style="border:none;background:none;" ng-if="config.function.orderByColumn.length > 1" ng-click="removeOrderByColumn($index)"
-                              title="Remove Script Argument">
-                              <span class="glyphicon glyphicon-minus-sign orange"></span>
-                            </button>
+                            <option value="" selected>--No Selection--</option>
+                          </select>
+                          <span>
+                            <select class="orderbyselect" required ng-model="config.function.orderByColumnDirection[$index]"                            
+                            title="<b>Select which direction the of this ORDER BY Clause</b>" data-toggle="tooltip" data-container="body"
+                            data-placement="right">
+                            <!-- <option value="" selected>--No Selection--</option> -->
+                              <option value="" selected>ASC</option>
+                              <option value="DESC">DESC</option>
+                            </select>
+                          </span>
+                          <button style="border:none;background:none;" ng-if="config.function.orderByColumn.length > 1" ng-click="removeOrderByColumn($index)"
+                            title="Remove Script Argument">
+                            <span class="glyphicon glyphicon-minus-sign orange"></span>
+                          </button>
                       </div>
                
                   </div>
@@ -308,7 +301,7 @@ function removeNull(list_choices){
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output.</span>
               </td>
             </tr>
 
@@ -656,7 +649,7 @@ function removeNull(list_choices){
                 <input required type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>  
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output.</span>  
               </td>
             </tr>
 
@@ -892,7 +885,7 @@ function removeNull(list_choices){
                 <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                   data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                   data-placement="right" />
-                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
+                <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output.</span>
               </td>
             </tr>
 
@@ -1124,7 +1117,7 @@ function removeNull(list_choices){
                   <input type="text" ng-model="item.value" ng-if="(['STRING','DOUBLE','INTEGER','DRIVER','SQLEXPR', 'LONG'].indexOf(item.datatype) >= 0 || (item.datatype == 'TABLE_NAME' && isArgumentOutputTable(item))) && !item.allowsLists && !getPermittedValuesWithName(item)"
                     data-toggle="tooltip" data-container="body" data-html="true" title="{{ getArgumentDescriptionWithName(item.name) }}"
                     data-placement="right" />
-                  <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output</span>
+                  <span style="padding-left:30px" >This same table name must be entered into the <strong>Input / Output</strong> tab above as an Output.</span>
                 </td>
               </tr>
         
