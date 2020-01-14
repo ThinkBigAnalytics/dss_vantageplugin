@@ -169,15 +169,26 @@ def asterDo():
 
     
 
-    print(dss_function)
+    # print(dss_function)
     # recipe_output_table = dss_function.get('recipeOutputTable', "")
     # print('recipe_output_table before IF')
     # print(recipe_output_table)
     if requiresTransactions:
         print('Start transaction for selectResult')
         print(stTxn)
+        print('================================BEFORE START TRANSACTION')
         executor.query_to_df(stTxn)
-    selectResult = executor.query_to_df(query)
+
+    # Detect error
+    print('==============================BEFORE TRY QUERY')
+    try:
+        print('================================BEFORE QUERY')
+        selectResult = executor.query_to_df(query)
+        print('================================QUERY WORKED')
+    except Exception as error:
+        print('================================TRIGGERED')
+        raise RuntimeError("Error, event triggered.")
+
     
     print('Moving results to output...')
     pythonrecipe_out = output_dataset
