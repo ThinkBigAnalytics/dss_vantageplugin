@@ -176,19 +176,8 @@ def asterDo():
     if requiresTransactions:
         print('Start transaction for selectResult')
         print(stTxn)
-        print('================================BEFORE START TRANSACTION')
         executor.query_to_df(stTxn)
-
-    # Detect error
-    print('==============================BEFORE TRY QUERY')
-    try:
-        print('================================BEFORE QUERY')
-        selectResult = executor.query_to_df(query)
-        print('================================QUERY WORKED')
-    except Exception as error:
-        print('================================TRIGGERED')
-        raise RuntimeError("Error, event triggered.")
-
+    selectResult = executor.query_to_df(query)
     
     print('Moving results to output...')
     pythonrecipe_out = output_dataset

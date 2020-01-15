@@ -177,7 +177,24 @@ def asterDo():
         print('Start transaction for selectResult')
         print(stTxn)
         executor.query_to_df(stTxn)
-    selectResult = executor.query_to_df(query)
+
+    # Detect error
+    try:
+        selectResult = executor.query_to_df(query)
+    except Exception as error:
+
+        err_str = str(error)
+        err_str_list = err_str.split(" ")
+        
+        if len(err_str_list) > 25:
+            new_err_str = err_str_list[:24]
+            new_err_str.append("\n\n")
+            new_err_str.append("...")
+            new_err_str = " ".join(new_err_str)
+            raise RuntimeError(new_err_str)
+        else:
+            raise RuntimeError(err_str)
+            
     
     print('Moving results to output...')
     pythonrecipe_out = output_dataset
