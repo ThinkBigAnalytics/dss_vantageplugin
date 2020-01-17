@@ -30,7 +30,7 @@ def getSelectClause(dss_function, inputTables, config={}):
 def getCreateQuery(dss_function, inputTables, outputTable, config={}):
     return CREATE_QUERY.format(
                     # outputTable.tableType,
-                    #    outputTable.tablename,
+                       outputTable.tablename,
                     #    outputTable.hashKey and DISTRIBUTE_BY_HASH.format(outputTable.hashKey),
                        getSelectClause(dss_function, inputTables, config))
 
@@ -53,7 +53,7 @@ def getDropOutputTableArgumentsStatements(args):
 def getBeginDropCreateQueries(dss_function, inputTables, outputTable, config):
     #  return [BEGIN_TRANSACTION_QUERY,
     return [
-                    # DROP_QUERY.format(outputTablename=outputTable.tablename),
+                    # DROP_QUERY.format(outputTablename=outputTable.tablename) + "\n" +
                     getCreateQuery(dss_function, inputTables, outputTable, config)
                     # getCreateQuery(dss_function, inputTables, outputTable, config),
                     # COMMIT_QUERY]
@@ -61,4 +61,7 @@ def getBeginDropCreateQueries(dss_function, inputTables, outputTable, config):
 
 def getFunctionsQuery(dss_function, inputTables, outputTable, config):
     return getBeginDropCreateQueries(dss_function, inputTables, outputTable, config)
+
+def dropTableStatement(outputTable):
+    return DROP_QUERY.format(outputTablename=outputTable.tablename)
 
