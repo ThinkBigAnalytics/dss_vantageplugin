@@ -5,11 +5,10 @@
   "function_name": "LinReg",
   "function_version": "1.5",
   "function_type": "non-driver",
-  "function_alias_name": "LinReg",
+  "function_alias_name": "LinRegInternal",
   "function_r_name": "aa.lm",
   "short_description": "Outputs coefficients of the linear model represented by the input matrices.",
   "long_description": "Outputs coefficients of the linear model represented by the input matrices. The 0th coefficient corresponds to the slope intercept.",
-  "partner_function": "LinRegMatrix",
   "input_tables": [
     {
       "requiredInputKind": [

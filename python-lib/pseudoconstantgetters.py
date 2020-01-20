@@ -20,10 +20,13 @@ from pseudoconstants import *
 def getPartitionKind(kind):
     return PARTITION_KEY_MAPPING.get(kind, '')
 
-# CREATE_QUERY = '''CREATE {} TABLE {}{}
-# AS
-# {}'''
-CREATE_QUERY = '''{}'''
+CREATE_QUERY = '''CREATE TABLE {}
+AS 
+(
+{}
+)
+WITH DATA;'''
+# CREATE_QUERY = '''{}'''
 
 # Update to:
 SELECT_QUERY = '''SELECT {}
@@ -32,7 +35,7 @@ FROM   {}
 {}
 {}
 ) as tmp_alias
-{};'''
+{}'''
 
 MR_SELECT_QUERY = '''SELECT {}
 FROM   {}
@@ -41,7 +44,7 @@ FROM   {}
 {} {}
 {}
 ) as tmp_alias
-{};'''
+{}'''
 
 MAP_FUNCTION_QUERY = '''ON {}
 (

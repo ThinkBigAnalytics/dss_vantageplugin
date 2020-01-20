@@ -1050,12 +1050,47 @@ removeOrderByColumn_WITHDIR: function(orderArray, orderDirArray, index) {
       },
       testPrint: function(element){
         $delay(() => {
-        // console.log('Testprint')
-        $('input.flexdatalist').trigger('change');
-        $('input.flexdatalist').trigger('input');
-        console.log(element.value);
-        $scope.config.test_model = element.value;
-        console.log($scope.config.test_model);
+        console.log('Testprint')
+        // $('input.flexdatalist').trigger('change');
+        // $('input.flexdatalist').trigger('input');
+        // console.log(element.value);
+        // console.log('==================================');
+        // console.log(element);
+        // console.log('==================================');
+        // $scope.config.test_model = element;
+        // console.log($scope.config.test_model);
+        // alert($scope.config.test_model)
+
+        // if XGBoost_Predict and if 
+        });
+      },
+      changeInputModelTable: function(element){
+        $delay(() => {
+          if($scope.config.function.name == 'XGBoost_Predict'){
+            if (element.name == 'Model'){
+              // initialize
+              $scope.config.function.required_input[1].orderByColumn = [''];
+              $scope.config.function.required_input[1].orderByColumnDirection = [''];
+  
+              //Get list of column names
+              var tableName = $scope.inputschemas[element.value];
+  
+              var listColumn = [];
+              tableName.forEach(column => {
+                listColumn.push(column.name);
+              });
+              // alert(listColumn);
+  
+              //if column name tree_id exist in the list
+              var columnDefault = ['class_num', 'iter', 'tree_id'];
+              columnDefault.forEach(column => {
+                if (listColumn.includes(column)){
+                  $scope.config.function.required_input[1].orderByColumn.unshift(column);
+                  $scope.config.function.required_input[1].orderByColumnDirection.unshift('ASC');
+                };
+              });
+            };
+          };
         });
       },
       /**
@@ -1247,6 +1282,7 @@ removeOrderByColumn_WITHDIR: function(orderArray, orderDirArray, index) {
        * Initializes this plugin.
        */
       initialize: function () {
+        // alert("Initialize")
         $scope.communicateWithBackend();
         if ($scope.config.function) {
           $scope.getFunctionMetadata($scope.config.function.name, !$scope.config.function);

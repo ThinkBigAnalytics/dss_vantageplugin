@@ -169,7 +169,7 @@ def asterDo():
 
     
 
-    print(dss_function)
+    # print(dss_function)
     # recipe_output_table = dss_function.get('recipeOutputTable', "")
     # print('recipe_output_table before IF')
     # print(recipe_output_table)

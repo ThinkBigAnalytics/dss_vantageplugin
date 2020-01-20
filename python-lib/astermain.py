@@ -121,7 +121,9 @@ def asterDo():
         
     # actual query
     query = getFunctionsQuery(dss_function, inputTables, outputTable, get_recipe_config() or {})
-    
+    print("=============================")
+    print (query)
+    print("=============================")
     # raise RuntimeError("""I Just wanted to make this execution stop: """)
     
     # Uncomment below
@@ -130,6 +132,21 @@ def asterDo():
    
 
     if dss_function.get('dropIfExists', False):
+
+        # 
+        dropTableStr = dropTableStatement(outputTable)
+        # executor.query_to_df(dropTableStr)
+        if requiresTransactions:
+            print('Start transaction for drop')
+            print(stTxn)
+            executor.query_to_df(stTxn)
+
+            print('End transaction for drop')
+            print(edTxn)
+            executor.query_to_df(edTxn,[dropTableStr])
+        else:
+            executor.query_to_df([dropTableStr])
+
         #Start transaction
         #Move to drop query and make each DROP run separately
         dropAllQuery = getDropOutputTableArgumentsStatements(dss_function.get('output_tables', []))
@@ -177,13 +194,39 @@ def asterDo():
         print('Start transaction for selectResult')
         print(stTxn)
         executor.query_to_df(stTxn)
-    selectResult = executor.query_to_df(query)
+
+    # Detect error
+    try:
+        selectResult = executor.query_to_df(query)
+    except Exception as error:
+
+        err_str = str(error)
+        err_str_list = err_str.split(" ")
+        
+        if len(err_str_list) > 20:
+            print("=============================")
+            print(error)
+            print("=============================")
+            new_err_str = err_str_list[:19]
+            new_err_str.append("\n\n")
+            new_err_str.append("...")
+            new_err_str = " ".join(new_err_str)
+            raise RuntimeError(new_err_str)
+        else:
+            raise RuntimeError(err_str)
+            
     
     print('Moving results to output...')
-    pythonrecipe_out = output_dataset
-    pythonrecipe_out.write_with_schema(selectResult)
-    outtables = dss_function.get('output_tables', [])
+    # pythonrecipe_out = output_dataset
+    # pythonrecipe_out.write_with_schema(selectResult)
+    customOutputTableSQL = 'SELECT * from '+ outputTable.tablename + ' SAMPLE 0'
+    selRes = executor.query_to_df(customOutputTableSQL)
 
+    pythonrecipe_out = output_dataset
+    pythonrecipe_out.write_schema_from_dataframe(selRes)
+
+    # Additional Tables
+    outtables = dss_function.get('output_tables', [])
     if(outtables != []):
         tableCounter = 1
         print('Working on output tables')
