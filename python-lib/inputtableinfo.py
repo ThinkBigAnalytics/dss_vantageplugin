@@ -89,8 +89,8 @@ class inputtableinfo(tableinfo.tableinfo):
 
     def __getOrderByKeyFromInputDef(self, inputdef):
         #no empty string checking for orderByColumn since this is mandatory if isOrdered is true
-        orderKeyFromInputDef = inputdef.get("orderByColumn", [])
-        orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", [])
+        orderKeyFromInputDef = inputdef.get("orderByColumn", [''])
+        orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", [''])
         
         # print('Order type')
         # print(orderKeyFromInputDef)
