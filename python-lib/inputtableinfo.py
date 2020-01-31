@@ -91,7 +91,20 @@ class inputtableinfo(tableinfo.tableinfo):
         #no empty string checking for orderByColumn since this is mandatory if isOrdered is true
         orderKeyFromInputDef = inputdef.get("orderByColumn", [''])
         orderKeyDirectionFromInputDef = inputdef.get("orderByColumnDirection", [''])
-        
+
+        if isinstance(orderKeyFromInputDef, (list, tuple)):
+            # None is in the tuple
+            if None in orderKeyFromInputDef:
+                for ctr, i in enumerate(orderKeyFromInputDef):
+                    if i == None:
+                        orderKeyFromInputDef[ctr] = ''
+
+        print("====================ReturnVal===========================")
+        print(orderKeyFromInputDef)
+        print("=======================================================")
+        print(orderKeyDirectionFromInputDef)
+        print("=======================================================")
+
         # print('Order type')
         # print(orderKeyFromInputDef)
         # print(orderKeyDirectionFromInputDef)
@@ -105,8 +118,9 @@ class inputtableinfo(tableinfo.tableinfo):
         # print(isinstance(orderKeyFromInputDef, (list, tuple)))
         # print(isinstance(orderKeyDirectionFromInputDef, (list, tuple)))
         if isinstance(orderKeyFromInputDef, (list, tuple)) and orderKeyFromInputDef != ['']:
+
             returnValue = ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
-            #print(returnValue)
+            
             return ', '.join([a + " " +  b for a,b in zip(orderKeyFromInputDef,orderKeyDirectionFromInputDef)])
         else:
             return orderKeyFromInputDef
