@@ -191,7 +191,7 @@ def asterDo():
     # print('recipe_output_table before IF')
     # print(recipe_output_table)
     if requiresTransactions:
-        print('Start transaction for selectResult')
+        print('Start transaction for create table')
         print(stTxn)
         executor.query_to_df(stTxn)
 
@@ -214,9 +214,20 @@ def asterDo():
             raise RuntimeError(new_err_str)
         else:
             raise RuntimeError(err_str)
-            
+
+    if requiresTransactions:
+        print('End transaction for create table')
+        print(edTxn)
+        executor.query_to_df(edTxn)
+
     
     print('Moving results to output...')
+
+    if requiresTransactions:
+        print('Start transaction for schema building')
+        print(stTxn)
+        executor.query_to_df(stTxn)
+
     # pythonrecipe_out = output_dataset
     # pythonrecipe_out.write_with_schema(selectResult)
     customOutputTableSQL = 'SELECT * from '+ outputTable.tablename + ' SAMPLE 0'
@@ -264,7 +275,7 @@ def asterDo():
                 pythonrecipe_out2 = output_dataset2
                 pythonrecipe_out2.write_schema_from_dataframe(selRes)
     if requiresTransactions:
-        print('End transaction')
+        print('End transaction for schema building')
         print(edTxn)
         executor.query_to_df(edTxn)
     print('Complete!')  
