@@ -202,9 +202,11 @@ def asterDo():
 
         err_str = str(error)
         err_str_list = err_str.split(" ")
-        
+        # trying to shorten the error for the modal in front-end
         if len(err_str_list) > 15:
-            #print(error)
+            print ("\n=================================\n")
+            print (error)
+            print ("\n=================================\n")
             new_err_str = err_str_list[:15]
             new_err_str.append("\n\n")
             new_err_str.append("...")
