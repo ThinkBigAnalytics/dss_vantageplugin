@@ -99,11 +99,11 @@ class inputtableinfo(tableinfo.tableinfo):
                     if i == None:
                         orderKeyFromInputDef[ctr] = ''
 
-        print("====================ReturnVal===========================")
-        print(orderKeyFromInputDef)
-        print("=======================================================")
-        print(orderKeyDirectionFromInputDef)
-        print("=======================================================")
+        # print("====================ReturnVal===========================")
+        # print(orderKeyFromInputDef)
+        # print("=======================================================")
+        # print(orderKeyDirectionFromInputDef)
+        # print("=======================================================")
 
         # print('Order type')
         # print(orderKeyFromInputDef)

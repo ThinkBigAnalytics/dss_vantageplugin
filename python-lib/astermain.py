@@ -121,9 +121,9 @@ def asterDo():
         
     # actual query
     query = getFunctionsQuery(dss_function, inputTables, outputTable, get_recipe_config() or {})
-    print("=============================")
-    print (query)
-    print("=============================")
+    # print("=============================")
+    # print (query)
+    # print("=============================")
     # raise RuntimeError("""I Just wanted to make this execution stop: """)
     
     # Uncomment below
@@ -203,11 +203,9 @@ def asterDo():
         err_str = str(error)
         err_str_list = err_str.split(" ")
         
-        if len(err_str_list) > 20:
-            print("=============================")
-            print(error)
-            print("=============================")
-            new_err_str = err_str_list[:19]
+        if len(err_str_list) > 15:
+            #print(error)
+            new_err_str = err_str_list[:15]
             new_err_str.append("\n\n")
             new_err_str.append("...")
             new_err_str = " ".join(new_err_str)
