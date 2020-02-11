@@ -88,8 +88,10 @@ def asterDo():
     
     # Recipe function param
     dss_function = get_recipe_config().get('function', None)
-    print('Showing DSS Function')
-    print(dss_function)
+    print ("\n=================================\n")
+    print ('Showing DSS Function')
+    print (dss_function)
+    print ("\n=================================\n")
     
     # Daitaiku DSS params
     client = dataiku.api_client()
@@ -121,9 +123,9 @@ def asterDo():
         
     # actual query
     query = getFunctionsQuery(dss_function, inputTables, outputTable, get_recipe_config() or {})
-    print("=============================")
-    print (query)
-    print("=============================")
+    # print("=============================")
+    # print (query)
+    # print("=============================")
     # raise RuntimeError("""I Just wanted to make this execution stop: """)
     
     # Uncomment below
@@ -183,15 +185,13 @@ def asterDo():
     #     output_schema.append({"name":column, "type":"string"})
     # output_dataset.write_schema(output_schema)
     print('\n'.join(query))
+    # print(dss_function)
 
-    
-
-    print(dss_function)
     # recipe_output_table = dss_function.get('recipeOutputTable', "")
     # print('recipe_output_table before IF')
     # print(recipe_output_table)
     if requiresTransactions:
-        print('Start transaction for selectResult')
+        print('Start transaction for create table')
         print(stTxn)
         executor.query_to_df(stTxn)
 
@@ -202,21 +202,32 @@ def asterDo():
 
         err_str = str(error)
         err_str_list = err_str.split(" ")
-        
-        if len(err_str_list) > 20:
-            print("=============================")
-            print(error)
-            print("=============================")
-            new_err_str = err_str_list[:19]
+        # trying to shorten the error for the modal in front-end
+        if len(err_str_list) > 15:
+            print ("\n=================================\n")
+            print (error)
+            print ("\n=================================\n")
+            new_err_str = err_str_list[:15]
             new_err_str.append("\n\n")
             new_err_str.append("...")
             new_err_str = " ".join(new_err_str)
             raise RuntimeError(new_err_str)
         else:
             raise RuntimeError(err_str)
-            
+
+    if requiresTransactions:
+        print('End transaction for create table')
+        print(edTxn)
+        executor.query_to_df(edTxn)
+
     
     print('Moving results to output...')
+
+    if requiresTransactions:
+        print('Start transaction for schema building')
+        print(stTxn)
+        executor.query_to_df(stTxn)
+
     # pythonrecipe_out = output_dataset
     # pythonrecipe_out.write_with_schema(selectResult)
     customOutputTableSQL = 'SELECT * from '+ outputTable.tablename + ' SAMPLE 0'
@@ -264,7 +275,7 @@ def asterDo():
                 pythonrecipe_out2 = output_dataset2
                 pythonrecipe_out2.write_schema_from_dataframe(selRes)
     if requiresTransactions:
-        print('End transaction')
+        print('End transaction for schema building')
         print(edTxn)
         executor.query_to_df(edTxn)
     print('Complete!')  
