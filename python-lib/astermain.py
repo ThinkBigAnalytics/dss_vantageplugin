@@ -88,8 +88,10 @@ def asterDo():
     
     # Recipe function param
     dss_function = get_recipe_config().get('function', None)
-    print('Showing DSS Function')
-    print(dss_function)
+    print ("\n=================================\n")
+    print ('Showing DSS Function')
+    print (dss_function)
+    print ("\n=================================\n")
     
     # Daitaiku DSS params
     client = dataiku.api_client()
@@ -183,10 +185,8 @@ def asterDo():
     #     output_schema.append({"name":column, "type":"string"})
     # output_dataset.write_schema(output_schema)
     print('\n'.join(query))
+    # print(dss_function)
 
-    
-
-    print(dss_function)
     # recipe_output_table = dss_function.get('recipeOutputTable', "")
     # print('recipe_output_table before IF')
     # print(recipe_output_table)
