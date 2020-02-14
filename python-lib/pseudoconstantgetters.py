@@ -25,7 +25,8 @@ AS
 (
 {}
 )
-WITH DATA;'''
+WITH DATA
+;'''
 # CREATE_QUERY = '''{}'''
 
 # Update to:
