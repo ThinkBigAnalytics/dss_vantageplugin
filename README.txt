@@ -7,7 +7,7 @@
 -
 - March 2020                                                                   
 -
-- Copyright (c) 2019 Teradata
+- Copyright (c) 2020 Teradata
 -------------------------------------------------------------------------
 
 The Teradata Vantage Plugins for Dataiku Data Science Studio (DSS) allows 
