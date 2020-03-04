@@ -3,9 +3,9 @@
 -              The Teradata Vantage SCRIPT Table Operator Plugin for R
 -              and Python
 -              
-- Version: 1.0
+- Version: 1.1-1
 -
-- September 2019                                                                   
+- March 2020                                                                   
 -
 - Copyright (c) 2019 Teradata
 -------------------------------------------------------------------------
