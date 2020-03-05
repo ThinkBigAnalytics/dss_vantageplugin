@@ -3,14 +3,14 @@ TeradataVantageFunctionsPlugin/
 VantageMLE_DSSPlugin/
 /resource/mapping.json_orig
 /resource/mapping_modded.json
-*.zip
-*.DS_Store
 .project
 .pydevproject
 .settings
 *.pyc
 *.sh
 *.diff
+*.zip
+*.DS_Store
 todo.todo
 /TDAP_Test_Run
 /python-lib/StringArgument.py
